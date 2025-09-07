@@ -1,24 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import Fields from "./components/form/Fields"
+import DesignQuantityType from "./components/form/DesignQuantityType";
+import NumberThickness from "./components/form/NumberThickness";
+import Colors from "./components/form/Colors";
+import Upload from "./components/form/Upload";
+
+import { Container } from "@chakra-ui/react"
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container dir="rtl" maxW="6xl">
+
+      <Fields />
+
+      <DesignQuantityType />
+
+      <NumberThickness />
+
+      <Colors />
+
+      <Upload />
+
+    </Container>
   );
 }
 
