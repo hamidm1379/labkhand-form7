@@ -36,7 +36,7 @@ const Fields = () => {
                     </Field.Label>
                     <Input height="44px" placeholder="نام سفارش" />
                     <Field.ErrorText>
-                        تعداد به درستی وارد نشده.
+                        نام به درستی وارد نشده.
                     </Field.ErrorText>
                 </Field.Root>
 
