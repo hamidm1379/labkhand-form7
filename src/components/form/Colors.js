@@ -139,7 +139,7 @@ const Colors = () => {
             </RadioCard.Root>
 
             <SimpleGrid columns={[1, null, 5]} gap="6">
-                <GridItem colSpan={3}>
+                <GridItem colSpan={[1, null, 3]}>
                     <RadioCard.Root
                         orientation="vertical"
                         align="center"
@@ -173,8 +173,8 @@ const Colors = () => {
                         </HStack>
                     </RadioCard.Root>
                 </GridItem>
-                <GridItem marginY="auto" colSpan={2}>
-                    <Field.Root width="288px" sm={{ width: "220px" }}>
+                <GridItem marginY="auto" colSpan={[1, null, 2]}>
+                    <Field.Root width="full" sm={{ width: "220px" }}>
                         <Field.Label>
                             پوشش نهایی دلخواه را وارد کنید
                             <Field.RequiredIndicator />

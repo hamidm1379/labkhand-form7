@@ -44,7 +44,7 @@ const NumberThickness = () => {
     return (
         <>
             <SimpleGrid columns={[1, null, 5]} gap="6">
-                <GridItem colSpan={3}>
+                <GridItem colSpan={[1, null, 3]}>
                     <RadioCard.Root
                         orientation="vertical"
                         align="center"
@@ -77,8 +77,8 @@ const NumberThickness = () => {
                         </HStack>
                     </RadioCard.Root>
                 </GridItem>
-                <GridItem marginY="auto" colSpan={2}>
-                    <Field.Root width="288px" sm={{ width: "220px" }}>
+                <GridItem marginY="auto" colSpan={[1, null, 2]}>
+                    <Field.Root width="full" sm={{ width: "220px" }}>
                         <Field.Label>
                             تعداد لایه دلخواه را وارد کنید
                             <Field.RequiredIndicator />
@@ -123,7 +123,7 @@ const NumberThickness = () => {
                     </RadioCard.Root>
                 </GridItem>
                 <GridItem marginY="auto" colSpan={[1, 1, 1]}>
-                    <Field.Root width="288px" sm={{ width: "220px" }}>
+                    <Field.Root width="full" sm={{ width: "220px" }}>
                         <Field.Label>
                             ضخامت برد دلخواه را وارد کنید
                             <Field.RequiredIndicator />

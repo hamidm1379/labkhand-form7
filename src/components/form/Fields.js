@@ -11,7 +11,7 @@ const Fields = () => {
                 فرم سفارش برد مدار چاپی (PCB)
             </Box>
             <SimpleGrid columns={[1, 2, 3]} gap="6">
-                <Field.Root width="288px" sm={{ width: "220px" }}>
+                <Field.Root width="full" sm={{ width: "220px" }}>
                     <Field.Label>
                         نام سفارش :
                         <Field.RequiredIndicator
@@ -37,7 +37,7 @@ const Fields = () => {
                     <Input height="44px" placeholder="نام سفارش" />
                 </Field.Root>
 
-                <Field.Root width="288px" sm={{ width: "220px" }}>
+                <Field.Root width="full" sm={{ width: "220px" }}>
                     <Field.Label>
                         تعداد سفارش :
                         <Field.RequiredIndicator
@@ -70,7 +70,7 @@ const Fields = () => {
             </Box>
 
             <SimpleGrid columns={[1, 2, 3]} gap="6">
-                <Field.Root width="288px" sm={{ width: "220px" }}>
+                <Field.Root width="full" sm={{ width: "220px" }}>
                     <Field.Label>
                         طول :
                         <Field.RequiredIndicator
@@ -96,7 +96,7 @@ const Fields = () => {
                     <Input height="44px" placeholder="طول" />
                 </Field.Root>
 
-                <Field.Root width="288px" sm={{ width: "220px" }}>
+                <Field.Root width="full" sm={{ width: "220px" }}>
                     <Field.Label>
                         عرض :
                         <Field.RequiredIndicator
