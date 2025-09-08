@@ -1,4 +1,12 @@
-import { Field,SimpleGrid, Grid, Input, Image, HStack, GridItem, RadioCard } from "@chakra-ui/react"
+"use client"
+
+import { useState } from 'react';
+
+import { Field, SimpleGrid, Box, Input, Image, HStack, GridItem, RadioCard } from "@chakra-ui/react"
+import { FaCheck } from "react-icons/fa";
+
+import { Tooltip } from "../../components/ui/tooltip"
+import { FaExclamationCircle } from 'react-icons/fa';
 
 import BordtakImage from "../../image/bordtak.png"
 import PanelImage from "../../image/panel.png"
@@ -36,6 +44,10 @@ const material = [
 ]
 
 const DesignQuantityType = () => {
+    const [selectedValue, setSelectedValue] = useState(items[0]?.value);
+    const [selectedValueTwo, setSelectedValueTwo] = useState(numbers[0]?.value);
+    const [selectedValueThree, setSelectedValueThree] = useState(material[0]?.value);
+
     return (
         <>
             <RadioCard.Root
@@ -46,12 +58,35 @@ const DesignQuantityType = () => {
                 paddingY="20px"
                 dir="rtl"
             >
-                <RadioCard.Label dir="rtl">طرح فایل :</RadioCard.Label>
+                <RadioCard.Label dir="rtl">طرح فایل :
+                    <Tooltip
+                        content="عرض را وارد کنید"
+                        positioning={{ placement: "top" }}
+                        openDelay={100}
+                        closeDelay={100}
+                        contentProps={{ css: { "--tooltip-bg": "white", "color": "black" } }}
+                        showArrow
+                    >
+                        <Box cursor="pointer" as={FaExclamationCircle}></Box>
+                    </Tooltip>
+                </RadioCard.Label>
                 <HStack>
                     {items.map((item) => (
-                        <RadioCard.Item height="100px" key={item.value} value={item.value} colorPalette="blue">
+                        <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValue(item.value)} height="100px" key={item.value} value={item.value} colorPalette="blue">
                             <RadioCard.ItemHiddenInput />
                             <RadioCard.ItemControl>
+                                {selectedValue === item.value && (
+                                    <RadioCard.ItemIndicator
+                                        as={FaCheck}
+                                        color=""
+                                        position="absolute"
+                                        borderWidth="2px"
+                                        borderColor="gray.400"
+                                        bottom="-6px"
+                                        left="-6px"
+                                        padding="3px"
+                                    />
+                                )}
                                 <Image src={item.src} />
                                 <RadioCard.ItemText>{item.title}</RadioCard.ItemText>
                             </RadioCard.ItemControl>
@@ -72,9 +107,21 @@ const DesignQuantityType = () => {
                         <RadioCard.Label dir="rtl">تعداد طرح :</RadioCard.Label>
                         <HStack spacing={3} wrap="wrap" justify="center">
                             {numbers.map((item) => (
-                                <RadioCard.Item key={item.value} value={item.value} colorPalette="blue">
+                                <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueTwo(item.value)} key={item.value} value={item.value} colorPalette="blue">
                                     <RadioCard.ItemHiddenInput />
                                     <RadioCard.ItemControl>
+                                        {selectedValueTwo === item.value && (
+                                            <RadioCard.ItemIndicator
+                                                as={FaCheck}
+                                                color=""
+                                                position="absolute"
+                                                borderWidth="2px"
+                                                borderColor="gray.400"
+                                                bottom="-6px"
+                                                left="-6px"
+                                                padding="3px"
+                                            />
+                                        )}
                                         <RadioCard.ItemText>{item.title}</RadioCard.ItemText>
                                     </RadioCard.ItemControl>
                                 </RadioCard.Item>
@@ -83,12 +130,12 @@ const DesignQuantityType = () => {
                     </RadioCard.Root>
                 </GridItem>
                 <GridItem marginY="auto" colSpan={2}>
-                    <Field.Root>
+                    <Field.Root width="220px">
                         <Field.Label>
                             تعداد طرح دلخواه را وارد کنید
                             <Field.RequiredIndicator />
                         </Field.Label>
-                        <Input placeholder="تعداد" />
+                        <Input height="44px" placeholder="تعداد" />
                     </Field.Root>
                 </GridItem>
             </SimpleGrid>
@@ -101,12 +148,35 @@ const DesignQuantityType = () => {
                 paddingY="20px"
                 dir="rtl"
             >
-                <RadioCard.Label dir="rtl">جنس برد :</RadioCard.Label>
+                <RadioCard.Label dir="rtl">جنس برد :
+                    <Tooltip
+                        content="جنس برد را وارد کنید"
+                        positioning={{ placement: "top" }}
+                        openDelay={100}
+                        closeDelay={100}
+                        contentProps={{ css: { "--tooltip-bg": "white", "color": "black" } }}
+                        showArrow
+                    >
+                        <Box cursor="pointer" as={FaExclamationCircle}></Box>
+                    </Tooltip>
+                </RadioCard.Label>
                 <HStack spacing={3} wrap="wrap" justify="center">
                     {material.map((item) => (
-                        <RadioCard.Item height="100px" key={item.value} value={item.value} colorPalette="blue">
+                        <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueThree(item.value)} height="100px" key={item.value} value={item.value} colorPalette="blue">
                             <RadioCard.ItemHiddenInput />
                             <RadioCard.ItemControl>
+                                {selectedValueThree === item.value && (
+                                    <RadioCard.ItemIndicator
+                                        as={FaCheck}
+                                        color=""
+                                        position="absolute"
+                                        borderWidth="2px"
+                                        borderColor="gray.400"
+                                        bottom="-6px"
+                                        left="-6px"
+                                        padding="3px"
+                                    />
+                                )}
                                 <Image src={item.src} />
                                 <RadioCard.ItemText>{item.title}</RadioCard.ItemText>
                             </RadioCard.ItemControl>
