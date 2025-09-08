@@ -11,7 +11,7 @@ const Fields = () => {
                 فرم سفارش برد مدار چاپی (PCB)
             </Box>
             <SimpleGrid columns={[1, 2, 3]} gap="6">
-                <Field.Root width="full" sm={{ width: "220px" }}>
+                <Field.Root width="full" sm={{ width: "220px" }} invalid>
                     <Field.Label>
                         نام سفارش :
                         <Field.RequiredIndicator
@@ -35,6 +35,9 @@ const Fields = () => {
                         />
                     </Field.Label>
                     <Input height="44px" placeholder="نام سفارش" />
+                    <Field.ErrorText>
+                        تعداد به درستی وارد نشده.
+                    </Field.ErrorText>
                 </Field.Root>
 
                 <Field.Root width="full" sm={{ width: "220px" }}>
