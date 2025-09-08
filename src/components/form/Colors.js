@@ -174,7 +174,7 @@ const Colors = () => {
                     </RadioCard.Root>
                 </GridItem>
                 <GridItem marginY="auto" colSpan={2}>
-                    <Field.Root width="220px">
+                    <Field.Root width="288px" sm={{ width: "220px" }}>
                         <Field.Label>
                             پوشش نهایی دلخواه را وارد کنید
                             <Field.RequiredIndicator />

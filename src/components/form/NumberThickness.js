@@ -78,7 +78,7 @@ const NumberThickness = () => {
                     </RadioCard.Root>
                 </GridItem>
                 <GridItem marginY="auto" colSpan={2}>
-                    <Field.Root width="220px">
+                    <Field.Root width="288px" sm={{ width: "220px" }}>
                         <Field.Label>
                             تعداد لایه دلخواه را وارد کنید
                             <Field.RequiredIndicator />
@@ -123,7 +123,7 @@ const NumberThickness = () => {
                     </RadioCard.Root>
                 </GridItem>
                 <GridItem marginY="auto" colSpan={[1, 1, 1]}>
-                    <Field.Root width="220px">
+                    <Field.Root width="288px" sm={{ width: "220px" }}>
                         <Field.Label>
                             ضخامت برد دلخواه را وارد کنید
                             <Field.RequiredIndicator />
@@ -131,8 +131,8 @@ const NumberThickness = () => {
                         <Input height="44px" placeholder="تعداد" />
                     </Field.Root>
                 </GridItem>
-                <GridItem marginY="auto" colSpan={[1, 1, 1]}>
-                    <Image src={BoardThickImage} />
+                <GridItem margin="auto" colSpan={[1, 1, 1]}>
+                    <Image margin="auto" width="220px" height="50px" src={BoardThickImage} />
                 </GridItem>
             </SimpleGrid>
 
@@ -172,7 +172,7 @@ const NumberThickness = () => {
                     </RadioCard.Root>
                 </GridItem>
                 <GridItem marginY="auto" colSpan={1}>
-                    <Field.Root width="220px">
+                    <Field.Root width="full" sm={{ width: "220px" }}>
                         <Field.Label>
                             ضخامت برد دلخواه را وارد کنید
                             <Field.RequiredIndicator />
@@ -180,8 +180,8 @@ const NumberThickness = () => {
                         <Input height="44px" placeholder="تعداد" />
                     </Field.Root>
                 </GridItem>
-                <GridItem marginY="auto" colSpan={1}>
-                    <Image src={coppThickImage} />
+                <GridItem margin="auto" colSpan={1}>
+                    <Image margin="auto" width="220px" height="50px" src={coppThickImage} />
                 </GridItem>
             </SimpleGrid>
         </>

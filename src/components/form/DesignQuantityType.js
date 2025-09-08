@@ -95,7 +95,7 @@ const DesignQuantityType = () => {
                 </HStack>
             </RadioCard.Root>
 
-            <SimpleGrid columns={[1, null, 5]} gap="6">
+            <SimpleGrid columns={[2, null, 5]} gap="6">
                 <GridItem colSpan={3}>
                     <RadioCard.Root
                         orientation="vertical"
@@ -130,7 +130,7 @@ const DesignQuantityType = () => {
                     </RadioCard.Root>
                 </GridItem>
                 <GridItem marginY="auto" colSpan={2}>
-                    <Field.Root width="220px">
+                    <Field.Root width="288px" sm={{ width: "220px" }}>
                         <Field.Label>
                             تعداد طرح دلخواه را وارد کنید
                             <Field.RequiredIndicator />
