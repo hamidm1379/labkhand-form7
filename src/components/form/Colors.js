@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { Field, SimpleGrid, Box, Input, ColorSwatch, Image, HStack, GridItem, RadioCard, Text } from "@chakra-ui/react"
+import { Field, SimpleGrid, Box, Input, ColorSwatch, HStack, GridItem, RadioCard, Text } from "@chakra-ui/react"
 import { FaCheck } from "react-icons/fa";
 
 import { Tooltip } from "../../components/ui/tooltip"
@@ -70,7 +70,7 @@ const Colors = () => {
                 </RadioCard.Label>
                 <HStack spacing={3} wrap="wrap" justify="center">
                     {boardColor.map((item) => (
-                        <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValue(item.value)} key={item.value} value={item.value} colorPalette={item.color}>
+                        <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValue(item.value)} key={item.value} value={item.value} colorPalette="blue">
                             <RadioCard.ItemHiddenInput />
                             <RadioCard.ItemControl>
                                 {selectedValue === item.value && (
@@ -115,7 +115,7 @@ const Colors = () => {
                 </RadioCard.Label>
                 <HStack>
                     {guideColor.map((item) => (
-                        <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueTwo(item.value)} key={item.value} value={item.value} colorPalette={item.color}>
+                        <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueTwo(item.value)} key={item.value} value={item.value} colorPalette="blue">
                             <RadioCard.ItemHiddenInput />
                             <RadioCard.ItemControl>
                                 {selectedValueTwo === item.value && (

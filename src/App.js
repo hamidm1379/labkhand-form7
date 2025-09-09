@@ -1,28 +1,15 @@
-import Fields from "./components/form/Fields"
-import DesignQuantityType from "./components/form/DesignQuantityType";
-import NumberThickness from "./components/form/NumberThickness";
-import Colors from "./components/form/Colors";
-import Upload from "./components/form/Upload";
-
-import { Container } from "@chakra-ui/react"
-
-
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Home from "./Home"
+import Register from "./register/index"
 
 function App() {
   return (
-    <Container dir="rtl" maxW="6xl">
-
-      <Fields />
-
-      <DesignQuantityType />
-
-      <NumberThickness />
-
-      <Colors />
-
-      <Upload />
-
-    </Container>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/register" element={<Register />}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

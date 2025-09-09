@@ -7,7 +7,7 @@ import { FaExclamationCircle } from 'react-icons/fa';
 const Fields = () => {
     return (
         <>
-            <Box paddingY="40px" fontSize="18px">
+            <Box paddingY="40px" fontSize="23px">
                 فرم سفارش برد مدار چاپی (PCB)
             </Box>
             <SimpleGrid columns={[1, 2, 3]} gap="6">
@@ -17,7 +17,7 @@ const Fields = () => {
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge size="xs" color="red" backgroundColor="white">
+                                    <Badge size="xs" color="red" backgroundColor="gray.50">
                                         (ضروری)
                                     </Badge>
                                     <Tooltip
@@ -46,7 +46,7 @@ const Fields = () => {
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge size="xs" color="red" backgroundColor="white">
+                                    <Badge size="xs" color="red" backgroundColor="gray.50">
                                         (ضروری)
                                     </Badge>
                                     <Tooltip
@@ -79,7 +79,7 @@ const Fields = () => {
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge size="xs" color="red" backgroundColor="white">
+                                    <Badge size="xs" color="red" backgroundColor="gray.50">
                                         (ضروری)
                                     </Badge>
                                     <Tooltip
@@ -105,7 +105,7 @@ const Fields = () => {
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge size="xs" color="red" backgroundColor="white">
+                                    <Badge size="xs" color="red" backgroundColor="gray.50">
                                         (ضروری)
                                     </Badge>
                                     <Tooltip
