@@ -43,19 +43,20 @@ const NumberThickness = () => {
 
     return (
         <>
-            <SimpleGrid columns={[1, null, 5]} gap="6">
+            <SimpleGrid columns={[1, null, 6]} gap="6">
                 <GridItem colSpan={[1, null, 3]}>
                     <RadioCard.Root
                         orientation="vertical"
                         align="center"
                         defaultValue={2}
+                        maxW="460px"
                         paddingY="20px"
                         dir="rtl"
                     >
                         <RadioCard.Label dir="rtl">تعداد لایه ها :</RadioCard.Label>
                         <HStack spacing={3} wrap="wrap" justify="center">
                             {layers.map((item) => (
-                                <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueTwo(item.value)} key={item.value} value={item.value} colorPalette="blue">
+                                <RadioCard.Item  _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueTwo(item.value)} key={item.value} value={item.value} colorPalette="blue">
                                     <RadioCard.ItemHiddenInput />
                                     <RadioCard.ItemControl position="relative">
                                         {selectedValueTwo === item.value && (
@@ -83,17 +84,18 @@ const NumberThickness = () => {
                             تعداد لایه دلخواه را وارد کنید
                             <Field.RequiredIndicator />
                         </Field.Label>
-                        <Input height="44px" placeholder="تعداد" />
+                        <Input height="44px" />
                     </Field.Root>
                 </GridItem>
             </SimpleGrid>
 
-            <SimpleGrid columns={[1, 2, 5]} gap="6">
+            <SimpleGrid columns={[1, 2, 6]} gap="6">
                 <GridItem colSpan={[1, 1, 3]}>
                     <RadioCard.Root
                         orientation="vertical"
                         align="center"
                         defaultValue={0.4}
+                        maxW="550px"
                         paddingY="20px"
                         dir="rtl"
                     >
@@ -128,28 +130,28 @@ const NumberThickness = () => {
                             ضخامت برد دلخواه را وارد کنید
                             <Field.RequiredIndicator />
                         </Field.Label>
-                        <Input height="44px" placeholder="تعداد" />
+                        <Input height="44px" />
                     </Field.Root>
                 </GridItem>
-                <GridItem margin="auto" colSpan={[1, 1, 1]}>
+                <GridItem margin="auto" colSpan={[1, 1, 2]}>
                     <Image margin="auto" width="220px" height="50px" src={BoardThickImage} />
                 </GridItem>
             </SimpleGrid>
 
-            <SimpleGrid columns={[1, null, 5]} gap="6">
+            <SimpleGrid columns={[1, null, 6]} gap="6">
                 <GridItem colSpan={[1, 1, 3]}>
                     <RadioCard.Root
                         orientation="vertical"
                         align="center"
                         defaultValue="1oz"
                         paddingY="20px"
-                        maxW="200px"
+                        maxW="130px"
                         dir="rtl"
                     >
                         <RadioCard.Label dir="rtl">ضخامت مس :</RadioCard.Label>
                         <HStack spacing={3} wrap="wrap" justify="center">
                             {copperThickness.map((item) => (
-                                <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueThree(item.value)} key={item.value} value={item.value} colorPalette="blue">
+                                <RadioCard.Item width="60px" _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueThree(item.value)} key={item.value} value={item.value} colorPalette="blue">
                                     <RadioCard.ItemHiddenInput />
                                     <RadioCard.ItemControl>
                                         {selectedValueThree === item.value && (
@@ -174,13 +176,13 @@ const NumberThickness = () => {
                 <GridItem marginY="auto" colSpan={1}>
                     <Field.Root width="full" sm={{ width: "220px" }}>
                         <Field.Label>
-                            ضخامت برد دلخواه را وارد کنید
+                            ضخامت مس دلخواه را وارد کنید
                             <Field.RequiredIndicator />
                         </Field.Label>
                         <Input height="44px" placeholder="تعداد" />
                     </Field.Root>
                 </GridItem>
-                <GridItem margin="auto" colSpan={1}>
+                <GridItem margin="auto" colSpan={2}>
                     <Image margin="auto" width="220px" height="50px" src={coppThickImage} />
                 </GridItem>
             </SimpleGrid>

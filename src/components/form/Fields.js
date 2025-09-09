@@ -34,7 +34,7 @@ const Fields = () => {
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" placeholder="نام سفارش" />
+                    <Input height="44px" />
                     <Field.ErrorText>
                         نام به درستی وارد نشده.
                     </Field.ErrorText>
@@ -63,7 +63,7 @@ const Fields = () => {
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" placeholder="تعداد سفارش" />
+                    <Input height="44px" />
                 </Field.Root>
 
             </SimpleGrid>
@@ -96,7 +96,7 @@ const Fields = () => {
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" placeholder="طول" />
+                    <Input height="44px" />
                 </Field.Root>
 
                 <Field.Root width="full" sm={{ width: "220px" }}>
@@ -122,7 +122,7 @@ const Fields = () => {
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" placeholder="عرض" />
+                    <Input height="44px" />
                 </Field.Root>
 
                 <Image margin="auto" sm={{ margin: "0" }} src={SizeImage} alt="ابعاد" />

@@ -51,7 +51,7 @@ const Colors = () => {
             <RadioCard.Root
                 orientation="vertical"
                 align="center"
-                maxW="700px"
+                maxW="770px"
                 defaultValue="سبز"
                 paddingY="20px"
                 dir="rtl"
@@ -85,7 +85,7 @@ const Colors = () => {
                                         padding="3px"
                                     />
                                 )}
-                                <ColorSwatch key={item.value} value={item.color} width="20px" height="20px" />
+                                <ColorSwatch key={item.value} value={item.color} width="30px" height="30px" />
                                 <RadioCard.ItemText>{item.title}</RadioCard.ItemText>
                             </RadioCard.ItemControl>
                         </RadioCard.Item>
@@ -96,7 +96,7 @@ const Colors = () => {
             <RadioCard.Root
                 orientation="vertical"
                 align="center"
-                maxW="300px"
+                maxW="325px"
                 defaultValue="سفید"
                 paddingY="20px"
                 dir="rtl"
@@ -130,7 +130,7 @@ const Colors = () => {
                                         padding="3px"
                                     />
                                 )}
-                                <ColorSwatch key={item.value} value={item.color} width="20px" height="20px" />
+                                <ColorSwatch key={item.value} value={item.color} width="30px" height="30px" />
                                 <RadioCard.ItemText>{item.title}</RadioCard.ItemText>
                             </RadioCard.ItemControl>
                         </RadioCard.Item>
@@ -138,14 +138,14 @@ const Colors = () => {
                 </HStack>
             </RadioCard.Root>
 
-            <SimpleGrid columns={[1, null, 5]} gap="6">
+            <SimpleGrid columns={[1, null, 6]} gap="6">
                 <GridItem colSpan={[1, null, 3]}>
                     <RadioCard.Root
                         orientation="vertical"
                         align="center"
                         defaultValue="HASL"
                         paddingY="20px"
-                        maxW="200px"
+                        maxW="135px"
                         dir="rtl"
                     >
                         <RadioCard.Label dir="rtl">پوشش نهایی :</RadioCard.Label>
@@ -189,18 +189,18 @@ const Colors = () => {
                                 <Box cursor="pointer" as={FaExclamationCircle}></Box>
                             </Tooltip>
                         </Field.Label>
-                        <Input height="44px" placeholder="تعداد" />
+                        <Input height="44px" />
                     </Field.Root>
                 </GridItem>
             </SimpleGrid>
 
-            <SimpleGrid columns={[1, null, 2]} gap="">
+            <SimpleGrid columns={[1, null, 2]} gap="6">
                 <RadioCard.Root
                     orientation="vertical"
                     align="center"
                     defaultValue="CNC"
                     paddingY="20px"
-                    maxW="200px"
+                    maxW="150px"
                     dir="rtl"
                 >
                     <RadioCard.Label dir="rtl">برش برد :
@@ -244,7 +244,7 @@ const Colors = () => {
                     align="center"
                     defaultValue="yes"
                     paddingY="20px"
-                    maxW="200px"
+                    maxW="125px"
                     dir="rtl"
                 >
                     <RadioCard.Label dir="rtl">استنسیل :

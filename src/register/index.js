@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Field, SimpleGrid,RadioCard, HStack, Button, Link, Box, Input, Badge, Text, Select, Portal, Textarea, createListCollection } from "@chakra-ui/react"
+import { Field, SimpleGrid, RadioCard, HStack, Button, Link, Box, Input, Badge, Text, Select, Portal, Textarea, createListCollection } from "@chakra-ui/react"
 import { FaCheck } from "react-icons/fa";
 import { Container } from "@chakra-ui/react"
 
@@ -38,7 +38,7 @@ function Register() {
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" placeholder="نام " />
+                    <Input height="44px" />
                     <Field.ErrorText>
                         نام به درستی وارد نشده.
                     </Field.ErrorText>
@@ -58,7 +58,7 @@ function Register() {
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" placeholder="نام خانوادگی" />
+                    <Input height="44px" />
                 </Field.Root>
 
             </SimpleGrid>
@@ -76,7 +76,7 @@ function Register() {
                         }
                     />
                 </Field.Label>
-                <Input height="44px" placeholder="نام شرکت" />
+                <Input height="44px" />
                 <Field.ErrorText>
                     نام به درستی وارد نشده.
                 </Field.ErrorText>
@@ -97,7 +97,7 @@ function Register() {
                 </Field.Label>
                 <Text width="full" fontSize="14px" color="gray.600">خیابان ، کوچه ، پلاک ، واحد و ... : (ضروری)</Text>
 
-                <Input height="44px" placeholder="آدرس" />
+                <Input height="44px" />
                 <Field.ErrorText>
                     نام به درستی وارد نشده.
                 </Field.ErrorText>
@@ -166,7 +166,7 @@ function Register() {
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" placeholder="کد پستی" />
+                    <Input height="44px" />
                     <Field.ErrorText>
                         نام به درستی وارد نشده.
                     </Field.ErrorText>
@@ -185,7 +185,7 @@ function Register() {
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" placeholder="ایمیل" />
+                    <Input height="44px" />
                     <Field.ErrorText>
                         نام به درستی وارد نشده.
                     </Field.ErrorText>
@@ -204,7 +204,7 @@ function Register() {
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" placeholder="شماره ثابت" />
+                    <Input height="44px" />
                     <Field.ErrorText>
                         نام به درستی وارد نشده.
                     </Field.ErrorText>
@@ -223,7 +223,7 @@ function Register() {
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" placeholder="شماره موبایل" />
+                    <Input height="44px" />
                     <Field.ErrorText>
                         نام به درستی وارد نشده.
                     </Field.ErrorText>
@@ -232,7 +232,7 @@ function Register() {
 
             <Field.Root marginTop="10px">
                 <Field.Label>توضیحات سفارش :</Field.Label>
-                <Textarea minH="200px" placeholder="توضیحات سفارش" />
+                <Textarea minH="200px" />
             </Field.Root>
 
             <RadioCard.Root
@@ -240,11 +240,11 @@ function Register() {
                 align="center"
                 defaultValue="yes"
                 paddingY="20px"
-                maxW="200px"
+                maxW="125px"
                 dir="rtl"
             >
                 <RadioCard.Label dir="rtl">حمل و نقل به آدرس متفاوت :</RadioCard.Label>
-                <HStack width="150px">
+                <HStack>
                     {stasil.map((item) => (
                         <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" key={item.value} value={item.value} colorPalette="blue">
                             <RadioCard.ItemHiddenInput />
@@ -269,9 +269,11 @@ function Register() {
             </RadioCard.Root>
 
             <HStack paddingY="20px">
-                <Button colorPalette="blue" variant="solid">
-                    <Link color="white" href="/">قبلی</Link>
-                </Button>
+                <Link color="white" href="/">
+                    <Button colorPalette="blue" variant="solid">
+                        قبلی
+                    </Button>
+                </Link>
                 <Button colorPalette="blue" variant="solid">
                     ارسال
                 </Button>

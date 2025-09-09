@@ -53,14 +53,14 @@ const DesignQuantityType = () => {
             <RadioCard.Root
                 orientation="vertical"
                 align="center"
-                maxW="300px"
+                maxW="220px"
                 defaultValue="برد تک"
                 paddingY="20px"
                 dir="rtl"
             >
                 <RadioCard.Label dir="rtl">طرح فایل :
                     <Tooltip
-                        content="عرض را وارد کنید"
+                        content="تعداد طرح را وارد کنید"
                         positioning={{ placement: "top" }}
                         openDelay={100}
                         closeDelay={100}
@@ -72,7 +72,7 @@ const DesignQuantityType = () => {
                 </RadioCard.Label>
                 <HStack>
                     {items.map((item) => (
-                        <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValue(item.value)} height="100px" key={item.value} value={item.value} colorPalette="blue">
+                        <RadioCard.Item height="88px" _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValue(item.value)} key={item.value} value={item.value} colorPalette="blue">
                             <RadioCard.ItemHiddenInput />
                             <RadioCard.ItemControl>
                                 {selectedValue === item.value && (
@@ -95,13 +95,14 @@ const DesignQuantityType = () => {
                 </HStack>
             </RadioCard.Root>
 
-            <SimpleGrid columns={[1, null, 5]} gap="6">
+            <SimpleGrid columns={[1, null, 6]} gap="6">
                 <GridItem colSpan={[1, null, 3]}>
                     <RadioCard.Root
                         orientation="vertical"
                         align="center"
                         defaultValue={1}
                         paddingY="20px"
+                        maxW="550px"
                         dir="rtl"
                     >
                         <RadioCard.Label dir="rtl">تعداد طرح :</RadioCard.Label>
@@ -135,7 +136,7 @@ const DesignQuantityType = () => {
                             تعداد طرح دلخواه را وارد کنید
                             <Field.RequiredIndicator />
                         </Field.Label>
-                        <Input height="44px" placeholder="تعداد" />
+                        <Input height="44px" />
                     </Field.Root>
                 </GridItem>
             </SimpleGrid>
@@ -143,7 +144,7 @@ const DesignQuantityType = () => {
             <RadioCard.Root
                 orientation="vertical"
                 align="center"
-                maxW="800px"
+                maxW="740px"
                 defaultValue="FR-4"
                 paddingY="20px"
                 dir="rtl"
@@ -162,7 +163,7 @@ const DesignQuantityType = () => {
                 </RadioCard.Label>
                 <HStack spacing={3} wrap="wrap" justify="center">
                     {material.map((item) => (
-                        <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueThree(item.value)} height="100px" key={item.value} value={item.value} colorPalette="blue">
+                        <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueThree(item.value)} height="90px" key={item.value} value={item.value} colorPalette="blue">
                             <RadioCard.ItemHiddenInput />
                             <RadioCard.ItemControl>
                                 {selectedValueThree === item.value && (

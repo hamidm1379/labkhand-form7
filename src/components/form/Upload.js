@@ -1,4 +1,4 @@
-import { Field, Textarea, HStack, Text, Button, FileUpload,Link } from "@chakra-ui/react"
+import { Field, Textarea, HStack, Text, Button, FileUpload, Link } from "@chakra-ui/react"
 
 import { HiUpload } from "react-icons/hi"
 
@@ -24,13 +24,15 @@ const Upload = () => {
 
             <Field.Root>
                 <Field.Label>توضیحات :</Field.Label>
-                <Textarea minH="200px" placeholder="توضیحات :" />
+                <Textarea minH="200px" />
             </Field.Root>
 
             <HStack paddingY="20px">
-                <Button colorPalette="blue" variant="solid">
-                    <Link color="white" href="/register">بعدی</Link>
-                </Button>
+                <Link color="white" href="/register">
+                    <Button colorPalette="blue" variant="solid">
+                        بعدی
+                    </Button>
+                </Link>
             </HStack>
         </>
     )
