@@ -59,14 +59,12 @@ function OrderAdmin() {
             alert("خطا در حذف سفارش: " + err.message);
         }
     };
-
     return (
         <Container dir="rtl" maxW="6xl" backgroundColor="gray.50" marginY="20px" borderRadius="20px">
             <div class="order-container">
                 <h1 style={{ textAlign: "center", color: "#333", marginBottom: "30px", fontSize: "24px" }}>لیست سفارشات</h1>
                 {orders.map((order, index) => {
                     const data = order.data;
-
                     const products = Object.keys(data)
                         .filter(key => /^\d+$/.test(key))
                         .map(key => data[key]);

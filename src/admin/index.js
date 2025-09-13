@@ -36,6 +36,23 @@ function Admin() {
 
     if (loading) return <p>در حال بارگذاری...</p>
 
+    const handleDelete = async (usersId) => {
+        if (!window.confirm("آیا مطمئن هستید که می‌خواهید این سفارش را حذف کنید؟ این عمل غیرقابل بازگشت است.")) {
+            return;
+        }
+        try {
+            const { data, error } = await supabase
+                .from("OrderForm")
+                .delete()
+                .eq("id", usersId);
+
+            if (error) throw error;
+            setUsers((prev) => prev.filter((users) => users.id !== usersId));
+        } catch (err) {
+            alert("خطا در حذف سفارش: " + err.message);
+        }
+    };
+
     return (
         <Container dir="rtl" maxW="6xl" backgroundColor="gray.50" marginY="20px" borderRadius="20px">
             <div class="order-container">
@@ -55,7 +72,7 @@ function Admin() {
                                     اطلاعات بیشتر
                                 </Button>
                             </Dialog.Trigger>
-                            <Button marginRight="10px" colorPalette="red" variant="outline" size="sm">
+                            <Button onClick={() => handleDelete(user.id)} marginRight="10px" colorPalette="red" variant="outline" size="sm">
                                 حذف
                             </Button>
                             <Portal>
