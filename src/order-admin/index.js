@@ -67,17 +67,16 @@ function OrderAdmin() {
                     const data = order.data;
                     const products = Object.keys(data)
                         .filter(key => /^\d+$/.test(key))
-                        .map(key => data[key]);
-
+                        .map(key => data[key]);  
                     return (
-                        <div dir="rtl" key={index} class="order-container">
-                            <div key={data.id} class="order-item">
-                                <div class="order-header">
+                        <div dir="rtl" key={index} className="order-container">
+                            <div key={data.id} className="order-item">
+                                <div className="order-header">
                                     <div>سفارش #{index + 1}</div>
-                                    <span class="order-date">{convertToJalaali(order.created_at)}</span>
+                                    <span className="order-date">{convertToJalaali(order.created_at)}</span>
                                 </div>
-                                <div class="customer-name">{data.firstname} {data.lastname}</div>
-                                <div class="order-total">نام شرکت : {data.companyname}</div>
+                                <div className="customer-name">{data.firstname} {data.lastname}</div>
+                                <div className="order-total">نام شرکت : {data.companyname}</div>
                                 <Dialog.Root scrollBehavior="inside" size="cover" placement="center" motionPreset="slide-in-bottom">
                                     <Dialog.Trigger asChild>
                                         <Button variant="outline" size="sm">
@@ -174,7 +173,6 @@ function OrderAdmin() {
                         </div>
                     );
                 })}
-
             </div>
         </Container>
     );

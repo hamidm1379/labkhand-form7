@@ -8,9 +8,6 @@ function FilePreview({ uploadedFile }) {
 
   return (
     <div>
-      <p style={{ margin: "0 0 15px 0", color: "#555" }}>
-        <strong>نام فایل:</strong> {name || "نامشخص"}
-      </p>
       <div>
         <a href={base64} download={name || "file"}>
           <Button variant="outline" color="gray.600">
