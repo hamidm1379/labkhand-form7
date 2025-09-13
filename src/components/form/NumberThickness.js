@@ -36,10 +36,18 @@ const copperThickness = [
 ]
 
 
-const NumberThickness = () => {
+const NumberThickness = ({ formData, setFormData }) => {
     const [selectedValue, setSelectedValue] = useState(boardThickness[0]?.value);
     const [selectedValueTwo, setSelectedValueTwo] = useState(layers[0]?.value);
     const [selectedValueThree, setSelectedValueThree] = useState(copperThickness[0]?.value);
+
+    const handlechange = (key, value) => {
+        setFormData({ ...formData, [key]: value.target.value });
+    };
+
+    const handlechangeInput = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
     return (
         <>
@@ -54,9 +62,9 @@ const NumberThickness = () => {
                         dir="rtl"
                     >
                         <RadioCard.Label dir="rtl">تعداد لایه ها :</RadioCard.Label>
-                        <HStack spacing={3} wrap="wrap" justify="center">
+                        <HStack key="countlayer" name="countlayer" value={formData.countlayer || "2"} onChange={(value) => handlechange("countlayer", value)} spacing={3} wrap="wrap" justify="center">
                             {layers.map((item) => (
-                                <RadioCard.Item  _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueTwo(item.value)} key={item.value} value={item.value} colorPalette="blue">
+                                <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueTwo(item.value)} key={item.value} value={item.value} colorPalette="blue">
                                     <RadioCard.ItemHiddenInput />
                                     <RadioCard.ItemControl position="relative">
                                         {selectedValueTwo === item.value && (
@@ -84,7 +92,7 @@ const NumberThickness = () => {
                             تعداد لایه دلخواه را وارد کنید
                             <Field.RequiredIndicator />
                         </Field.Label>
-                        <Input height="44px" />
+                        <Input height="44px" type="number" key="countlayernumber" name="countlayernumber" value={formData.countlayernumber || ""} onChange={handlechangeInput}/>
                     </Field.Root>
                 </GridItem>
             </SimpleGrid>
@@ -100,7 +108,7 @@ const NumberThickness = () => {
                         dir="rtl"
                     >
                         <RadioCard.Label dir="rtl">ضخامت برد :</RadioCard.Label>
-                        <HStack spacing={3} wrap="wrap" justify="center">
+                        <HStack key="boardthickness" name="boardthickness" value={formData.boardthickness || "1"} onChange={(value) => handlechange("boardthickness", value)} spacing={3} wrap="wrap" justify="center">
                             {boardThickness.map((item) => (
                                 <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValue(item.value)} key={item.value} value={item.value} colorPalette="blue">
                                     <RadioCard.ItemHiddenInput />
@@ -130,7 +138,7 @@ const NumberThickness = () => {
                             ضخامت برد دلخواه را وارد کنید
                             <Field.RequiredIndicator />
                         </Field.Label>
-                        <Input height="44px" />
+                        <Input height="44px" type="number" key="boardthicknessnumber" name="boardthicknessnumber" value={formData.boardthicknessnumber || ""} onChange={handlechangeInput}/>
                     </Field.Root>
                 </GridItem>
                 <GridItem margin="auto" colSpan={[1, 1, 2]}>
@@ -149,7 +157,7 @@ const NumberThickness = () => {
                         dir="rtl"
                     >
                         <RadioCard.Label dir="rtl">ضخامت مس :</RadioCard.Label>
-                        <HStack spacing={3} wrap="wrap" justify="center">
+                        <HStack key="copperthickness" name="copperthickness" value={formData.copperthickness || "1oz"} onChange={(value) => handlechange("copperthickness", value)} spacing={3} wrap="wrap" justify="center">
                             {copperThickness.map((item) => (
                                 <RadioCard.Item width="60px" _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueThree(item.value)} key={item.value} value={item.value} colorPalette="blue">
                                     <RadioCard.ItemHiddenInput />
@@ -179,7 +187,7 @@ const NumberThickness = () => {
                             ضخامت مس دلخواه را وارد کنید
                             <Field.RequiredIndicator />
                         </Field.Label>
-                        <Input height="44px" placeholder="تعداد" />
+                        <Input height="44px" type="number" key="copperthicknessnumber" name="copperthicknessnumber" value={formData.copperthicknessnumber || ""} onChange={handlechangeInput} />
                     </Field.Root>
                 </GridItem>
                 <GridItem margin="auto" colSpan={2}>

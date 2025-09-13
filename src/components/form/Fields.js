@@ -3,15 +3,17 @@ import SizeImage from "../../image/size.png"
 import { Tooltip } from "../../components/ui/tooltip"
 import { FaExclamationCircle } from 'react-icons/fa';
 
+export default function Fields({ formData, setFormData, errors }) {
 
-const Fields = () => {
+    const handlechange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
     return (
         <>
-            <Box paddingY="40px" fontSize="23px">
-                فرم سفارش برد مدار چاپی (PCB)
-            </Box>
+            
             <SimpleGrid columns={[1, 2, 3]} gap="6">
-                <Field.Root width="full" sm={{ width: "220px" }} invalid>
+                <Field.Root {...(errors?.productname ? { invalid: true } : {})} width="full" sm={{ width: "220px" }} >
                     <Field.Label>
                         نام سفارش :
                         <Field.RequiredIndicator
@@ -34,13 +36,12 @@ const Fields = () => {
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" />
+                    <Input height="44px" type="text" key="productname" name="productname" value={formData.productname || ""} onChange={handlechange} />
                     <Field.ErrorText>
-                        نام به درستی وارد نشده.
+                        لطفا فرم را کامل کنید.
                     </Field.ErrorText>
                 </Field.Root>
-
-                <Field.Root width="full" sm={{ width: "220px" }}>
+                <Field.Root {...(errors?.countproduct ? { invalid: true } : {})} width="full" sm={{ width: "220px" }}>
                     <Field.Label>
                         تعداد سفارش :
                         <Field.RequiredIndicator
@@ -63,7 +64,10 @@ const Fields = () => {
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" />
+                    <Input height="44px" type="number" key="countproduct" name="countproduct" value={formData.countproduct} onChange={handlechange} min={1}/>
+                    <Field.ErrorText>
+                        لطفا فرم را کامل کنید.
+                    </Field.ErrorText>
                 </Field.Root>
 
             </SimpleGrid>
@@ -73,7 +77,7 @@ const Fields = () => {
             </Box>
 
             <SimpleGrid columns={[1, 2, 3]} gap="6">
-                <Field.Root width="full" sm={{ width: "220px" }}>
+                <Field.Root {...(errors?.width ? { invalid: true } : {})} width="full" sm={{ width: "220px" }}>
                     <Field.Label>
                         طول :
                         <Field.RequiredIndicator
@@ -96,10 +100,13 @@ const Fields = () => {
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" />
+                    <Input height="44px" type="number" key="length" name="length" value={formData.length} onChange={handlechange} />
+                    <Field.ErrorText>
+                        لطفا فرم را کامل کنید.
+                    </Field.ErrorText>
                 </Field.Root>
 
-                <Field.Root width="full" sm={{ width: "220px" }}>
+                <Field.Root {...(errors?.length ? { invalid: true } : {})} width="full" sm={{ width: "220px" }}>
                     <Field.Label>
                         عرض :
                         <Field.RequiredIndicator
@@ -122,7 +129,10 @@ const Fields = () => {
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" />
+                    <Input height="44px" type="number" key="width" name="width" value={formData.width} onChange={handlechange} />
+                    <Field.ErrorText>
+                        لطفا فرم را کامل کنید.
+                    </Field.ErrorText>
                 </Field.Root>
 
                 <Image margin="auto" sm={{ margin: "0" }} src={SizeImage} alt="ابعاد" />
@@ -131,4 +141,3 @@ const Fields = () => {
         </>
     )
 }
-export default Fields;

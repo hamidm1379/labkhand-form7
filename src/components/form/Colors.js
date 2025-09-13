@@ -35,16 +35,24 @@ const boardcut = [
 ]
 
 const stasil = [
-    { value: "yes", title: "بله" },
-    { value: "no", title: "خیر" }
+    { value: "بله", title: "بله" },
+    { value: "خیر", title: "خیر" }
 ]
 
-const Colors = () => {
+const Colors = ({ formData, setFormData }) => {
     const [selectedValue, setSelectedValue] = useState(boardColor[0]?.value);
     const [selectedValueTwo, setSelectedValueTwo] = useState(guideColor[0]?.value);
     const [selectedValueThree, setSelectedValueThree] = useState(finalCover[0]?.value);
     const [selectedValueFour, setSelectedValueFour] = useState(boardcut[0]?.value);
     const [selectedValueFive, setSelectedValueFive] = useState(stasil[0]?.value);
+
+    const handlechange = (key, value) => {
+        setFormData({ ...formData, [key]: value.target.value });
+    };
+
+    const handlechangeInput = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
     return (
         <>
@@ -68,7 +76,7 @@ const Colors = () => {
                         <Box cursor="pointer" as={FaExclamationCircle}></Box>
                     </Tooltip>
                 </RadioCard.Label>
-                <HStack spacing={3} wrap="wrap" justify="center">
+                <HStack key="boardcolor" name="boardcolor" value={formData.boardcolor || "سبز"} onChange={(value) => handlechange("boardcolor", value)} spacing={3} wrap="wrap" justify="center">
                     {boardColor.map((item) => (
                         <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValue(item.value)} key={item.value} value={item.value} colorPalette="blue">
                             <RadioCard.ItemHiddenInput />
@@ -113,7 +121,7 @@ const Colors = () => {
                         <Box cursor="pointer" as={FaExclamationCircle}></Box>
                     </Tooltip>
                 </RadioCard.Label>
-                <HStack>
+                <HStack key="guidecolor" name="guidecolor" value={formData.guidecolor || "سفید"} onChange={(value) => handlechange("guidecolor", value)}>
                     {guideColor.map((item) => (
                         <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueTwo(item.value)} key={item.value} value={item.value} colorPalette="blue">
                             <RadioCard.ItemHiddenInput />
@@ -149,7 +157,7 @@ const Colors = () => {
                         dir="rtl"
                     >
                         <RadioCard.Label dir="rtl">پوشش نهایی :</RadioCard.Label>
-                        <HStack>
+                        <HStack key="finalcover" name="finalcover" value={formData.finalcover || "HASL"} onChange={(value) => handlechange("finalcover", value)}>
                             {finalCover.map((item) => (
                                 <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueThree(item.value)} key={item.value} value={item.value} colorPalette="blue">
                                     <RadioCard.ItemHiddenInput />
@@ -189,7 +197,7 @@ const Colors = () => {
                                 <Box cursor="pointer" as={FaExclamationCircle}></Box>
                             </Tooltip>
                         </Field.Label>
-                        <Input height="44px" />
+                        <Input height="44px" type="text" key="finalcovernumber" name="finalcovernumber" value={formData.finalcovernumber || ""} onChange={handlechangeInput} />
                     </Field.Root>
                 </GridItem>
             </SimpleGrid>
@@ -215,7 +223,7 @@ const Colors = () => {
                             <Box cursor="pointer" as={FaExclamationCircle}></Box>
                         </Tooltip>
                     </RadioCard.Label>
-                    <HStack>
+                    <HStack key="boardcut" name="boardcut" value={formData.boardcut || "CNC"} onChange={(value) => handlechange("finalcover", value)}>
                         {boardcut.map((item) => (
                             <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" key={item.value} value={item.value} colorPalette="blue">
                                 <RadioCard.ItemHiddenInput />
@@ -242,7 +250,7 @@ const Colors = () => {
                 <RadioCard.Root
                     orientation="vertical"
                     align="center"
-                    defaultValue="yes"
+                    defaultValue="بله"
                     paddingY="20px"
                     maxW="125px"
                     dir="rtl"
@@ -259,7 +267,7 @@ const Colors = () => {
                             <Box cursor="pointer" as={FaExclamationCircle}></Box>
                         </Tooltip>
                     </RadioCard.Label>
-                    <HStack>
+                    <HStack key="stansil" name="stansil" value={formData.stansil || "بله"} onChange={(value) => handlechange("stansil", value)}>
                         {stasil.map((item) => (
                             <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" key={item.value} value={item.value} colorPalette="blue">
                                 <RadioCard.ItemHiddenInput />
