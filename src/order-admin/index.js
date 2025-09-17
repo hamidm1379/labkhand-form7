@@ -67,7 +67,7 @@ function OrderAdmin() {
                     const data = order.data;
                     const products = Object.keys(data)
                         .filter(key => /^\d+$/.test(key))
-                        .map(key => data[key]);  
+                        .map(key => data[key]);
                     return (
                         <div dir="rtl" key={index} className="order-container">
                             <div key={data.id} className="order-item">
@@ -127,7 +127,7 @@ function OrderAdmin() {
                                                     <SimpleGrid paddingTop="20px" dir="rtl" columns={2}>
                                                         <div>
                                                             <Text fontSize="16px" paddingBottom="10px">فایل ارسال شده :</Text>
-                                                            <DiplayFile uploadedFile={data.boardfile} />
+                                                            {(data.boardfile == null) ? <span>فایلی فرستاده نشده.</span> : <DiplayFile uploadedFile={data.boardfile || ""} />}
                                                         </div>
                                                         <div>
                                                             <Text fontSize="16px">توضیحات سفارش :</Text>

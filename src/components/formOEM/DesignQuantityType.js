@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Field, SimpleGrid, Box, Input, Image, HStack, GridItem, RadioCard } from "@chakra-ui/react"
 import { FaCheck } from "react-icons/fa";
 
-import { Tooltip } from "../../components/ui/tooltip"
+import { Tooltip } from "../ui/tooltip"
 import { FaQuestionCircle } from 'react-icons/fa';
 
 import BordtakImage from "../../image/bordtak.png"

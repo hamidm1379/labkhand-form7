@@ -5,6 +5,7 @@ import { FaCheck } from "react-icons/fa";
 import { MdDescription } from 'react-icons/md';
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaTimes } from 'react-icons/fa';
 
 const stasil = [
     { value: "بله", title: "بله" },
@@ -16,15 +17,15 @@ const stasilSec = [
     { value: "خیر", title: "خیر" }
 ]
 
-function Upload({ formData, setFormData,errors }) {
+function Upload({ formData, setFormData, errors }) {
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
-    const [fileName, setFileName] = useState(formData.boardfile?.name || "");
+    const [fileName, setFileName] = useState(formData.boardfile?.name);
     const [selectedValueFive, setSelectedValueFive] = useState(stasil[0]?.value);
     const [selectedValue, setSelectedValue] = useState(stasilSec[0]?.value);
 
     const fileInputRefSec = useRef(null);
-    const [fileNameSec, setFileNameSec] = useState(formData.BOMfile?.name || "");
+    const [fileNameSec, setFileNameSec] = useState(formData.BOMfile?.name);
 
     const handlechangeInput = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -71,8 +72,8 @@ function Upload({ formData, setFormData,errors }) {
         const file = event.target.files[0];
         if (!file) return;
 
-        if (file.size > 10 * 1024 * 1024) {
-            showToast("فایل بیش از حد بزرگ است. حداکثر 5 مگابایت مجاز است.", "error");
+        if (file.size > 30 * 1024 * 1024) {
+            showToast("فایل بیش از حد بزرگ است. حداکثر 30 مگابایت مجاز است.", "error");
             return;
         }
 
@@ -109,8 +110,8 @@ function Upload({ formData, setFormData,errors }) {
         const file = event.target.files[0];
         if (!file) return;
 
-        if (file.size > 10 * 1024 * 1024) {
-            showToast("فایل بیش از حد بزرگ است. حداکثر 5 مگابایت مجاز است.", "error");
+        if (file.size > 30 * 1024 * 1024) {
+            showToast("فایل بیش از حد بزرگ است. حداکثر 30 مگابایت مجاز است.", "error");
             return;
         }
 
@@ -143,61 +144,89 @@ function Upload({ formData, setFormData,errors }) {
         fileInputRefSec.current?.click();
     };
 
+    const handleRemoveFile = () => {
+        setFormData({
+            ...formData,
+            boardfile: null,
+        });
+        setFileName("");
+        if (fileInputRef.current) fileInputRef.current.value = "";
+    };
+
+    const handleRemoveFileSec = () => {
+        setFormData({
+            ...formData,
+            BOMfile: null,
+        });
+        setFileNameSec("");
+        if (fileInputRefSec.current) fileInputRefSec.current.value = "";
+    };
+
     return (
         <>
-            <Text>
-                فایل برد :
+            <Text display="flex">
+                فایل برد : <Text marginRight="7px" fontSize="16px" color="red">*</Text>
             </Text>
             <div className="Boardfile-Upload">
                 <input
                     type="file"
                     ref={fileInputRef}
                     onChange={handleFileChange}
-                    accept=".zip,.xls,.xlsx,.csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
+                    accept=".zip,.rar,.xls,.xlsx,.csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
                 />
-                <button onClick={handleUploadClick}>
+                <button className="handleUpload" onClick={handleUploadClick}>
                     <div className="upload-text">
                         <span>آپلود فایل</span>
                         <div className="upload-icon"><HiUpload /></div>
                     </div>
                 </button>
-                {fileName !== "" && (
+                {(fileName !== "" && formData.boardfile !== null) && (
                     <p className="file-text">
-                        <span>{fileName}</span>
-                        <MdDescription size={40} />
+                        <p className="handleRemove" onClick={handleRemoveFile}>
+                            <FaTimes size={30} />
+                        </p>
+                        <div>
+                            <span>{formData.boardfile?.name}</span>
+                            <MdDescription size={40} />
+                        </div>
                     </p>
                 )}
             </div>
             {errors?.boardfile && <p className="Boardfile-Error">لطفا یک فایل آپلود کنید.</p>}
             <Text fontSize="14px" color="gray" paddingTop="5px" paddingBottom="20px">
-                انواع فایل های مجاز : zip,exel , حداکثر اندازه فایل: 10 MB.
+                انواع فایل های مجاز : zip,exel,rar , حداکثر اندازه فایل: 30 MB.
             </Text>
-            <Text marginTop="20px">
-                فایل BOM :
+            <Text display="flex" marginTop="20px">
+                فایل BOM : <Text marginRight="7px" fontSize="16px" color="red">*</Text>
             </Text>
             <div className="Boardfile-Upload">
                 <input
                     type="file"
                     ref={fileInputRefSec}
                     onChange={handleFileChangeSec}
-                    accept=".zip,.xls,.xlsx,.csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
+                    accept=".zip,.rar,.xls,.xlsx,.csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
                 />
-                <button onClick={handleUploadClickSec}>
+                <button className="handleUpload" onClick={handleUploadClickSec}>
                     <div className="upload-text">
                         <span>آپلود فایل</span>
                         <div className="upload-icon"><HiUpload /></div>
                     </div>
                 </button>
-                {fileNameSec !== "" && (
+                {(fileNameSec !== "" && formData.BOMfile !== null) && (
                     <p className="file-text">
-                        <span>{fileNameSec}</span>
-                        <MdDescription size={40} />
+                        <p className="handleRemove" onClick={handleRemoveFileSec}>
+                            <FaTimes size={30} />
+                        </p>
+                        <div>
+                            <span>{formData.BOMfile?.name}</span>
+                            <MdDescription size={40} />
+                        </div>
                     </p>
                 )}
             </div>
             {errors?.BOMfile && <p className="Boardfile-Error">لطفا یک فایل آپلود کنید.</p>}
             <Text fontSize="14px" color="gray" paddingTop="5px" paddingBottom="20px">
-                انواع فایل های مجاز : zip,exel , حداکثر اندازه فایل: 10 MB.
+                انواع فایل های مجاز : zip,exel,rar , حداکثر اندازه فایل: 30 MB.
             </Text>
             <Text fontSize="16px" color="gray" paddingY="30px">
                 نمونه BOM مورد نظر را از اینجا دانلود کنید.
@@ -270,7 +299,7 @@ function Upload({ formData, setFormData,errors }) {
             </SimpleGrid>
             <Field.Root>
                 <Field.Label>توضیحات :</Field.Label>
-                <Textarea key="description" name="description" value={formData.description || ""} onChange={handlechangeInput} minH="200px" />
+                <Textarea backgroundColor="white" key="description" name="description" value={formData.description || ""} onChange={handlechangeInput} minH="200px" />
             </Field.Root>
         </>
     );

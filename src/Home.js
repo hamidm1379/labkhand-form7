@@ -16,10 +16,6 @@ function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    localStorage.clear();
-  }, []);
-
-  useEffect(() => {
     const savedData = localStorage.getItem("pageOneData");
     if (savedData) {
       const parsed = JSON.parse(savedData);
@@ -37,7 +33,6 @@ function Home() {
         finalcover: "HASL",
         boardcut: "CNC",
         stansil: "بله",
-        boardfile: null
       });
     } else {
       setPageOneData({
@@ -84,7 +79,7 @@ function Home() {
 
   return (
     <Container dir="rtl" maxW="6xl" backgroundColor="gray.50" marginY="20px" borderRadius="20px">
-      <Box paddingY="40px" fontSize="23px">
+      <Box color="#0662EA" paddingY="40px" fontSize="23px">
         فرم سفارش برد مدار چاپی (PCB)
       </Box>
 
@@ -101,9 +96,6 @@ function Home() {
       <HStack paddingY="20px">
         <Button onClick={goNext} colorPalette="blue" variant="solid">
           بعدی
-        </Button>
-        <Button colorPalette="blue" variant="outline">
-          <a href="https://labkhandelec.com/">بازگشت</a>
         </Button>
       </HStack>
 

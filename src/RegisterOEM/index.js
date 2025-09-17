@@ -59,7 +59,7 @@ function Register() {
     const [pageTwoData, setPageTwoData] = useState({});
     const navigate = useNavigate();
 
-    const page1 = JSON.parse(localStorage.getItem("pageOneData") || "{}");
+    const page1 = JSON.parse(localStorage.getItem("pageOneDataOEM") || "{}");
 
     const [formData, setFormData] = useState({
         firstname: "",
@@ -148,7 +148,7 @@ function Register() {
             return;
         }
 
-        const page1 = JSON.parse(localStorage.getItem("pageOneData") || "{}");
+        const page1 = JSON.parse(localStorage.getItem("pageOneDataOEM") || "{}");
         const page2 = JSON.parse(localStorage.getItem("pageTwoData") || "{}");
 
         const allData = { ...page1, ...page2 };
@@ -158,7 +158,7 @@ function Register() {
             console.error("Supabase Error:", error);
         } else {
             console.log("Sent to Supabase:", data);
-            localStorage.removeItem("pageOneDataPCB");
+            localStorage.removeItem("pageOneDataOEM");
             localStorage.removeItem("pageTwoData");
             if (page1.pagename === "PCB") { navigate("/PCB"); }
             if (page1.pagename === "OEM") { navigate("/OEM"); }
@@ -260,6 +260,9 @@ function Register() {
                     نام شرکت :
                 </Field.Label>
                 <Input backgroundColor="white" height="44px" type="text" key="companyname" name="companyname" value={formData.companyname || ""} onChange={handleChange} />
+                <Field.ErrorText>
+                    لطفا فرم را کامل کنید.
+                </Field.ErrorText>
             </Field.Root>
 
             <Field.Root width="full" {...(errors?.address ? { invalid: true } : {})} marginTop="10px">
@@ -335,6 +338,7 @@ function Register() {
                     </Select.Root>
                     <Field.ErrorText>لطفا شهر مورد نظر را وارد کنید.</Field.ErrorText>
                 </Field.Root>
+
                 <Field.Root {...(errors?.postcode ? { invalid: true } : {})} width="full" marginTop="10px">
                     <Field.Label>
                         کدپستی :
@@ -384,7 +388,7 @@ function Register() {
                             }
                         />
                     </Field.Label>
-                    <Input maxLength={11} type="text" backgroundColor="white" height="44px" key="telephone" name="telephone" value={formData.telephone || ""} onChange={(e) => { handleChange(e); handleChangeNumber(e) }} onKeyDown={handleKeyDown} />
+                    <Input maxLength={11} type="text" backgroundColor="white" height="44px" min={1} key="telephone" name="telephone" value={formData.telephone || ""} onChange={(e) => { handleChange(e); handleChangeNumber(e) }} onKeyDown={handleKeyDown} />
                     <Field.ErrorText>
                         لطفا فرم را کامل کنید.
                     </Field.ErrorText>

@@ -15,7 +15,6 @@ const supabase = createClient(
 function Admin() {
     const [users, setUsers] = useState([])
     const [loading, setLoading] = useState(true)
-    const [jalaaliDate, setJalaaliDate] = useState(null);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -42,7 +41,7 @@ function Admin() {
             return;
         }
         try {
-            const { data, error } = await supabase
+            const { error } = await supabase
                 .from("OrderForm")
                 .delete()
                 .eq("id", usersId);

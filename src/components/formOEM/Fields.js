@@ -1,6 +1,6 @@
 import { Field, SimpleGrid, Box, Input, Badge, Image, Text } from "@chakra-ui/react"
 import SizeImage from "../../image/size.png"
-import { Tooltip } from "../../components/ui/tooltip"
+import { Tooltip } from "../ui/tooltip"
 import { FaQuestionCircle } from 'react-icons/fa';
 
 export default function Fields({ formData, setFormData, errors }) {

@@ -6,12 +6,12 @@ import {
     Text,
     Field,
     Stack,
-    HStack,
-    Link
+    HStack
 } from "@chakra-ui/react";
 import { HiUpload } from "react-icons/hi"
 import { Container } from "@chakra-ui/react"
 import { MdDescription } from 'react-icons/md';
+import { FaTimes } from 'react-icons/fa';
 
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
@@ -163,10 +163,19 @@ function OrderForm() {
     const removeForm = (id) => {
         setForms((prev) => prev.filter((f) => f.id !== id));
     };
-    // console.log
+
+    const handleRemoveFile = () => {
+        setFormData({
+            ...formData,
+            uploadedFile: null,
+        });
+        setFileName("");
+        if (fileInputRef.current) fileInputRef.current.value = "";
+    };
+
     return (
         <Container dir="rtl" maxW="6xl" backgroundColor="gray.50" marginY="20px" borderRadius="20px">
-            <Box paddingY="40px" fontSize="23px">
+            <Box color="#0662EA" paddingY="40px" fontSize="23px">
                 فرم سفارش قطعات الکترونیک
             </Box>
             {(errors?.number || errors?.brand || errors?.link || errors?.count || errors?.description) && <Text paddingBottom="10px" color="tomato" fontSize="14px">لطفا حداقل یک فرم را کامل کنید.</Text>}
@@ -297,7 +306,7 @@ function OrderForm() {
                     onChange={handleFileChange}
                     accept=".zip,.xls,.xlsx,.csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
                 />
-                <button onClick={handleUploadClick}>
+                <button className="handleUpload" onClick={handleUploadClick}>
                     <div className="upload-text">
                         <span>آپلود فایل</span>
                         <div className="upload-icon"><HiUpload /></div>
@@ -305,8 +314,13 @@ function OrderForm() {
                 </button>
                 {fileName !== "" && (
                     <p className="file-text">
-                        <span>{fileName}</span>
-                        <MdDescription size={40} />
+                        <p className="handleRemove" onClick={handleRemoveFile}>
+                            <FaTimes size={30} />
+                        </p>
+                        <div>
+                            <span>{fileName}</span>
+                            <MdDescription size={40} />
+                        </div>
                     </p>
                 )}
             </div>

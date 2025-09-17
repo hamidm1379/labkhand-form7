@@ -7,6 +7,8 @@ import OEM from "./OEM/index";
 import OrderFormRegister from "./OrderFormRegister/index";
 import Admin from "./admin/index";
 import AdminOrder from "./order-admin/index";
+import RegisterPCBA from "./RegisterPCBA/index";
+import RegisterOEM from "./RegisterOEM/index";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
         <Route path="/PCBA" element={<PCBA />}></Route>
         <Route path="/OEM" element={<OEM />}></Route>
         <Route path="/register" element={<Register />}></Route>
+        <Route path="/registerPCBA" element={<RegisterPCBA />}></Route>
+        <Route path="/registerOEM" element={<RegisterOEM />}></Route>
         <Route path="/order-form-register" element={<OrderFormRegister />}></Route>
         <Route path="/order-form" element={<OrderForm />}></Route>
         <Route path="/admin" element={<Admin />}></Route>

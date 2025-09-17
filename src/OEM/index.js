@@ -1,8 +1,8 @@
-import Fields from "../components/form/Fields"
-import DesignQuantityType from "../components/form/DesignQuantityType";
-import NumberThickness from "../components/form/NumberThickness";
-import Colors from "../components/form/Colors";
-import UploadOEM from "../components/form/UploadOEM";
+import Fields from "../components/formOEM/Fields"
+import DesignQuantityType from "../components/formOEM/DesignQuantityType";
+import NumberThickness from "../components/formOEM/NumberThickness";
+import Colors from "../components/formOEM/Colors";
+import UploadOEM from "../components/formOEM/UploadOEM";
 
 import { Container, HStack, Button, Box } from "@chakra-ui/react"
 
@@ -12,19 +12,15 @@ import { useNavigate } from "react-router-dom";
 
 function HomeOEM() {
 
-    const [pageOneData, setPageOneData] = useState({});
+    const [pageOneDataOEM, setPageOneDataOEM] = useState({});
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
-        localStorage.clear();
-    }, []);
-
-    useEffect(() => {
-        const savedData = localStorage.getItem("pageOneData");
+        const savedData = localStorage.getItem("pageOneDataOEM");
         if (savedData) {
             const parsed = JSON.parse(savedData);
-            setPageOneData({
+            setPageOneDataOEM({
                 ...parsed,
                 pagename: "OEM",
                 filedisign: "برد تک",
@@ -38,13 +34,11 @@ function HomeOEM() {
                 finalcover: "HASL",
                 boardcut: "CNC",
                 stansil: "بله",
-                boardfile: null,
-                BOMfile: null,
                 montage: "بله",
                 costumerbrand: "بله"
             });
         } else {
-            setPageOneData({
+            setPageOneDataOEM({
                 pagename: "OEM",
                 filedisign: "برد تک",
                 countdisign: "1",
@@ -57,23 +51,23 @@ function HomeOEM() {
                 finalcover: "HASL",
                 boardcut: "CNC",
                 stansil: "بله",
-                boardfile: null,
-                BOMfile: null,
                 montage: "بله",
-                costumerbrand: "بله"
+                costumerbrand: "بله",
+                boardfile: null,
+                BOMfile: null
             });
         }
     }, []);
 
     useEffect(() => {
-        localStorage.setItem("pageOneData", JSON.stringify(pageOneData));
-    }, [pageOneData]);
+        localStorage.setItem("pageOneDataOEM", JSON.stringify(pageOneDataOEM));
+    }, [pageOneDataOEM]);
 
     const goNext = () => {
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        const { productname, countproduct, width, length, boardfile, BOMfile } = pageOneData;
+        const { productname, countproduct, width, length, boardfile, BOMfile } = pageOneDataOEM;
         let newErrors = {};
 
         if (!productname) newErrors.productname = "نام";
@@ -86,32 +80,29 @@ function HomeOEM() {
         setErrors(newErrors);
 
         if (Object.keys(newErrors).length === 0) {
-            navigate("/register");
+            navigate("/registerOEM");
         }
     };
 
     return (
         <Container dir="rtl" maxW="6xl" backgroundColor="gray.50" marginY="20px" borderRadius="20px">
-            <Box paddingY="40px" fontSize="23px">
+            <Box color="#0662EA" paddingY="40px" fontSize="23px">
                 فرم سفارش محصول سفارشی (OEM)
             </Box>
-            <Fields errors={errors} formData={pageOneData} setFormData={setPageOneData} />
+            <Fields errors={errors} formData={pageOneDataOEM} setFormData={setPageOneDataOEM} />
 
-            <DesignQuantityType formData={pageOneData} setFormData={setPageOneData} />
+            <DesignQuantityType formData={pageOneDataOEM} setFormData={setPageOneDataOEM} />
 
-            <NumberThickness formData={pageOneData} setFormData={setPageOneData} />
+            <NumberThickness formData={pageOneDataOEM} setFormData={setPageOneDataOEM} />
 
-            <Colors formData={pageOneData} setFormData={setPageOneData} />
+            <Colors formData={pageOneDataOEM} setFormData={setPageOneDataOEM} />
 
-            <UploadOEM errors={errors} formData={pageOneData} setFormData={setPageOneData} />
+            <UploadOEM errors={errors} formData={pageOneDataOEM} setFormData={setPageOneDataOEM} />
 
 
             <HStack paddingY="20px">
                 <Button onClick={goNext} colorPalette="blue" variant="solid">
                     بعدی
-                </Button>
-                <Button colorPalette="blue" variant="outline">
-                    <a href="https://labkhandelec.com/">بازگشت</a>
                 </Button>
             </HStack>
 

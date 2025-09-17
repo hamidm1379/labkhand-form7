@@ -1,5 +1,4 @@
-import { Field, SimpleGrid, RadioCard, HStack, Button, Box, Input, Badge, Text, Select, Portal, Textarea, createListCollection } from "@chakra-ui/react"
-import { FaCheck } from "react-icons/fa";
+import { Field, SimpleGrid, HStack, Button, Box, Input, Badge, Text, Select, Portal, Textarea, createListCollection } from "@chakra-ui/react"
 import { Container } from "@chakra-ui/react"
 
 import { useState, useEffect } from "react";
@@ -49,7 +48,7 @@ const frameworks = createListCollection({
 
 function Register() {
     const [errors, setErrors] = useState({});
-
+    const [value, setValue] = useState("");
     const navigate = useNavigate();
     const [registerData, setRegisterData] = useState({
         firstname: ""
@@ -76,9 +75,14 @@ function Register() {
 
         let newErrors = {};
 
+        setSubmitted(true);
+
+        if (!validateEmail(registerData.email)) {
+            newErrors.email = "فرمت ایمیل معتبر نیست";
+        }
+
         if (!registerData.firstname) newErrors.firstname = "الزامی"
         if (!registerData.lastname) newErrors.lastname = "الزامی"
-        if (!registerData.companyname) newErrors.companyname = "الزامی"
         if (!registerData.address) newErrors.address = "الزامی"
         if (!registerData.postcode) newErrors.postcode = "الزامی"
         if (!registerData.province) newErrors.province = "الزامی"
@@ -131,10 +135,34 @@ function Register() {
         itemToValue: (item) => item.name,
     })
 
+
+    const handleChangeNumber = (e) => {
+        const inputValue = e.target.value;
+        if (/^\d*\.?\d*$/.test(inputValue) || inputValue === '') {
+            setValue(inputValue);
+        }
+    };
+
+    const handleKeyDown = (e) => {
+        if (
+            ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter'].includes(e.key) ||
+            (e.key === '.' && !value.includes('.')) ||
+            (e.key >= '0' && e.key <= '9')
+        ) {
+            return;
+        }
+        e.preventDefault();
+    };
+    const [submitted, setSubmitted] = useState(false);
+    const validateEmail = (email) => {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+    };
+
     return (
         <Container dir="rtl" maxW="6xl" backgroundColor="gray.50" marginY="20px" borderRadius="20px">
             <Box fontWeight="bold" color="#0662EA" paddingY="40px" fontSize="23px">
-                فرم سفارش 
+                فرم سفارش
             </Box>
             <SimpleGrid columns={[1, null, 2]} gap="6">
                 <Field.Root width="full" {...(errors?.firstname ? { invalid: true } : {})}>
@@ -143,14 +171,14 @@ function Register() {
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge size="xs" color="red" backgroundColor="gray.50">
-                                        (ضروری)
+                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                        *
                                     </Badge>
                                 </>
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" type="text" key="firstname" name="firstname" value={registerData.firstname || ""} onChange={handleChange} />
+                    <Input backgroundColor="white" height="44px" type="text" key="firstname" name="firstname" value={registerData.firstname || ""} onChange={handleChange} />
                     <Field.ErrorText>
                         لطفا فرم را کامل کنید.
                     </Field.ErrorText>
@@ -162,15 +190,15 @@ function Register() {
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge size="xs" color="red" backgroundColor="gray.50">
-                                        (ضروری)
+                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                        *
                                     </Badge>
 
                                 </>
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" type="text" key="lastname" name="lastname" value={registerData.lastname || ""} onChange={handleChange} />
+                    <Input backgroundColor="white" height="44px" type="text" key="lastname" name="lastname" value={registerData.lastname || ""} onChange={handleChange} />
                     <Field.ErrorText>
                         لطفا فرم را کامل کنید.
                     </Field.ErrorText>
@@ -180,48 +208,34 @@ function Register() {
             <Field.Root width="full" {...(errors?.companyname ? { invalid: true } : {})} marginTop="10px">
                 <Field.Label>
                     نام شرکت :
-                    <Field.RequiredIndicator
-                        fallback={
-                            <>
-                                <Badge size="xs" color="red" backgroundColor="gray.50">
-                                    (ضروری)
-                                </Badge>
-                            </>
-                        }
-                    />
                 </Field.Label>
-                <Input height="44px" type="text" key="companyname" name="companyname" value={registerData.companyname || ""} onChange={handleChange} />
-                <Field.ErrorText>
-                    لطفا فرم را کامل کنید.
-                </Field.ErrorText>
+                <Input backgroundColor="white" height="44px" type="text" key="companyname" name="companyname" value={registerData.companyname || ""} onChange={handleChange} />
             </Field.Root>
-
             <Field.Root width="full" {...(errors?.address ? { invalid: true } : {})} marginTop="10px">
                 <Field.Label>
                     آدرس:
                     <Field.RequiredIndicator
                         fallback={
                             <>
-                                <Badge size="xs" color="red" backgroundColor="gray.50">
-                                    (ضروری)
+                                <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                    *
                                 </Badge>
                             </>
                         }
                     />
                 </Field.Label>
-                <Text width="full" fontSize="14px" color="gray.600">خیابان ، کوچه ، پلاک ، واحد و ... : (ضروری)</Text>
-                <Input height="44px" type="text" key="address" name="address" value={registerData.address || ""} onChange={handleChange} />
+                <Text width="full" fontSize="14px" color="gray.600">خیابان ، کوچه ، پلاک ، واحد و ... : </Text>
+                <Input backgroundColor="white" height="44px" type="text" key="address" name="address" value={registerData.address || ""} onChange={handleChange} />
                 <Field.ErrorText>
                     لطفا فرم را کامل کنید.
                 </Field.ErrorText>
             </Field.Root>
-
             <SimpleGrid columns={[1, null, 2]} gap="6" marginTop="10px">
                 <Field.Root width="full" {...(errors?.province ? { invalid: true } : {})}>
                     <Select.Root collection={frameworks}>
                         <Select.HiddenSelect key="province" name="province" value={registerData.province || ""} onChange={(value) => handlechangeSelect("province", value)} />
-                        <Select.Label color="gray.600" dir="rtl">استان : (ضروری)</Select.Label>
-                        <Select.Control dir="rtl">
+                        <Select.Label display="flex" dir="rtl">استان : <Text marginRight="7px" fontSize="16px" color="red">*</Text></Select.Label>
+                        <Select.Control backgroundColor="white" dir="rtl">
                             <Select.Trigger dir="rtl">
                                 <Select.ValueText placeholder="استان" />
                             </Select.Trigger>
@@ -247,8 +261,8 @@ function Register() {
                 <Field.Root width="full" {...(errors?.province ? { invalid: true } : {})}>
                     <Select.Root collection={city}>
                         <Select.HiddenSelect key="city" name="city" value={registerData.city || ""} onChange={(value) => handlechangeSelect("city", value)} />
-                        <Select.Label color="gray.600" dir="rtl">شهر : (ضروری)</Select.Label>
-                        <Select.Control dir="rtl">
+                        <Select.Label display="flex" dir="rtl">شهر : <Text marginRight="7px" fontSize="16px" color="red">*</Text></Select.Label>
+                        <Select.Control backgroundColor="white" dir="rtl">
                             <Select.Trigger dir="rtl">
                                 <Select.ValueText placeholder="شهر" />
                             </Select.Trigger>
@@ -269,42 +283,40 @@ function Register() {
                     </Select.Root>
                     <Field.ErrorText>لطفا شهر مورد نظر را وارد کنید.</Field.ErrorText>
                 </Field.Root>
-
                 <Field.Root {...(errors?.postcode ? { invalid: true } : {})} width="full" marginTop="10px">
                     <Field.Label>
                         کدپستی :
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge size="xs" color="red" backgroundColor="gray.50">
-                                        (ضروری)
+                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                        *
                                     </Badge>
                                 </>
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" type="text" key="postcode" name="postcode" value={registerData.postcode || ""} onChange={handleChange} />
+                    <Input backgroundColor="white" maxLength={10} height="44px" type="text" key="postcode" name="postcode" value={registerData.postcode || ""} onChange={(e) => { handleChange(e); handleChangeNumber(e) }} onKeyDown={handleKeyDown} />
                     <Field.ErrorText>
                         لطفا فرم را کامل کنید.
                     </Field.ErrorText>
                 </Field.Root>
-                <Field.Root {...(errors?.email ? { invalid: true } : {})} width="full" marginTop="10px">
+                <Field.Root {...(submitted && !validateEmail(registerData.email) ? {invalid: true} : {})} width="full" marginTop="10px">
                     <Field.Label>
                         ایمیل :
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge size="xs" color="red" backgroundColor="gray.50">
-                                        (ضروری)
+                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                        *
                                     </Badge>
-
                                 </>
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" type="text" key="email" name="email" value={registerData.email || ""} onChange={handleChange} />
+                    <Input backgroundColor="white" height="44px" type="email" key="email" name="email" value={registerData.email || ""} onChange={handleChange} />
                     <Field.ErrorText>
-                        لطفا فرم را کامل کنید.
+                        ایمیل به درستی وارد نشده.
                     </Field.ErrorText>
                 </Field.Root>
                 <Field.Root {...(errors?.telephone ? { invalid: true } : {})} width="full" marginTop="10px">
@@ -313,14 +325,14 @@ function Register() {
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge size="xs" color="red" backgroundColor="gray.50">
-                                        (ضروری)
+                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                        *
                                     </Badge>
                                 </>
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" type="number" key="telephone" name="telephone" value={registerData.telephone || ""} onChange={handleChange} />
+                    <Input backgroundColor="white" maxLength={11} height="44px" type="text" key="telephone" name="telephone" value={registerData.telephone || ""} onChange={(e) => { handleChange(e); handleChangeNumber(e) }} onKeyDown={handleKeyDown} />
                     <Field.ErrorText>
                         لطفا فرم را کامل کنید.
                     </Field.ErrorText>
@@ -331,14 +343,14 @@ function Register() {
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge size="xs" color="red" backgroundColor="gray.50">
-                                        (ضروری)
+                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                        *
                                     </Badge>
                                 </>
                             }
                         />
                     </Field.Label>
-                    <Input height="44px" type="number" key="mobilephone" name="mobilephone" value={registerData.mobilephone || ""} onChange={handleChange} />
+                    <Input backgroundColor="white" maxLength={11} height="44px" type="text" key="mobilephone" name="mobilephone" value={registerData.mobilephone || ""} onChange={(e) => { handleChange(e); handleChangeNumber(e) }} onKeyDown={handleKeyDown} />
                     <Field.ErrorText>
                         لطفا فرم را کامل کنید.
                     </Field.ErrorText>
@@ -347,7 +359,7 @@ function Register() {
 
             <Field.Root marginTop="10px">
                 <Field.Label>توضیحات سفارش :</Field.Label>
-                <Textarea key="orderdescription" name="orderdescription" value={registerData.orderdescription || ""} onChange={handleChange} minH="200px" />
+                <Textarea backgroundColor="white" key="orderdescription" name="orderdescription" value={registerData.orderdescription || ""} onChange={handleChange} minH="200px" />
             </Field.Root>
 
             <HStack paddingY="20px">

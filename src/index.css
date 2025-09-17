@@ -6,8 +6,8 @@
 }
 
 body {
-  font-family: 'yekan',sans-serif;
-} 
+  font-family: 'yekan', sans-serif;
+}
 
 body {
   margin: 0;
@@ -39,7 +39,7 @@ body {
 .Boardfile-Upload .file-text {
   display: flex;
   margin: 12px auto;
-  justify-content: end;
+  justify-content: space-between;
   gap: 6px;
   padding: 24px 16px;
   border-radius: 3px;
@@ -51,11 +51,29 @@ body {
   margin: auto 0;
 }
 
+.Boardfile-Upload .file-text div {
+  display: flex;
+}
+
+
+.Boardfile-Upload .file-text p {
+  margin: auto 0;
+  cursor: pointer;
+}
+
+.Boardfile-Upload .handleUpload {
+  transition-duration: 100ms;
+}
+
+.Boardfile-Upload .handleUpload:hover {
+  background-color: #2563EB;
+  color: white;
+}
+
 .Boardfile-Error {
   font-size: 13px;
   margin-top: 5px;
-  color: tomato;
-  font-weight: 500;
+  color: #ef4444;
 }
 
 .order-container {
