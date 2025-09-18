@@ -6,7 +6,9 @@ import {
     Text,
     Field,
     Stack,
-    HStack
+    HStack,
+    Badge,
+    Link
 } from "@chakra-ui/react";
 import { HiUpload } from "react-icons/hi"
 import { Container } from "@chakra-ui/react"
@@ -18,15 +20,31 @@ import { useNavigate } from "react-router-dom";
 
 function OrderForm() {
     const navigate = useNavigate();
-
+    const [linkErrors, setLinkErrors] = useState({});
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState({});
-    const [forms, setForms] = useState([
-        { id: Date.now(), number: "", brand: "", link: "", count: "", description: "" },
-    ]);
+    const [forms, setForms] = useState(
+        Array.from({ length: 5 }, () => ({
+            id: Date.now() + Math.random(),
+            number: "",
+            brand: "",
+            link: "",
+            count: "",
+            description: "",
+        }))
+    );
+
+    const isValidUrl = (string) => {
+        try {
+            new URL(string);
+            return true;
+        } catch (_) {
+            return false;
+        }
+    };
+
     const fileInputRef = useRef(null);
     const [fileName, setFileName] = useState(formData.boardfile?.name || "");
-    console.log(forms)
     const showToast = (message, type = "info") => {
         const toast = document.createElement("div");
         toast.innerText = message;
@@ -64,8 +82,8 @@ function OrderForm() {
         const file = event.target.files[0];
         if (!file) return;
 
-        if (file.size > 5 * 1024 * 1024) {
-            showToast("فایل بیش از حد بزرگ است. حداکثر 5 مگابایت مجاز است.", "error");
+        if (file.size > 30 * 1024 * 1024) {
+            showToast("فایل بیش از حد بزرگ است. حداکثر 30 مگابایت مجاز است.", "error");
             return;
         }
 
@@ -99,30 +117,35 @@ function OrderForm() {
     };
 
     const goNext = () => {
-
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        const { id, brand, number, link, count, description } = forms[0];
+        if (formData.boardfile) {
+            navigate("/order-form-register");
+            return;
+        }
+        const hasInvalidLink = forms.some(f => {
+            const link = f.link?.trim();
+            return link && !isValidUrl(link);
+        });
+
+        if (hasInvalidLink) {
+            showToast("یک یا چند لینک دیتاشیت معتبر نیستند. لطفاً اصلاح کنید.", "error");
+            return;
+        }
+
+        const { brand, number, count, description } = forms[0];
         let newErrors = {};
 
-        if (!brand) newErrors.brand = "نام";
-        if (!number) newErrors.number = "نام";
-        if (!link) newErrors.link = "نام";
-        if (!count) newErrors.count = "نام";
-        if (!description) newErrors.description = "نام";
-        if (!id) newErrors.id = "نام";
+        if (!brand?.trim()) newErrors.brand = "برند الزامی است.";
+        if (!number?.trim()) newErrors.number = "شماره فنی الزامی است.";
+        if (!count?.toString().trim()) newErrors.count = "تعداد الزامی است.";
 
         setErrors(newErrors);
 
         if (Object.keys(newErrors).length === 0) {
             navigate("/order-form-register");
         }
-
     };
-
-    useEffect(() => {
-        localStorage.clear();
-    }, []);
 
     useEffect(() => {
         const savedOrder = localStorage.getItem("formData");
@@ -144,7 +167,7 @@ function OrderForm() {
         setForms((prev) => [
             ...prev,
             {
-                id: Date.now(),
+                id: Date.now() + Math.random(),
                 number: "",
                 brand: "",
                 link: "",
@@ -158,6 +181,26 @@ function OrderForm() {
         setForms((prev) =>
             prev.map((f) => (f.id === id ? { ...f, [field]: value } : f))
         );
+
+        if (field === 'link') {
+            if (value.trim()) {
+                if (!isValidUrl(value)) {
+                    setLinkErrors(prev => ({ ...prev, [id]: "لینک وارد شده معتبر نیست." }));
+                } else {
+                    setLinkErrors(prev => {
+                        const newErrors = { ...prev };
+                        delete newErrors[id];
+                        return newErrors;
+                    });
+                }
+            } else {
+                setLinkErrors(prev => {
+                    const newErrors = { ...prev };
+                    delete newErrors[id];
+                    return newErrors;
+                });
+            }
+        }
     };
 
     const removeForm = (id) => {
@@ -167,7 +210,7 @@ function OrderForm() {
     const handleRemoveFile = () => {
         setFormData({
             ...formData,
-            uploadedFile: null,
+            boardfile: null,
         });
         setFileName("");
         if (fileInputRef.current) fileInputRef.current.value = "";
@@ -178,123 +221,179 @@ function OrderForm() {
             <Box color="#0662EA" paddingY="40px" fontSize="23px">
                 فرم سفارش قطعات الکترونیک
             </Box>
-            {(errors?.number || errors?.brand || errors?.link || errors?.count || errors?.description) && <Text paddingBottom="10px" color="tomato" fontSize="14px">لطفا حداقل یک فرم را کامل کنید.</Text>}
-            <Stack fontSize="14px" fontWeight="semibold" display="none" sm={{ display: "flex" }} direction="row">
-                <Text paddingRight="16px" width="200px">
+            {(errors?.number || errors?.brand || errors?.count) && <Text paddingBottom="10px" color="red" fontSize="14px">لطفا حداقل یک فرم را کامل کنید یا یک فایل ارسال کنید .</Text>}
+
+            {Object.keys(linkErrors).length > 0 && (
+                <ul>
+                    {forms
+                        .filter(form => linkErrors[form.id])
+                        .map(form => (
+                            <li key={form.id}>
+                                <Text paddingY="10px" color="red" fontSize="14px" as="span">لینک دیتاشیت ردیف  {forms.indexOf(form) + 1} به درستی وارد نشده .</Text>
+                            </li>
+                        ))}
+                    <Text color="red" fontSize="14px" paddingTop="10px" dir="ltr" textAlign="right"> (فرمت مورد نظر : https://...) </Text>
+                </ul>
+            )}
+
+            <Stack marginY="10px" fontSize="14px" fontWeight="semibold" display="none" sm={{ display: "flex" }} direction="row">
+                <Text width="80px">
+                    عنوان ردیف
+                </Text>
+                <Text width="200px" display="flex">
                     شماره فنی
+                    <Text marginRight="7px" fontSize="16px" color="red">*</Text>
                 </Text>
-                <Text paddingRight="16px" width="200px">
+                <Text width="200px" display="flex">
                     برند
+                    <Text marginRight="7px" fontSize="16px" color="red">*</Text>
                 </Text>
-                <Text paddingRight="14px" width="200px">
+                <Text width="200px">
                     لینک دیتاشیت
                 </Text>
-                <Text paddingRight="10px" width="200px">
+                <Text width="200px" display="flex">
                     تعداد
+                    <Text marginRight="7px" fontSize="16px" color="red">*</Text>
                 </Text>
-                <Text paddingRight="8px" width="200px">
+                <Text width="200px">
                     توضیحات
+                </Text>
+                <Text width="70px">
+
                 </Text>
             </Stack>
             {forms.map((form, index) => (
-                <Stack direction="row" marginY="10px">
-                    <Text paddingLeft="10px" marginY="auto" sm={{ display: "none" }}>
-                        {index + 1}
-                    </Text>
-                    <Stack width="100%" key={form.id} direction={{ base: "column", sm: "row" }}>
-                        <Text paddingLeft="10px" marginY="auto" display="none" sm={{ display: "flex" }}>
+                <>
+                    <Stack direction="row" marginY="10px">
+                        <Text paddingLeft="10px" marginY="auto" sm={{ display: "none" }}>
                             {index + 1}
                         </Text>
-                        <Field.Root width="full" md={{ width: "200px" }}>
-                            <Field.Label sm={{ display: "none" }}>
-                                شماره فنی
-                            </Field.Label>
-                            <Input
-                                height="38px"
-                                type="number"
-                                key={form.id}
-                                name={form.number}
-                                value={form.number}
-                                onChange={(e) => handleChange(form.id, 'number', e.target.value)}
-                                min={1}
-                            />
-                        </Field.Root>
-                        <Field.Root width="full" md={{ width: "200px" }}>
-                            <Field.Label sm={{ display: "none" }}>
-                                برند
-                            </Field.Label>
-                            <Input
-                                height="38px"
-                                type="text"
-                                key={form.id}
-                                name={form.brand}
-                                value={form.brand}
-                                onChange={(e) => handleChange(form.id, 'brand', e.target.value)}
-                            />
-                            <Field.ErrorText>
-                                نام به درستی وارد نشده.
-                            </Field.ErrorText>
-                        </Field.Root>
-                        <Field.Root width="full" md={{ width: "200px" }}>
-                            <Field.Label sm={{ display: "none" }}>
-                                لینک دیتاشیت
-                            </Field.Label>
-                            <Input
-                                height="38px"
-                                type="text"
-                                key={form.id}
-                                name={form.link}
-                                value={form.link}
-                                onChange={(e) => handleChange(form.id, 'link', e.target.value)}
-                            />
-                            <Field.ErrorText>
-                                نام به درستی وارد نشده.
-                            </Field.ErrorText>
-                        </Field.Root>
-                        <Field.Root width="full" md={{ width: "200px" }}>
-                            <Field.Label sm={{ display: "none" }}>
-                                تعداد
-                            </Field.Label>
-                            <Input
-                                height="38px"
-                                type="number"
-                                key={form.id}
-                                name={form.count}
-                                value={form.count}
-                                onChange={(e) => handleChange(form.id, 'count', e.target.value)}
-                                min={1}
-                            />
-                            <Field.ErrorText>
-                                نام به درستی وارد نشده.
-                            </Field.ErrorText>
-                        </Field.Root>
-                        <Field.Root width="full" md={{ width: "200px" }}>
-                            <Field.Label sm={{ display: "none" }}>
-                                توضیحات
-                            </Field.Label>
-                            <Input
-                                height="38px"
-                                key={form.id}
-                                name={form.description}
-                                value={form.description}
-                                onChange={(e) => handleChange(form.id, 'description', e.target.value)}
-                            />
-                            <Field.ErrorText>
-                                نام به درستی وارد نشده.
-                            </Field.ErrorText>
-                        </Field.Root>
-                        <Stack direction="row" padding="10px" margin="auto" gap="4px">
-                            <Box width="22px" onClick={addForm} padding="3px" backgroundColor="blue" borderRadius="full" cursor="pointer">
-                                <AiOutlinePlus color="white" />
-                            </Box>
-                            {forms.length > 1 && (
-                                <Box width="22px" onClick={() => removeForm(form.id)} padding="3px" backgroundColor="blue" borderRadius="full" cursor="pointer">
-                                    <AiOutlineMinus color="white" />
+                        <Stack width="100%" key={form.id} direction={{ base: "column", sm: "row" }}>
+                            <Text width="80px" paddingRight="22px" margin="auto" display="none" sm={{ display: "flex" }}>
+                                {index + 1}
+                            </Text>
+                            <Field.Root width="full" md={{ width: "200px" }}>
+                                <Field.Label sm={{ display: "none" }}>
+                                    شماره فنی
+                                    <Field.RequiredIndicator
+                                        fallback={
+                                            <>
+                                                <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                                    *
+                                                </Badge>
+                                            </>
+                                        }
+                                    />
+                                </Field.Label>
+                                <Input
+                                    height="38px"
+                                    type="text"
+                                    key={form.id}
+                                    name={form.number}
+                                    value={form.number}
+                                    onChange={(e) => handleChange(form.id, 'number', e.target.value)}
+                                    backgroundColor="white"
+                                />
+                            </Field.Root>
+                            <Field.Root width="full" md={{ width: "200px" }}>
+                                <Field.Label sm={{ display: "none" }}>
+                                    برند
+                                    <Field.RequiredIndicator
+                                        fallback={
+                                            <>
+                                                <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                                    *
+                                                </Badge>
+                                            </>
+                                        }
+                                    />
+                                </Field.Label>
+                                <Input
+                                    height="38px"
+                                    type="text"
+                                    key={form.id}
+                                    name={form.brand}
+                                    value={form.brand}
+                                    backgroundColor="white"
+                                    onChange={(e) => handleChange(form.id, 'brand', e.target.value)}
+                                />
+                                <Field.ErrorText>
+                                    نام به درستی وارد نشده.
+                                </Field.ErrorText>
+                            </Field.Root>
+                            <Field.Root width="full" md={{ width: "200px" }}>
+                                <Field.Label sm={{ display: "none" }}>
+                                    لینک دیتاشیت
+                                </Field.Label>
+                                <Input
+                                    height="38px"
+                                    type="text"
+                                    key={form.id}
+                                    name={form.link}
+                                    value={form.link}
+                                    backgroundColor="white"
+                                    onChange={(e) => handleChange(form.id, 'link', e.target.value)}
+                                />
+                                <Field.ErrorText>
+                                    نام به درستی وارد نشده.
+                                </Field.ErrorText>
+                            </Field.Root>
+                            <Field.Root width="full" md={{ width: "200px" }}>
+                                <Field.Label sm={{ display: "none" }}>
+                                    تعداد
+                                    <Field.RequiredIndicator
+                                        fallback={
+                                            <>
+                                                <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                                    *
+                                                </Badge>
+                                            </>
+                                        }
+                                    />
+                                </Field.Label>
+                                <Input
+                                    height="38px"
+                                    type="number"
+                                    key={form.id}
+                                    name={form.count}
+                                    value={form.count}
+                                    onChange={(e) => handleChange(form.id, 'count', e.target.value)}
+                                    min={1}
+                                    backgroundColor="white"
+                                />
+                                <Field.ErrorText>
+                                    نام به درستی وارد نشده.
+                                </Field.ErrorText>
+                            </Field.Root>
+                            <Field.Root width="full" md={{ width: "200px" }}>
+                                <Field.Label sm={{ display: "none" }}>
+                                    توضیحات
+                                </Field.Label>
+                                <Input
+                                    height="38px"
+                                    key={form.id}
+                                    name={form.description}
+                                    value={form.description}
+                                    backgroundColor="white"
+                                    onChange={(e) => handleChange(form.id, 'description', e.target.value)}
+                                />
+                                <Field.ErrorText>
+                                    نام به درستی وارد نشده.
+                                </Field.ErrorText>
+                            </Field.Root>
+                            <Stack direction="row" padding="10px" margin="auto" gap="4px">
+                                <Box width="22px" onClick={addForm} padding="3px" backgroundColor="blue" borderRadius="full" cursor="pointer">
+                                    <AiOutlinePlus color="white" />
                                 </Box>
-                            )}
+                                {forms.length > 1 && (
+                                    <Box width="22px" onClick={() => removeForm(form.id)} padding="3px" backgroundColor="blue" borderRadius="full" cursor="pointer">
+                                        <AiOutlineMinus color="white" />
+                                    </Box>
+                                )}
+                            </Stack>
                         </Stack>
                     </Stack>
-                </Stack>
+                </>
             ))}
             <Text fontSize="14px" fontWeight="semibold" marginTop="10px">
                 در صورتی که تعداد اقلام مورد نیاز بالا می باشد، میتوانید جزئیات سفارش خود را طبق ستون های فوق و به صورت فایل اکسل آپلود نمایید :
@@ -325,10 +424,10 @@ function OrderForm() {
                 )}
             </div>
             <Text fontSize="14px" color="gray" paddingTop="5px">
-                انواع فایل های مجاز : xlsx, حداکثر اندازه فایل: 1 MB.
+                انواع فایل های مجاز : xlsx, حداکثر اندازه فایل: 30 MB.
             </Text>
             <Text fontSize="16px" color="gray" paddingY="30px">
-                نمونه BOM مورد نظر را از اینجا دانلود کنید.
+                نمونه BOM مورد نظر را از <Link href="https://labkhandelec.com/wp-content/uploads/2025/04/BOM-Sample.xlsx">اینجا</Link> دانلود کنید.
             </Text>
             <HStack paddingTop="10px" paddingBottom="40px">
                 <Button onClick={goNext} colorPalette="blue" variant="solid">

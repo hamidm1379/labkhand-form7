@@ -54,7 +54,8 @@ const stasil = [
 
 function Register() {
     const [selectedValueFive, setSelectedValueFive] = useState();
-    const [value, setValue] = useState("no");
+    const [value, setValue] = useState();
+    const [valueSec, setValueSec] = useState();
     const [errors, setErrors] = useState({});
     const [pageTwoData, setPageTwoData] = useState({});
     const navigate = useNavigate();
@@ -190,14 +191,12 @@ function Register() {
     const handleChangeNumber = (e) => {
         const inputValue = e.target.value;
         if (/^\d*\.?\d*$/.test(inputValue) || inputValue === '') {
-            setValue(inputValue);
+            setValueSec(inputValue);
         }
     };
 
     const handleKeyDown = (e) => {
         if (
-            ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter'].includes(e.key) ||
-            (e.key === '.' && !value.includes('.')) ||
             (e.key >= '0' && e.key <= '9')
         ) {
             return;
@@ -489,20 +488,8 @@ function Register() {
                     <Field.Root width="full" marginTop="10px">
                         <Field.Label>
                             نام شرکت :
-                            <Field.RequiredIndicator
-                                fallback={
-                                    <>
-                                        <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
-                                            *
-                                        </Badge>
-                                    </>
-                                }
-                            />
                         </Field.Label>
                         <Input backgroundColor="white" height="44px" type="text" key="changecompany" name="changecompany" value={formData.changecompany || ""} onChange={handleChange} />
-                        <Field.ErrorText>
-                            نام به درستی وارد نشده.
-                        </Field.ErrorText>
                     </Field.Root>
                     <Field.Root width="full" marginTop="10px">
                         <Field.Label>
@@ -584,7 +571,7 @@ function Register() {
                                     }
                                 />
                             </Field.Label>
-                            <Input backgroundColor="white" height="44px" type="number" min={1} key="changepostcode" name="changepostcode" value={formData.changepostcode || ""} onChange={handleChange} />
+                            <Input maxLength={10} backgroundColor="white" height="44px" type="text" key="changepostcode" name="changepostcode" value={formData.changepostcode || ""} onChange={(e) => { handleChange(e); handleChangeNumber(e) }} onKeyDown={handleKeyDown} />
                             <Field.ErrorText>
                                 نام به درستی وارد نشده.
                             </Field.ErrorText>
