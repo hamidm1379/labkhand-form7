@@ -229,7 +229,7 @@ function Upload({ formData, setFormData, errors }) {
                 انواع فایل های مجاز : zip,exel,rar , حداکثر اندازه فایل: 30 MB.
             </Text>
             <Text fontSize="16px" color="gray" paddingY="30px">
-                نمونه BOM مورد نظر را از اینجا دانلود کنید.
+                نمونه BOM مورد نظر را از <Link href="https://labkhandelec.com/wp-content/uploads/2025/04/BOM-Sample.xlsx">اینجا</Link> دانلود کنید.
             </Text>
             <SimpleGrid columns={[1, null, 2]} gap="6">
                 <RadioCard.Root
