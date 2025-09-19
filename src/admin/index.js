@@ -1,6 +1,7 @@
 import { Container } from "@chakra-ui/react"
 import { useState, useEffect } from "react";
-import { Button, CloseButton, Dialog, Portal, Table, Text, Box, SimpleGrid, GridItem, Input, Select } from "@chakra-ui/react"
+import { Button, CloseButton, Dialog, Portal, Link, Table, Text, Box, SimpleGrid, GridItem, Input, Select } from "@chakra-ui/react"
+import React from "react";
 
 import { createClient } from "@supabase/supabase-js";
 
@@ -36,6 +37,8 @@ function Admin() {
     const [searchTerm, setSearchTerm] = useState("")
     const [sortBy, setSortBy] = useState("date")
     const [sortOrder, setSortOrder] = useState("desc")
+    const [currentPage, setCurrentPage] = useState(1)
+    const [itemsPerPage] = useState(10)
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -71,11 +74,13 @@ function Admin() {
                 return (
                     fullName.includes(searchLower) ||
                     user.productname.toLowerCase().includes(searchLower) ||
-                    user.pagename.toLowerCase().includes(searchLower)
+                    user.pagename.toLowerCase().includes(searchLower) ||
+                    user.randomCode.includes(searchLower)
                 );
             });
             setFilteredUsers(filtered)
         }
+        setCurrentPage(1);
     }, [searchTerm, users])
 
     useEffect(() => {
@@ -88,9 +93,6 @@ function Admin() {
                     const nameB = `${b.firstname} ${b.lastname}`.toLowerCase();
                     comparison = nameA.localeCompare(nameB);
                     break;
-                case "code":
-                    comparison = a.randomCode.localeCompare(b.randomCode);
-                    break;
                 case "date":
                 default:
                     comparison = new Date(a.created_at) - new Date(b.created_at);
@@ -101,6 +103,7 @@ function Admin() {
         });
 
         setFilteredUsers(sorted);
+        setCurrentPage(1);
     }, [sortBy, sortOrder])
 
     if (loading) return <p>در حال بارگذاری...</p>
@@ -116,6 +119,7 @@ function Admin() {
                 .eq("id", usersId);
 
             if (error) throw error;
+
             const storedCodes = JSON.parse(localStorage.getItem('orderCodes') || '{}');
             delete storedCodes[usersId];
             localStorage.setItem('orderCodes', JSON.stringify(storedCodes));
@@ -124,6 +128,16 @@ function Admin() {
         } catch (err) {
             alert("خطا در حذف سفارش: " + err.message);
         }
+    };
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleSortChange = (newSortBy) => {
@@ -138,12 +152,12 @@ function Admin() {
     return (
         <Container dir="rtl" maxW="6xl" backgroundColor="gray.50" marginY="20px" borderRadius="20px">
             <h1 style={{ textAlign: "center", color: "#333", marginBottom: "30px", fontSize: "24px" }}>لیست سفارشات</h1>
-            <SimpleGrid columns={{ base: 1, md: 4 }} gap={{ base: "24px", md: "20px" }}>
+            <SimpleGrid columns={{ base: 1, md: 4 }} gap={{ base: "24px", md: "40px" }}>
                 <GridItem colSpan={{ base: 1, md: 1 }}>
                     <Box>
                         <Text fontSize="lg" fontWeight="bold" mb={4}>فیلترها</Text>
                         <Input
-                            placeholder="جستجو در نام، نام خانوادگی، محصول، صفحه..."
+                            placeholder="جستجو در نام، محصول، صفحه، کد سفارش..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             mb={4}
@@ -164,32 +178,28 @@ function Admin() {
                                 variant={sortBy === "name" ? "solid" : "outline"}
                                 colorScheme="blue"
                                 onClick={() => handleSortChange("name")}
-                                ml={1}
                             >
                                 نام {sortBy === "name" && (sortOrder === "desc" ? "↓" : "↑")}
                             </Button>
-                            <Button
-                                size="sm"
-                                variant={sortBy === "code" ? "solid" : "outline"}
-                                colorScheme="blue"
-                                onClick={() => handleSortChange("code")}
-                            >
-                                کد {sortBy === "code" && (sortOrder === "desc" ? "↓" : "↑")}
-                            </Button>
                         </Box>
+
                         <Text fontSize="sm" color="gray.600">
                             تعداد نتایج: {filteredUsers.length}
+                        </Text>
+                        <Text fontSize="sm" color="gray.600">
+                            صفحه {currentPage} از {totalPages}
                         </Text>
                     </Box>
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 3 }}>
                     <div className="order-container">
-                        {filteredUsers.map((user) => {
+                        {currentItems.map((user, index) => {
+                            const actualIndex = indexOfFirstItem + index;
                             return (
                                 <div key={user.id} className="order-item">
                                     <div>{user.pagename}</div>
                                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
-                                        <div style={{ fontSize: "14px", color: "#666" }}>نام محصول : {user.productname}</div>
+                                        نام سفارش : {user.productname}
                                     </div>
                                     <div className="order-header">
                                         <span className="order-id">کد ثبت سفارش : {user.randomCode}</span>
@@ -315,6 +325,49 @@ function Admin() {
                                 </div>
                             );
                         })}
+
+                        {totalPages > 1 && (
+                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "30px", gap: "10px" }}>
+                                <Button
+                                    size="sm"
+                                    onClick={() => handlePageChange(currentPage - 1)}
+                                    disabled={currentPage === 1}
+                                    variant="outline"
+                                >
+                                    قبلی
+                                </Button>
+
+                                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                                    .filter(page => {
+                                        return Math.abs(page - currentPage) <= 2 || page === 1 || page === totalPages;
+                                    })
+                                    .map((page, index, array) => {
+                                        const showDots = index > 0 && page - array[index - 1] > 1;
+                                        return (
+                                            <React.Fragment key={page}>
+                                                {showDots && <span style={{ margin: "0 5px" }}>...</span>}
+                                                <Button
+                                                    size="sm"
+                                                    onClick={() => handlePageChange(page)}
+                                                    variant={currentPage === page ? "solid" : "outline"}
+                                                    colorScheme={currentPage === page ? "blue" : "gray"}
+                                                >
+                                                    {page}
+                                                </Button>
+                                            </React.Fragment>
+                                        );
+                                    })}
+
+                                <Button
+                                    size="sm"
+                                    onClick={() => handlePageChange(currentPage + 1)}
+                                    disabled={currentPage === totalPages}
+                                    variant="outline"
+                                >
+                                    بعدی
+                                </Button>
+                            </div>
+                        )}
                     </div>
                 </GridItem>
             </SimpleGrid>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
-import { Container, Box, SimpleGrid, GridItem, Input, Button, Text, Table, Dialog, Portal, CloseButton } from "@chakra-ui/react"
+import { Container, Box, SimpleGrid, GridItem, Input, Button, Text, Table, Dialog, CloseButton, Portal } from "@chakra-ui/react"
 
 import DiplayFile from "../components/form/DisplayFile"
 import { convertToJalaali } from '../dateConveter';
@@ -34,6 +34,8 @@ function OrderAdmin() {
     const [searchTerm, setSearchTerm] = useState("");
     const [sortBy, setSortBy] = useState("date");
     const [sortOrder, setSortOrder] = useState("desc");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(10);
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -78,6 +80,7 @@ function OrderAdmin() {
             });
             setFilteredOrders(filtered);
         }
+        setCurrentPage(1);
     }, [searchTerm, orders]);
 
     useEffect(() => {
@@ -95,9 +98,6 @@ function OrderAdmin() {
                     const companyB = (b.data.companyname || "").toLowerCase();
                     comparison = companyA.localeCompare(companyB);
                     break;
-                case "code":
-                    comparison = a.randomCode.localeCompare(b.randomCode);
-                    break;
                 case "date":
                 default:
                     comparison = new Date(a.created_at) - new Date(b.created_at);
@@ -108,6 +108,7 @@ function OrderAdmin() {
         });
 
         setFilteredOrders(sorted);
+        setCurrentPage(1);
     }, [sortBy, sortOrder]);
 
     const handleDelete = async (orderId) => {
@@ -130,6 +131,16 @@ function OrderAdmin() {
         } catch (err) {
             alert("خطا در حذف سفارش: " + err.message);
         }
+    };
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredOrders.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleSortChange = (newSortBy) => {
@@ -157,7 +168,7 @@ function OrderAdmin() {
                     <Box>
                         <Text fontSize="lg" fontWeight="bold" mb={4}>فیلترها</Text>
                         <Input
-                            placeholder="جستجو در نام، نام خانوادگی، شرکت، کد..."
+                            placeholder="جستجو در نام، شرکت، کد سفارش..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             mb={4}
@@ -184,32 +195,27 @@ function OrderAdmin() {
                             >
                                 نام {sortBy === "name" && (sortOrder === "desc" ? "↓" : "↑")}
                             </Button>
-                            <Button
-                                size="sm"
-                                variant={sortBy === "code" ? "solid" : "outline"}
-                                colorScheme="blue"
-                                onClick={() => handleSortChange("code")}
-                                mb={1}
-                            >
-                                کد {sortBy === "code" && (sortOrder === "desc" ? "↓" : "↑")}
-                            </Button>
                         </Box>
                         <Text fontSize="sm" color="gray.600">
                             تعداد نتایج: {filteredOrders.length}
+                        </Text>
+                        <Text fontSize="sm" color="gray.600">
+                            صفحه {currentPage} از {totalPages}
                         </Text>
                     </Box>
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 3 }}>
                     <div className="order-container">
-                        {filteredOrders.map((order, index) => {
+                        {currentItems.map((order, index) => {
                             const data = order.data;
                             const products = Object.keys(data)
                                 .filter(key => /^\d+$/.test(key))
                                 .map(key => data[key]);
+                            const actualIndex = indexOfFirstItem + index;
                             return (
                                 <div dir="rtl" key={order.id} className="order-container">
                                     <div className="order-item">
-                                    <div>سفارش #{index + 1}</div>
+                                        <div>سفارش #{actualIndex + 1}</div>
                                         <div className="order-header">
                                             <span className="order-id">کد ثبت سفارش : {order.randomCode}</span>
                                             <span className="order-date">{convertToJalaali(order.created_at)}</span>
@@ -312,6 +318,47 @@ function OrderAdmin() {
                                 </div>
                             );
                         })}
+
+                        {totalPages > 1 && (
+                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "30px", gap: "10px" }}>
+                                <Button
+                                    size="sm"
+                                    onClick={() => handlePageChange(currentPage - 1)}
+                                    disabled={currentPage === 1}
+                                    variant="outline"
+                                >
+                                    قبلی
+                                </Button>
+                                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                                    .filter(page => {
+                                        return Math.abs(page - currentPage) <= 2 || page === 1 || page === totalPages;
+                                    })
+                                    .map((page, index, array) => {
+                                        const showDots = index > 0 && page - array[index - 1] > 1;
+                                        return (
+                                            <React.Fragment key={page}>
+                                                {showDots && <span style={{ margin: "0 5px" }}>...</span>}
+                                                <Button
+                                                    size="sm"
+                                                    onClick={() => handlePageChange(page)}
+                                                    variant={currentPage === page ? "solid" : "outline"}
+                                                    colorScheme={currentPage === page ? "blue" : "gray"}
+                                                >
+                                                    {page}
+                                                </Button>
+                                            </React.Fragment>
+                                        );
+                                    })}
+                                <Button
+                                    size="sm"
+                                    onClick={() => handlePageChange(currentPage + 1)}
+                                    disabled={currentPage === totalPages}
+                                    variant="outline"
+                                >
+                                    بعدی
+                                </Button>
+                            </div>
+                        )}
                     </div>
                 </GridItem>
             </SimpleGrid>
