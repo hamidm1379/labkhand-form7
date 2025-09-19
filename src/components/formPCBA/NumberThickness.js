@@ -165,7 +165,7 @@ const NumberThickness = ({ formData, setFormData }) => {
                     </Field.Root>
                 </GridItem>
                 <GridItem margin="auto" colSpan={[1, 1, 2]}>
-                    <Image margin="auto" width="220px" height="50px" src={BoardThickImage} />
+                    <Image marginTop="24px" marginX="auto" width="200px" height="50px" src={BoardThickImage} />
                 </GridItem>
             </SimpleGrid>
 
@@ -216,7 +216,7 @@ const NumberThickness = ({ formData, setFormData }) => {
                     </Field.Root>
                 </GridItem>
                 <GridItem margin="auto" colSpan={2}>
-                    <Image margin="auto" width="220px" height="50px" src={coppThickImage} />
+                    <Image marginTop="24px" marginX="auto" width="200px" height="50px" src={coppThickImage} />
                 </GridItem>
             </SimpleGrid>
         </>

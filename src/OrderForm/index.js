@@ -23,16 +23,21 @@ function OrderForm() {
     const [linkErrors, setLinkErrors] = useState({});
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState({});
-    const [forms, setForms] = useState(
-        Array.from({ length: 5 }, () => ({
-            id: Date.now() + Math.random(),
+
+    // تابع برای ایجاد فرم پیش‌فرض
+    const createDefaultForms = () => {
+        return Array.from({ length: 5 }, (_, index) => ({
+            id: Date.now() + Math.random() + index,
             number: "",
             brand: "",
             link: "",
             count: "",
             description: "",
-        }))
-    );
+        }));
+    };
+
+    const [forms, setForms] = useState(createDefaultForms());
+    const [isInitialized, setIsInitialized] = useState(false);
 
     const isValidUrl = (string) => {
         try {
@@ -44,7 +49,8 @@ function OrderForm() {
     };
 
     const fileInputRef = useRef(null);
-    const [fileName, setFileName] = useState(formData.boardfile?.name || "");
+    const [fileName, setFileName] = useState("");
+
     const showToast = (message, type = "info") => {
         const toast = document.createElement("div");
         toast.innerText = message;
@@ -73,7 +79,9 @@ function OrderForm() {
             toast.style.opacity = "0";
             toast.style.transition = "opacity 0.5s ease";
             setTimeout(() => {
-                document.body.removeChild(toast);
+                if (document.body.contains(toast)) {
+                    document.body.removeChild(toast);
+                }
             }, 500);
         }, 3000);
     };
@@ -91,15 +99,15 @@ function OrderForm() {
         reader.onloadend = () => {
             const base64String = reader.result;
 
-            setFormData({
-                ...formData,
+            setFormData(prev => ({
+                ...prev,
                 boardfile: {
                     name: file.name,
                     type: file.type,
                     size: file.size,
                     base64: base64String,
                 },
-            });
+            }));
 
             setFileName(file.name);
             showToast("فایل با موفقیت آپلود شد", "success");
@@ -147,21 +155,61 @@ function OrderForm() {
         }
     };
 
+    // useEffect برای بارگذاری داده‌ها از localStorage
     useEffect(() => {
-        const savedOrder = localStorage.getItem("formData");
-        const savedForms = localStorage.getItem("FormsData");
+        try {
+            const savedOrder = localStorage.getItem("formData");
+            const savedForms = localStorage.getItem("FormsData");
 
-        if (savedOrder) setFormData(JSON.parse(savedOrder));
-        if (savedForms) setForms(JSON.parse(savedForms));
+            if (savedOrder) {
+                const parsedFormData = JSON.parse(savedOrder);
+                setFormData(parsedFormData);
+                // تنظیم نام فایل اگر وجود دارد
+                if (parsedFormData.boardfile?.name) {
+                    setFileName(parsedFormData.boardfile.name);
+                }
+            }
+
+            if (savedForms) {
+                const parsedForms = JSON.parse(savedForms);
+                // بررسی اینکه آیا داده‌های ذخیره شده معتبر هستند
+                if (Array.isArray(parsedForms) && parsedForms.length > 0) {
+                    setForms(parsedForms);
+                } else {
+                    // اگر داده‌های ذخیره شده معتبر نیستند، از پیش‌فرض استفاده کن
+                    setForms(createDefaultForms());
+                }
+            }
+        } catch (error) {
+            console.error("خطا در بارگذاری داده‌ها از localStorage:", error);
+            // در صورت خطا، از مقادیر پیش‌فرض استفاده کن
+            setForms(createDefaultForms());
+        } finally {
+            setIsInitialized(true);
+        }
     }, []);
 
+    // useEffect برای ذخیره formData
     useEffect(() => {
-        localStorage.setItem("formData", JSON.stringify(formData));
-    }, [formData]);
+        if (isInitialized) {
+            try {
+                localStorage.setItem("formData", JSON.stringify(formData));
+            } catch (error) {
+                console.error("خطا در ذخیره formData:", error);
+            }
+        }
+    }, [formData, isInitialized]);
 
+    // useEffect برای ذخیره forms
     useEffect(() => {
-        localStorage.setItem("FormsData", JSON.stringify(forms));
-    }, [forms]);
+        if (isInitialized) {
+            try {
+                localStorage.setItem("FormsData", JSON.stringify(forms));
+            } catch (error) {
+                console.error("خطا در ذخیره FormsData:", error);
+            }
+        }
+    }, [forms, isInitialized]);
 
     const addForm = () => {
         setForms((prev) => [
@@ -208,13 +256,24 @@ function OrderForm() {
     };
 
     const handleRemoveFile = () => {
-        setFormData({
-            ...formData,
+        setFormData(prev => ({
+            ...prev,
             boardfile: null,
-        });
+        }));
         setFileName("");
         if (fileInputRef.current) fileInputRef.current.value = "";
     };
+
+    // نمایش لودینگ تا زمانی که داده‌ها بارگذاری شوند
+    if (!isInitialized) {
+        return (
+            <Container dir="rtl" maxW="6xl" backgroundColor="gray.50" marginY="20px" borderRadius="20px">
+                <Box color="#0662EA" paddingY="40px" fontSize="23px" textAlign="center">
+                    در حال بارگذاری...
+                </Box>
+            </Container>
+        );
+    }
 
     return (
         <Container dir="rtl" maxW="6xl" backgroundColor="gray.50" marginY="20px" borderRadius="20px">
@@ -237,7 +296,7 @@ function OrderForm() {
             )}
 
             <Stack marginY="10px" fontSize="14px" fontWeight="semibold" display="none" sm={{ display: "flex" }} direction="row">
-                <Text width="80px">
+                <Text width="85px">
                     عنوان ردیف
                 </Text>
                 <Text width="200px" display="flex">
@@ -258,17 +317,17 @@ function OrderForm() {
                 <Text width="200px">
                     توضیحات
                 </Text>
-                <Text width="70px">
-
+                <Text opacity={0} width="70px">
+                    aaaaaaa
                 </Text>
             </Stack>
             {forms.map((form, index) => (
-                <>
+                <div key={form.id}>
                     <Stack direction="row" marginY="10px">
                         <Text paddingLeft="10px" marginY="auto" sm={{ display: "none" }}>
                             {index + 1}
                         </Text>
-                        <Stack width="100%" key={form.id} direction={{ base: "column", sm: "row" }}>
+                        <Stack width="100%" direction={{ base: "column", sm: "row" }}>
                             <Text width="80px" paddingRight="22px" margin="auto" display="none" sm={{ display: "flex" }}>
                                 {index + 1}
                             </Text>
@@ -288,7 +347,6 @@ function OrderForm() {
                                 <Input
                                     height="38px"
                                     type="text"
-                                    key={form.id}
                                     name={form.number}
                                     value={form.number}
                                     onChange={(e) => handleChange(form.id, 'number', e.target.value)}
@@ -311,7 +369,6 @@ function OrderForm() {
                                 <Input
                                     height="38px"
                                     type="text"
-                                    key={form.id}
                                     name={form.brand}
                                     value={form.brand}
                                     backgroundColor="white"
@@ -328,7 +385,6 @@ function OrderForm() {
                                 <Input
                                     height="38px"
                                     type="text"
-                                    key={form.id}
                                     name={form.link}
                                     value={form.link}
                                     backgroundColor="white"
@@ -354,7 +410,6 @@ function OrderForm() {
                                 <Input
                                     height="38px"
                                     type="number"
-                                    key={form.id}
                                     name={form.count}
                                     value={form.count}
                                     onChange={(e) => handleChange(form.id, 'count', e.target.value)}
@@ -371,7 +426,6 @@ function OrderForm() {
                                 </Field.Label>
                                 <Input
                                     height="38px"
-                                    key={form.id}
                                     name={form.description}
                                     value={form.description}
                                     backgroundColor="white"
@@ -393,7 +447,7 @@ function OrderForm() {
                             </Stack>
                         </Stack>
                     </Stack>
-                </>
+                </div>
             ))}
             <Text fontSize="14px" fontWeight="semibold" marginTop="10px">
                 در صورتی که تعداد اقلام مورد نیاز بالا می باشد، میتوانید جزئیات سفارش خود را طبق ستون های فوق و به صورت فایل اکسل آپلود نمایید :
