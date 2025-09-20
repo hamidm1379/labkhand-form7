@@ -79,7 +79,7 @@ export default function DesignQuantityType({ formData, setFormData }) {
             >
                 <RadioCard.Label dir="rtl">طرح فایل :
                     <Tooltip
-                        content="تعداد طرح را وارد کنید"
+                        content="طرح فایل را وارد کنید"
                         positioning={{ placement: "top" }}
                         openDelay={100}
                         closeDelay={100}
@@ -113,7 +113,7 @@ export default function DesignQuantityType({ formData, setFormData }) {
                     ))}
                 </HStack>
             </RadioCard.Root>
-            
+
             <SimpleGrid columns={[1, null, 6]} gap="6">
                 <GridItem colSpan={[1, null, 3]}>
                     <RadioCard.Root
@@ -125,7 +125,18 @@ export default function DesignQuantityType({ formData, setFormData }) {
                         dir="rtl"
                         disabled={isInputFilled}
                     >
-                        <RadioCard.Label dir="rtl">تعداد طرح ؟</RadioCard.Label>
+                        <RadioCard.Label dir="rtl">تعداد طرح :
+                            <Tooltip
+                                content="تعداد طرح را وارد کنید"
+                                positioning={{ placement: "top" }}
+                                openDelay={100}
+                                closeDelay={100}
+                                contentProps={{ css: { "--tooltip-bg": "white", "color": "black" } }}
+                                showArrow
+                            >
+                                <Box cursor="pointer" as={FaQuestionCircle}></Box>
+                            </Tooltip>
+                        </RadioCard.Label>
                         <HStack key="countdisign" name="countdisign" value={formData.countdisign || "1"} onChange={(value) => handlechange("countdisign", value)} spacing={3} wrap="wrap" justify="center">
                             {numbers.map((item) => (
                                 <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueTwo(item.value)} key={item.value} value={item.value} colorPalette="blue">
@@ -157,7 +168,7 @@ export default function DesignQuantityType({ formData, setFormData }) {
                             تعداد طرح دلخواه را وارد کنید
                             <Field.RequiredIndicator />
                         </Field.Label>
-                        <Input backgroundColor="white" min={1} type="number" key="countdisignnumber" name="countdisignnumber" value={formData.countdisignnumber || ""} onChange={(e)=>{handlechangeInput(e);handlechangeInputFile(e);}} height="44px" />
+                        <Input backgroundColor="white" min={1} type="number" key="countdisignnumber" name="countdisignnumber" value={formData.countdisignnumber || ""} onChange={(e) => { handlechangeInput(e); handlechangeInputFile(e); }} height="44px" />
                     </Field.Root>
                 </GridItem>
             </SimpleGrid>

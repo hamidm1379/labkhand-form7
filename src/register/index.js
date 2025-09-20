@@ -117,7 +117,6 @@ function Register() {
     };
 
     const validate = () => {
-
         let newErrors = {};
 
         setSubmitted(true);
@@ -129,21 +128,36 @@ function Register() {
         if (!formData.firstname) newErrors.firstname = "الزامی"
         if (!formData.lastname) newErrors.lastname = "الزامی"
         if (!formData.address) newErrors.address = "الزامی"
-        if (!formData.postcode) newErrors.postcode = "الزامی"
+        if (!formData.postcode) newErrors.postcode = "لطفا فرم را کامل کنید."
         if (!formData.province) newErrors.province = "الزامی"
         if (!formData.city) newErrors.city = "الزامی"
         if (!formData.email) newErrors.email = "الزامی"
         if (!formData.telephone) newErrors.telephone = "الزامی"
         if (!formData.mobilephone) newErrors.mobilephone = "الزامی"
 
+        if (formData.postcode && formData.postcode.length !== 10) {
+            newErrors.postcode = "کد پستی باید دقیقاً 10 رقم باشد";
+        }
+
+        if (value === "yes") {
+            if (!formData.changename) newErrors.changename = "الزامی"
+            if (!formData.changelastname) newErrors.changelastname = "الزامی"
+            if (!formData.changeaddress) newErrors.changeaddress = "الزامی"
+            if (!formData.changeprovince) newErrors.changeprovince = "الزامی"
+            if (!formData.changecity) newErrors.changecity = "الزامی"
+            if (!formData.changepostcode) newErrors.changepostcode = "الزامی"
+
+            if (formData.changepostcode && formData.changepostcode.length !== 10) {
+                newErrors.changepostcode = "کد پستی باید دقیقاً 10 رقم باشد";
+            }
+        }
+
         setErrors(newErrors);
 
         return Object.keys(newErrors).length === 0;
-
     };
 
     const handleSubmit = async () => {
-
         if (!validate()) {
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
@@ -159,11 +173,9 @@ function Register() {
             console.error("Supabase Error:", error);
         } else {
             console.log("Sent to Supabase:", data);
-            localStorage.removeItem("pageOneDataPCB");
+            localStorage.removeItem("pageOneData");
             localStorage.removeItem("pageTwoData");
-            if (page1.pagename === "PCB") { navigate("/PCB"); }
-            if (page1.pagename === "OEM") { navigate("/OEM"); }
-            if (page1.pagename === "PCBA") { navigate("/PCBA"); }
+            window.location.href = "https://labkhandelec.com";
         }
     };
 
@@ -188,19 +200,24 @@ function Register() {
         itemToValue: (item) => item.name,
     })
 
-    const handleChangeNumber = (e) => {
+    const handleNumberChange = (e) => {
         const inputValue = e.target.value;
-        if (/^\d*\.?\d*$/.test(inputValue) || inputValue === '') {
-            setValueSec(inputValue);
+        if (/^\d*$/.test(inputValue) || inputValue === '') {
+            handleChange(e);
         }
     };
 
     const handleKeyDown = (e) => {
-        if (
-            (e.key >= '0' && e.key <= '9')
-        ) {
+        const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+
+        if (allowedKeys.includes(e.key)) {
             return;
         }
+
+        if (e.key >= '0' && e.key <= '9') {
+            return;
+        }
+
         e.preventDefault();
     };
 
@@ -209,8 +226,9 @@ function Register() {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(String(email).toLowerCase());
     };
+
     return (
-        <Container dir="rtl" maxW="6xl" backgroundColor="gray.50" marginY="20px" borderRadius="20px">
+        <Container dir="rtl" maxW="6xl" backgroundColor="#F2F7FE" marginY="20px" borderRadius="20px">
             <Box color="#0662EA" fontWeight="bold" paddingY="40px" fontSize="23px">
                 فرم سفارش برد مدار چاپی ({page1.pagename})
             </Box>
@@ -221,7 +239,7 @@ function Register() {
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
                                         *
                                     </Badge>
                                 </>
@@ -240,7 +258,7 @@ function Register() {
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
                                         *
                                     </Badge>
                                 </>
@@ -252,7 +270,6 @@ function Register() {
                         لطفا فرم را کامل کنید.
                     </Field.ErrorText>
                 </Field.Root>
-
             </SimpleGrid>
 
             <Field.Root width="full" {...(errors?.companyname ? { invalid: true } : {})} marginTop="10px">
@@ -268,7 +285,7 @@ function Register() {
                     <Field.RequiredIndicator
                         fallback={
                             <>
-                                <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
                                     *
                                 </Badge>
                             </>
@@ -310,7 +327,8 @@ function Register() {
                     </Select.Root>
                     <Field.ErrorText>لطفا استان مورد نظر را وارد کنید.</Field.ErrorText>
                 </Field.Root>
-                <Field.Root width="full" {...(errors?.province ? { invalid: true } : {})}>
+
+                <Field.Root width="full" {...(errors?.city ? { invalid: true } : {})}>
                     <Select.Root collection={city}>
                         <Select.HiddenSelect key="city" name="city" value={formData.city || ""} onChange={(value) => handlechangeSelect("city", value)} />
                         <Select.Label display="flex" dir="rtl">شهر : <Text marginRight="7px" fontSize="16px" color="red">*</Text></Select.Label>
@@ -335,31 +353,33 @@ function Register() {
                     </Select.Root>
                     <Field.ErrorText>لطفا شهر مورد نظر را وارد کنید.</Field.ErrorText>
                 </Field.Root>
+
                 <Field.Root {...(errors?.postcode ? { invalid: true } : {})} width="full" marginTop="10px">
                     <Field.Label>
                         کدپستی :
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
                                         *
                                     </Badge>
                                 </>
                             }
                         />
                     </Field.Label>
-                    <Input maxLength={10} type="text" backgroundColor="white" height="44px" key="postcode" name="postcode" value={formData.postcode || ""} onChange={(e) => { handleChange(e); handleChangeNumber(e) }} onKeyDown={handleKeyDown} />
+                    <Input maxLength={10} type="text" backgroundColor="white" height="44px" key="postcode" name="postcode" value={formData.postcode || ""} onChange={handleNumberChange} onKeyDown={handleKeyDown} />
                     <Field.ErrorText>
-                        لطفا فرم را کامل کنید.
+                        {errors.postcode || "لطفا فرم را کامل کنید."}
                     </Field.ErrorText>
                 </Field.Root>
-                <Field.Root {...(submitted && !validateEmail(formData.email) ? {invalid: true} : {})} width="full" marginTop="10px">
+
+                <Field.Root {...(submitted && !validateEmail(formData.email) ? { invalid: true } : {})} width="full" marginTop="10px">
                     <Field.Label>
                         ایمیل :
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
                                         *
                                     </Badge>
                                 </>
@@ -371,38 +391,40 @@ function Register() {
                         ایمیل به درستی وارد نشده.
                     </Field.ErrorText>
                 </Field.Root>
+
                 <Field.Root {...(errors?.telephone ? { invalid: true } : {})} width="full" marginTop="10px">
                     <Field.Label>
                         شماره ثابت :
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
                                         *
                                     </Badge>
                                 </>
                             }
                         />
                     </Field.Label>
-                    <Input maxLength={11} type="text" backgroundColor="white" height="44px" key="telephone" name="telephone" value={formData.telephone || ""} onChange={(e) => { handleChange(e); handleChangeNumber(e) }} onKeyDown={handleKeyDown} />
+                    <Input maxLength={11} type="text" backgroundColor="white" height="44px" key="telephone" name="telephone" value={formData.telephone || ""} onChange={handleNumberChange} onKeyDown={handleKeyDown} />
                     <Field.ErrorText>
                         لطفا فرم را کامل کنید.
                     </Field.ErrorText>
                 </Field.Root>
+
                 <Field.Root {...(errors?.mobilephone ? { invalid: true } : {})} width="full" marginTop="10px">
                     <Field.Label>
                         شماره موبایل :
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
                                         *
                                     </Badge>
                                 </>
                             }
                         />
                     </Field.Label>
-                    <Input maxLength={11} type="text" backgroundColor="white" height="44px" min={1} key="mobilephone" name="mobilephone" value={formData.mobilephone || ""} onChange={(e) => { handleChange(e); handleChangeNumber(e) }} onKeyDown={handleKeyDown} />
+                    <Input maxLength={11} type="text" backgroundColor="white" height="44px" min={1} key="mobilephone" name="mobilephone" value={formData.mobilephone || ""} onChange={handleNumberChange} onKeyDown={handleKeyDown} />
                     <Field.ErrorText>
                         لطفا فرم را کامل کنید.
                     </Field.ErrorText>
@@ -447,16 +469,17 @@ function Register() {
                     ))}
                 </HStack>
             </RadioCard.Root>
+
             {value === "yes" && (
                 <>
                     <SimpleGrid columns={[1, null, 2]} gap="6">
-                        <Field.Root width="full">
+                        <Field.Root width="full" {...(errors?.changename ? { invalid: true } : {})}>
                             <Field.Label>
                                 نام  :
                                 <Field.RequiredIndicator
                                     fallback={
                                         <>
-                                            <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                            <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
                                                 *
                                             </Badge>
                                         </>
@@ -464,15 +487,18 @@ function Register() {
                                 />
                             </Field.Label>
                             <Input backgroundColor="white" height="44px" type="text" key="changename" name="changename" value={formData.changename || ""} onChange={handleChange} />
+                            <Field.ErrorText>
+                                لطفا فرم را کامل کنید.
+                            </Field.ErrorText>
                         </Field.Root>
 
-                        <Field.Root width="full">
+                        <Field.Root width="full" {...(errors?.changelastname ? { invalid: true } : {})}>
                             <Field.Label>
                                 نام خانوادگی:
                                 <Field.RequiredIndicator
                                     fallback={
                                         <>
-                                            <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                            <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
                                                 *
                                             </Badge>
                                         </>
@@ -480,21 +506,26 @@ function Register() {
                                 />
                             </Field.Label>
                             <Input backgroundColor="white" height="44px" type="text" key="changelastname" name="changelastname" value={formData.changelastname || ""} onChange={handleChange} />
+                            <Field.ErrorText>
+                                لطفا فرم را کامل کنید.
+                            </Field.ErrorText>
                         </Field.Root>
                     </SimpleGrid>
+
                     <Field.Root width="full" marginTop="10px">
                         <Field.Label>
                             نام شرکت :
                         </Field.Label>
                         <Input backgroundColor="white" height="44px" type="text" key="changecompany" name="changecompany" value={formData.changecompany || ""} onChange={handleChange} />
                     </Field.Root>
-                    <Field.Root width="full" marginTop="10px">
+
+                    <Field.Root width="full" {...(errors?.changeaddress ? { invalid: true } : {})} marginTop="10px">
                         <Field.Label>
                             آدرس:
                             <Field.RequiredIndicator
                                 fallback={
                                     <>
-                                        <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                        <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
                                             *
                                         </Badge>
                                     </>
@@ -504,72 +535,81 @@ function Register() {
                         <Text width="full" fontSize="14px" color="gray.600">خیابان ، کوچه ، پلاک ، واحد و ... :</Text>
                         <Input backgroundColor="white" height="44px" type="text" key="changeaddress" name="changeaddress" value={formData.changeaddress || ""} onChange={handleChange} />
                         <Field.ErrorText>
-                            نام به درستی وارد نشده.
+                            لطفا فرم را کامل کنید.
                         </Field.ErrorText>
                     </Field.Root>
+
                     <SimpleGrid columns={[1, null, 2]} gap="6" marginTop="10px">
-                        <Select.Root collection={frameworks}>
-                            <Select.HiddenSelect key="changeprovince" name="changeprovince" value={formData.changeprovince || ""} onChange={(value) => handlechangeSelect("changeprovince", value)} />
-                            <Select.Label display="flex" dir="rtl">استان : <Text marginRight="7px" fontSize="16px" color="red">*</Text></Select.Label>
-                            <Select.Control backgroundColor="white" dir="rtl">
-                                <Select.Trigger dir="rtl">
-                                    <Select.ValueText placeholder="استان" />
-                                </Select.Trigger>
-                                <Select.IndicatorGroup>
-                                    <Select.Indicator />
-                                </Select.IndicatorGroup>
-                            </Select.Control>
-                            <Portal>
+                        <Field.Root width="full" {...(errors?.changeprovince ? { invalid: true } : {})}>
+                            <Select.Root collection={frameworks}>
+                                <Select.HiddenSelect key="changeprovince" name="changeprovince" value={formData.changeprovince || ""} onChange={(value) => handlechangeSelect("changeprovince", value)} />
+                                <Select.Label display="flex" dir="rtl">استان : <Text marginRight="7px" fontSize="16px" color="red">*</Text></Select.Label>
+                                <Select.Control backgroundColor="white" dir="rtl">
+                                    <Select.Trigger dir="rtl">
+                                        <Select.ValueText placeholder="استان" />
+                                    </Select.Trigger>
+                                    <Select.IndicatorGroup>
+                                        <Select.Indicator />
+                                    </Select.IndicatorGroup>
+                                </Select.Control>
+                                <Portal>
+                                    <Select.Positioner>
+                                        <Select.Content>
+                                            {frameworks.items.map((framework) => (
+                                                <Select.Item dir="rtl" item={framework} key={framework.value}>
+                                                    {framework.label}
+                                                    <Select.ItemIndicator />
+                                                </Select.Item>
+                                            ))}
+                                        </Select.Content>
+                                    </Select.Positioner>
+                                </Portal>
+                            </Select.Root>
+                            <Field.ErrorText>لطفا استان مورد نظر را وارد کنید.</Field.ErrorText>
+                        </Field.Root>
+
+                        <Field.Root width="full" {...(errors?.changecity ? { invalid: true } : {})}>
+                            <Select.Root collection={changecity}>
+                                <Select.HiddenSelect key="changecity" name="changecity" value={formData.changecity || ""} onChange={(value) => handlechangeSelect("changecity", value)} />
+                                <Select.Label display="flex" dir="rtl">شهر : <Text marginRight="7px" fontSize="16px" color="red">*</Text></Select.Label>
+                                <Select.Control backgroundColor="white" dir="rtl">
+                                    <Select.Trigger dir="rtl">
+                                        <Select.ValueText placeholder="شهر" />
+                                    </Select.Trigger>
+                                    <Select.IndicatorGroup>
+                                        <Select.Indicator />
+                                    </Select.IndicatorGroup>
+                                </Select.Control>
                                 <Select.Positioner>
                                     <Select.Content>
-                                        {frameworks.items.map((framework) => (
-                                            <Select.Item dir="rtl" item={framework} key={framework.value}>
-                                                {framework.label}
+                                        {changecity.items.map((item) => (
+                                            <Select.Item dir="rtl" value={item.id} item={item} key={item.id}>
+                                                {item.name}
                                                 <Select.ItemIndicator />
                                             </Select.Item>
                                         ))}
                                     </Select.Content>
                                 </Select.Positioner>
-                            </Portal>
-                        </Select.Root>
-                        <Select.Root collection={changecity}>
-                            <Select.HiddenSelect key="changecity" name="changecity" value={formData.changecity || ""} onChange={(value) => handlechangeSelect("changecity", value)} />
-                            <Select.Label display="flex" dir="rtl">شهر : <Text marginRight="7px" fontSize="16px" color="red">*</Text></Select.Label>
-                            <Select.Control backgroundColor="white" dir="rtl">
-                                <Select.Trigger dir="rtl">
-                                    <Select.ValueText placeholder="شهر" />
-                                </Select.Trigger>
-                                <Select.IndicatorGroup>
-                                    <Select.Indicator />
-                                </Select.IndicatorGroup>
-                            </Select.Control>
-                            <Select.Positioner>
-                                <Select.Content>
-                                    {changecity.items.map((item) => (
-                                        <Select.Item dir="rtl" value={item.id} item={item} key={item.id}>
-                                            {item.name}
-                                            <Select.ItemIndicator />
-                                        </Select.Item>
-                                    ))}
-                                </Select.Content>
-                            </Select.Positioner>
-                        </Select.Root>
-                        <Field.Root width="full" marginTop="10px">
+                            </Select.Root>
+                            <Field.ErrorText>لطفا شهر مورد نظر را وارد کنید.</Field.ErrorText>
+                        </Field.Root>
+
+                        <Field.Root {...(errors?.changepostcode ? { invalid: true } : {})} width="full" marginTop="10px">
                             <Field.Label>
                                 کدپستی :
                                 <Field.RequiredIndicator
                                     fallback={
                                         <>
-                                            <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                            <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
                                                 *
                                             </Badge>
                                         </>
                                     }
                                 />
                             </Field.Label>
-                            <Input maxLength={10} backgroundColor="white" height="44px" type="text" key="changepostcode" name="changepostcode" value={formData.changepostcode || ""} onChange={(e) => { handleChange(e); handleChangeNumber(e) }} onKeyDown={handleKeyDown} />
+                            <Input maxLength={10} backgroundColor="white" height="44px" type="text" key="changepostcode" name="changepostcode" value={formData.changepostcode || ""} onChange={handleNumberChange} onKeyDown={handleKeyDown} />
                             <Field.ErrorText>
-                                نام به درستی وارد نشده.
+                                {errors.changepostcode || "لطفا فرم را کامل کنید."}
                             </Field.ErrorText>
                         </Field.Root>
                     </SimpleGrid>

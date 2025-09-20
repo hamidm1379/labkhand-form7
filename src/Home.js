@@ -32,7 +32,7 @@ function Home() {
         guidecolor: "سفید",
         finalcover: "HASL",
         boardcut: "CNC",
-        stansil: "بله",
+        stansil: "خیر",
       });
     } else {
       setPageOneData({
@@ -47,7 +47,7 @@ function Home() {
         guidecolor: "سفید",
         finalcover: "HASL",
         boardcut: "CNC",
-        stansil: "بله",
+        stansil: "خیر",
         boardfile: null
       });
     }

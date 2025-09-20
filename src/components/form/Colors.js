@@ -44,7 +44,7 @@ const Colors = ({ formData, setFormData }) => {
     const [selectedValueTwo, setSelectedValueTwo] = useState(guideColor[0]?.value);
     const [selectedValueThree, setSelectedValueThree] = useState(finalCover[0]?.value);
     const [selectedValueFour, setSelectedValueFour] = useState(boardcut[0]?.value);
-    const [selectedValueFive, setSelectedValueFive] = useState(stasil[0]?.value);
+    const [selectedValueFive, setSelectedValueFive] = useState(stasil[1]?.value);
     const [isInputFilled, setIsInputFilled] = useState(false);
 
     const handlechange = (key, value) => {
@@ -167,7 +167,18 @@ const Colors = ({ formData, setFormData }) => {
                         dir="rtl"
                         disabled={isInputFilled}
                     >
-                        <RadioCard.Label dir="rtl">پوشش نهایی ؟</RadioCard.Label>
+                        <RadioCard.Label dir="rtl">پوشش نهایی :
+                            <Tooltip
+                                content="پوشش نهایی را وارد کنید"
+                                positioning={{ placement: "top" }}
+                                openDelay={100}
+                                closeDelay={100}
+                                contentProps={{ css: { "--tooltip-bg": "white", "color": "black" } }}
+                                showArrow
+                            >
+                                <Box cursor="pointer" as={FaQuestionCircle}></Box>
+                            </Tooltip>
+                        </RadioCard.Label>
                         <HStack key="finalcover" name="finalcover" value={formData.finalcover || "HASL"} onChange={(value) => handlechange("finalcover", value)}>
                             {finalCover.map((item) => (
                                 <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueThree(item.value)} key={item.value} value={item.value} colorPalette="blue">
@@ -198,18 +209,8 @@ const Colors = ({ formData, setFormData }) => {
                         <Field.Label>
                             پوشش نهایی دلخواه را وارد کنید
                             <Field.RequiredIndicator />
-                            <Tooltip
-                                content="پوشش"
-                                positioning={{ placement: "top" }}
-                                openDelay={100}
-                                closeDelay={100}
-                                contentProps={{ css: { "--tooltip-bg": "white", "color": "black" } }}
-                                showArrow
-                            >
-                                <Box cursor="pointer" as={FaQuestionCircle}></Box>
-                            </Tooltip>
                         </Field.Label>
-                        <Input backgroundColor="white" height="44px" type="text" key="finalcovernumber" name="finalcovernumber" value={formData.finalcovernumber || ""} onChange={(a)=>{handlechangeInput(a);handlechangeInputFile(a);}} />
+                        <Input backgroundColor="white" height="44px" type="text" key="finalcovernumber" name="finalcovernumber" value={formData.finalcovernumber || ""} onChange={(a) => { handlechangeInput(a); handlechangeInputFile(a); }} />
                     </Field.Root>
                 </GridItem>
             </SimpleGrid>
@@ -262,7 +263,7 @@ const Colors = ({ formData, setFormData }) => {
                 <RadioCard.Root
                     orientation="vertical"
                     align="center"
-                    defaultValue="بله"
+                    defaultValue="خیر"
                     paddingY="20px"
                     maxW="125px"
                     dir="rtl"
@@ -279,7 +280,7 @@ const Colors = ({ formData, setFormData }) => {
                             <Box cursor="pointer" as={FaQuestionCircle}></Box>
                         </Tooltip>
                     </RadioCard.Label>
-                    <HStack key="stansil" name="stansil" value={formData.stansil || "بله"} onChange={(value) => handlechange("stansil", value)}>
+                    <HStack key="stansil" name="stansil" value={formData.stansil || "خیر"} onChange={(value) => handlechange("stansil", value)}>
                         {stasil.map((item) => (
                             <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" key={item.value} value={item.value} colorPalette="blue">
                                 <RadioCard.ItemHiddenInput />

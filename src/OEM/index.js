@@ -33,7 +33,7 @@ function HomeOEM() {
                 guidecolor: "سفید",
                 finalcover: "HASL",
                 boardcut: "CNC",
-                stansil: "بله",
+                stansil: "خیر",
                 montage: "بله",
                 costumerbrand: "بله"
             });
@@ -50,7 +50,7 @@ function HomeOEM() {
                 guidecolor: "سفید",
                 finalcover: "HASL",
                 boardcut: "CNC",
-                stansil: "بله",
+                stansil: "خیر",
                 montage: "بله",
                 costumerbrand: "بله",
                 boardfile: null,
@@ -85,7 +85,7 @@ function HomeOEM() {
     };
 
     return (
-        <Container dir="rtl" maxW="6xl" backgroundColor="gray.50" marginY="20px" borderRadius="20px">
+        <Container dir="rtl" maxW="6xl" backgroundColor="#F2F7FE" marginY="20px" borderRadius="20px">
             <Box color="#0662EA" paddingY="40px" fontSize="23px">
                 فرم سفارش محصول سفارشی (OEM)
             </Box>

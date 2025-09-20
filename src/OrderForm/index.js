@@ -24,7 +24,6 @@ function OrderForm() {
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState({});
 
-    // تابع برای ایجاد فرم پیش‌فرض
     const createDefaultForms = () => {
         return Array.from({ length: 5 }, (_, index) => ({
             id: Date.now() + Math.random() + index,
@@ -155,7 +154,6 @@ function OrderForm() {
         }
     };
 
-    // useEffect برای بارگذاری داده‌ها از localStorage
     useEffect(() => {
         try {
             const savedOrder = localStorage.getItem("formData");
@@ -164,7 +162,6 @@ function OrderForm() {
             if (savedOrder) {
                 const parsedFormData = JSON.parse(savedOrder);
                 setFormData(parsedFormData);
-                // تنظیم نام فایل اگر وجود دارد
                 if (parsedFormData.boardfile?.name) {
                     setFileName(parsedFormData.boardfile.name);
                 }
@@ -172,24 +169,20 @@ function OrderForm() {
 
             if (savedForms) {
                 const parsedForms = JSON.parse(savedForms);
-                // بررسی اینکه آیا داده‌های ذخیره شده معتبر هستند
                 if (Array.isArray(parsedForms) && parsedForms.length > 0) {
                     setForms(parsedForms);
                 } else {
-                    // اگر داده‌های ذخیره شده معتبر نیستند، از پیش‌فرض استفاده کن
                     setForms(createDefaultForms());
                 }
             }
         } catch (error) {
             console.error("خطا در بارگذاری داده‌ها از localStorage:", error);
-            // در صورت خطا، از مقادیر پیش‌فرض استفاده کن
             setForms(createDefaultForms());
         } finally {
             setIsInitialized(true);
         }
     }, []);
 
-    // useEffect برای ذخیره formData
     useEffect(() => {
         if (isInitialized) {
             try {
@@ -200,7 +193,6 @@ function OrderForm() {
         }
     }, [formData, isInitialized]);
 
-    // useEffect برای ذخیره forms
     useEffect(() => {
         if (isInitialized) {
             try {
@@ -264,7 +256,6 @@ function OrderForm() {
         if (fileInputRef.current) fileInputRef.current.value = "";
     };
 
-    // نمایش لودینگ تا زمانی که داده‌ها بارگذاری شوند
     if (!isInitialized) {
         return (
             <Container dir="rtl" maxW="6xl" backgroundColor="gray.50" marginY="20px" borderRadius="20px">
@@ -276,7 +267,7 @@ function OrderForm() {
     }
 
     return (
-        <Container dir="rtl" maxW="6xl" backgroundColor="gray.50" marginY="20px" borderRadius="20px">
+        <Container dir="rtl" maxW="6xl" backgroundColor="#F2F7FE" marginY="20px" borderRadius="20px">
             <Box color="#0662EA" paddingY="40px" fontSize="23px">
                 فرم سفارش قطعات الکترونیک
             </Box>
@@ -337,7 +328,7 @@ function OrderForm() {
                                     <Field.RequiredIndicator
                                         fallback={
                                             <>
-                                                <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                                <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
                                                     *
                                                 </Badge>
                                             </>
@@ -359,7 +350,7 @@ function OrderForm() {
                                     <Field.RequiredIndicator
                                         fallback={
                                             <>
-                                                <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                                <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
                                                     *
                                                 </Badge>
                                             </>
@@ -400,7 +391,7 @@ function OrderForm() {
                                     <Field.RequiredIndicator
                                         fallback={
                                             <>
-                                                <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                                <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
                                                     *
                                                 </Badge>
                                             </>

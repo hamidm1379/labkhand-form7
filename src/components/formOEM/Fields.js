@@ -18,7 +18,7 @@ export default function Fields({ formData, setFormData, errors }) {
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
                                         *
                                     </Badge>
                                     <Tooltip
@@ -46,7 +46,7 @@ export default function Fields({ formData, setFormData, errors }) {
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
                                         *
                                     </Badge>
                                     <Tooltip
@@ -79,7 +79,7 @@ export default function Fields({ formData, setFormData, errors }) {
                         <Field.RequiredIndicator
                             fallback={
                                 <>
-                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
                                         *
                                     </Badge>
                                     <Tooltip
@@ -108,7 +108,7 @@ export default function Fields({ formData, setFormData, errors }) {
                             <Field.RequiredIndicator
                                 fallback={
                                     <>
-                                        <Badge fontSize="16px" size="xs" color="red" backgroundColor="gray.50">
+                                        <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
                                             *
                                         </Badge>
                                         <Tooltip
