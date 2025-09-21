@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Field, SimpleGrid, Box, Input, ColorSwatch, HStack, GridItem, RadioCard, Text } from "@chakra-ui/react"
 import { FaCheck } from "react-icons/fa";
@@ -36,7 +36,7 @@ const boardcut = [
 
 const stasil = [
     { value: "بله", title: "بله" },
-    { value: "خیر", title: "خیر" }
+    { value: "خیر", title: "خیر" },
 ]
 
 const Colors = ({ formData, setFormData }) => {
@@ -46,6 +46,16 @@ const Colors = ({ formData, setFormData }) => {
     const [selectedValueFour, setSelectedValueFour] = useState(boardcut[0]?.value);
     const [selectedValueFive, setSelectedValueFive] = useState(stasil[1]?.value);
     const [isInputFilled, setIsInputFilled] = useState(false);
+
+    useEffect(() => {
+        if (formData.finalcovernumber && formData.finalcovernumber.trim() !== "") {
+            setIsInputFilled(true);
+            setSelectedValueThree(null);
+        } else {
+            setIsInputFilled(false);
+            setSelectedValueThree(finalCover[0]?.value);
+        }
+    }, [formData.finalcovernumber]);
 
     const handlechange = (key, value) => {
         setFormData({ ...formData, [key]: value.target.value });
@@ -57,11 +67,49 @@ const Colors = ({ formData, setFormData }) => {
 
     const handlechangeInputFile = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+        setFormData(prev => ({ ...prev, [name]: value }));
 
         if (name === "finalcovernumber") {
-            setIsInputFilled(value.trim() !== "");
+            const isFilled = value.trim() !== "";
+            setIsInputFilled(isFilled);
+            
+            if (isFilled) {
+                setSelectedValueThree(null);
+                const newFormData = { ...formData, [name]: value };
+                delete newFormData.finalcover;
+                setFormData(newFormData);
+            } else {
+                setSelectedValueThree(finalCover[0]?.value);
+                setFormData({ ...formData, [name]: value, finalcover: finalCover[0]?.value });
+            }
         }
+    };
+
+    const handleRadioBoardColor = (value) => {
+        setSelectedValue(value);
+        setFormData({ ...formData, boardcolor: value });
+    };
+
+    const handleRadioGuideColor = (value) => {
+        setSelectedValueTwo(value);
+        setFormData({ ...formData, guidecolor: value });
+    };
+
+    const handleRadioFinalCover = (value) => {
+        if (!isInputFilled) {
+            setSelectedValueThree(value);
+            setFormData({ ...formData, finalcover: value });
+        }
+    };
+
+    const handleRadioBoardCut = (value) => {
+        setSelectedValueFour(value);
+        setFormData({ ...formData, boardcut: value });
+    };
+
+    const handleRadioStansil = (value) => {
+        setSelectedValueFive(value);
+        setFormData({ ...formData, stansil: value });
     };
 
     return (
@@ -88,7 +136,7 @@ const Colors = ({ formData, setFormData }) => {
                 </RadioCard.Label>
                 <HStack key="boardcolor" name="boardcolor" value={formData.boardcolor || "سبز"} onChange={(value) => handlechange("boardcolor", value)} spacing={3} wrap="wrap" justify="center">
                     {boardColor.map((item) => (
-                        <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValue(item.value)} key={item.value} value={item.value} colorPalette="blue">
+                        <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => handleRadioBoardColor(item.value)} key={item.value} value={item.value} colorPalette="blue">
                             <RadioCard.ItemHiddenInput />
                             <RadioCard.ItemControl>
                                 {selectedValue === item.value && (
@@ -133,7 +181,7 @@ const Colors = ({ formData, setFormData }) => {
                 </RadioCard.Label>
                 <HStack key="guidecolor" name="guidecolor" value={formData.guidecolor || "سفید"} onChange={(value) => handlechange("guidecolor", value)}>
                     {guideColor.map((item) => (
-                        <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueTwo(item.value)} key={item.value} value={item.value} colorPalette="blue">
+                        <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => handleRadioGuideColor(item.value)} key={item.value} value={item.value} colorPalette="blue">
                             <RadioCard.ItemHiddenInput />
                             <RadioCard.ItemControl>
                                 {selectedValueTwo === item.value && (
@@ -161,7 +209,7 @@ const Colors = ({ formData, setFormData }) => {
                     <RadioCard.Root
                         orientation="vertical"
                         align="center"
-                        defaultValue="HASL"
+                        value={isInputFilled ? "" : selectedValueThree}
                         paddingY="20px"
                         maxW="135px"
                         dir="rtl"
@@ -181,10 +229,19 @@ const Colors = ({ formData, setFormData }) => {
                         </RadioCard.Label>
                         <HStack key="finalcover" name="finalcover" value={formData.finalcover || "HASL"} onChange={(value) => handlechange("finalcover", value)}>
                             {finalCover.map((item) => (
-                                <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueThree(item.value)} key={item.value} value={item.value} colorPalette="blue">
+                                <RadioCard.Item 
+                                    _hover={!isInputFilled ? { boxShadow: "md" } : {}} 
+                                    transitionDuration="300ms" 
+                                    cursor={isInputFilled ? "not-allowed" : "pointer"} 
+                                    onClick={() => handleRadioFinalCover(item.value)} 
+                                    key={item.value} 
+                                    value={item.value} 
+                                    colorPalette="blue"
+                                    opacity={isInputFilled ? 0.5 : 1}
+                                >
                                     <RadioCard.ItemHiddenInput />
                                     <RadioCard.ItemControl>
-                                        {selectedValueThree === item.value && (
+                                        {selectedValueThree === item.value && !isInputFilled && (
                                             <RadioCard.ItemIndicator
                                                 as={FaCheck}
                                                 color=""
@@ -194,7 +251,6 @@ const Colors = ({ formData, setFormData }) => {
                                                 bottom="-6px"
                                                 left="-6px"
                                                 padding="3px"
-                                                display={isInputFilled ? "none" : ""}
                                             />
                                         )}
                                         <RadioCard.ItemText>{item.title}</RadioCard.ItemText>
@@ -236,11 +292,11 @@ const Colors = ({ formData, setFormData }) => {
                             <Box cursor="pointer" as={FaQuestionCircle}></Box>
                         </Tooltip>
                     </RadioCard.Label>
-                    <HStack key="boardcut" name="boardcut" value={formData.boardcut || "CNC"} onChange={(value) => handlechange("finalcover", value)}>
+                    <HStack key="boardcut" name="boardcut" value={formData.boardcut || "CNC"} onChange={(value) => handlechange("boardcut", value)}>
                         {boardcut.map((item) => (
                             <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" key={item.value} value={item.value} colorPalette="blue">
                                 <RadioCard.ItemHiddenInput />
-                                <RadioCard.ItemControl onClick={() => setSelectedValueFour(item.value)}>
+                                <RadioCard.ItemControl onClick={() => handleRadioBoardCut(item.value)}>
                                     {selectedValueFour === item.value && (
                                         <RadioCard.ItemIndicator
                                             as={FaCheck}
@@ -284,7 +340,7 @@ const Colors = ({ formData, setFormData }) => {
                         {stasil.map((item) => (
                             <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" key={item.value} value={item.value} colorPalette="blue">
                                 <RadioCard.ItemHiddenInput />
-                                <RadioCard.ItemControl onClick={() => setSelectedValueFive(item.value)}>
+                                <RadioCard.ItemControl onClick={() => handleRadioStansil(item.value)}>
                                     {selectedValueFive === item.value && (
                                         <RadioCard.ItemIndicator
                                             as={FaCheck}

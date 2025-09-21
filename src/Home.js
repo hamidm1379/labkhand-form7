@@ -26,7 +26,7 @@ function Home() {
         countdisign: "1",
         boardmaterial: "FR-4",
         countlayer: "2",
-        boardthickness: "0.4",
+        boardthickness: "1.6",
         copperthickness: "1oz",
         boardcolor: "سبز",
         guidecolor: "سفید",
@@ -41,7 +41,7 @@ function Home() {
         countdisign: "1",
         boardmaterial: "FR-4",
         countlayer: "2",
-        boardthickness: "0.4",
+        boardthickness: "1.6",
         copperthickness: "1oz",
         boardcolor: "سبز",
         guidecolor: "سفید",
@@ -78,7 +78,7 @@ function Home() {
   };
 
   return (
-    <Container dir="rtl" maxW="6xl" backgroundColor="gray.50" marginY="20px" borderRadius="20px">
+    <Container dir="rtl" maxW="6xl" backgroundColor="#F2F7FE" marginY="20px" borderRadius="20px">
       <Box color="#0662EA" paddingY="40px" fontSize="23px">
         فرم سفارش برد مدار چاپی (PCB)
       </Box>

@@ -49,6 +49,8 @@ const frameworks = createListCollection({
 function Register() {
     const [errors, setErrors] = useState({});
     const [value, setValue] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitSuccess, setSubmitSuccess] = useState(false);
     const navigate = useNavigate();
     const [registerData, setRegisterData] = useState({
         firstname: ""
@@ -71,6 +73,14 @@ function Register() {
         setRegisterData({ ...registerData, [key]: value.target.value });
     };
 
+    const validateTelephone = (telephone) => {
+        return telephone.startsWith('0') && telephone.length >= 10;
+    };
+
+    const validateMobile = (mobile) => {
+        return mobile.startsWith('09') && mobile.length === 11;
+    };
+
     const validate = () => {
         let newErrors = {};
 
@@ -87,11 +97,19 @@ function Register() {
         if (!registerData.province) newErrors.province = "الزامی"
         if (!registerData.city) newErrors.city = "الزامی"
         if (!registerData.email) newErrors.email = "الزامی"
-        if (!registerData.telephone) newErrors.telephone = "الزامی"
-        if (!registerData.mobilephone) newErrors.mobilephone = "الزامی"
+        if (!registerData.telephone) newErrors.telephone = "لطفا فرم را کامل کنید."
+        if (!registerData.mobilephone) newErrors.mobilephone = "لطفا فرم را کامل کنید."
+
+        if (registerData.telephone && !validateTelephone(registerData.telephone)) {
+            newErrors.telephone = "شماره ثابت باید با 0 شروع شود و 11 رقم باشد.";
+        }
+
+        if (registerData.mobilephone && !validateMobile(registerData.mobilephone)) {
+            newErrors.mobilephone = "شماره موبایل باید با 09 شروع شود و 11 رقم باشد.";
+        }
 
         if (registerData.postcode && registerData.postcode.length !== 10) {
-            newErrors.postcode = "کد پستی باید دقیقاً 10 رقم باشد";
+            newErrors.postcode = "کد پستی باید دقیقاً 10 رقم باشد.";
         }
 
         setErrors(newErrors);
@@ -105,23 +123,36 @@ function Register() {
             return;
         }
 
-        const page1 = JSON.parse(localStorage.getItem("formData") || "{}");
-        const page3 = JSON.parse(localStorage.getItem("FormsData") || "{}");
-        const page2 = JSON.parse(localStorage.getItem("pageTwoData") || "{}");
-        const products = page3.products || [];
-        const allData = { ...page1, ...page2, ...page3, products: products };
+        setIsSubmitting(true);
 
-        console.log(allData)
-        const { data, error } = await supabase.from("order-request").insert([{ data: allData }]);
+        try {
+            const page1 = JSON.parse(localStorage.getItem("formData") || "{}");
+            const page3 = JSON.parse(localStorage.getItem("FormsData") || "{}");
+            const page2 = JSON.parse(localStorage.getItem("pageTwoData") || "{}");
+            const products = page3.products || [];
+            const allData = { ...page1, ...page2, ...page3, products: products };
 
-        if (error) {
-            console.error("Supabase Error:", error);
-        } else {
-            console.log("Sent to Supabase:", data);
-            localStorage.removeItem("FormsData");
-            localStorage.removeItem("formData");
-            localStorage.removeItem("pageTwoData");
-            window.location.href = "https://labkhandelec.com";
+            console.log(allData)
+            const { data, error } = await supabase.from("order-request").insert([{ data: allData }]);
+
+            if (error) {
+                console.error("Supabase Error:", error);
+                alert("خطا در ارسال فرم. لطفا دوباره تلاش کنید.");
+            } else {
+                console.log("Sent to Supabase:", data);
+                setSubmitSuccess(true);
+                setTimeout(() => {
+                    localStorage.removeItem("FormsData");
+                    localStorage.removeItem("formData");
+                    localStorage.removeItem("pageTwoData");
+                    window.location.href = "https://labkhandelec.com";
+                }, 3000);
+            }
+        } catch (error) {
+            console.error("Submit Error:", error);
+            alert("خطا در ارسال فرم. لطفا دوباره تلاش کنید.");
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -162,6 +193,30 @@ function Register() {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(String(email).toLowerCase());
     };
+
+    if (submitSuccess) {
+        return (
+            <Container dir="rtl" marginY="50px" borderRadius="20px">
+                <Box
+                    color="#0662EA"
+                    fontWeight="bold"
+                    paddingY="80px"
+                    fontSize="23px"
+                    textAlign="center"
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    gap="20px"
+                >
+                    <Box fontSize="48px" color="green.500">✓</Box>
+                    <Text>فرم شما با موفقیت ارسال شد!</Text>
+                    <Text fontSize="16px" color="gray.600">
+                        در حال انتقال به صفحه اصلی...
+                    </Text>
+                </Box>
+            </Container>
+        );
+    }
 
     return (
         <Container dir="rtl" maxW="6xl" backgroundColor="#F2F7FE" marginY="20px" borderRadius="20px">
@@ -343,7 +398,7 @@ function Register() {
                     </Field.Label>
                     <Input backgroundColor="white" maxLength={11} height="44px" type="text" key="telephone" name="telephone" value={registerData.telephone || ""} onChange={handleNumberChange} onKeyDown={handleKeyDown} />
                     <Field.ErrorText>
-                        لطفا فرم را کامل کنید.
+                        {errors.telephone || "لطفا فرم را کامل کنید."}
                     </Field.ErrorText>
                 </Field.Root>
 
@@ -362,7 +417,7 @@ function Register() {
                     </Field.Label>
                     <Input backgroundColor="white" maxLength={11} height="44px" type="text" key="mobilephone" name="mobilephone" value={registerData.mobilephone || ""} onChange={handleNumberChange} onKeyDown={handleKeyDown} />
                     <Field.ErrorText>
-                        لطفا فرم را کامل کنید.
+                        {errors.mobilephone || "لطفا فرم را کامل کنید."}
                     </Field.ErrorText>
                 </Field.Root>
             </SimpleGrid>
@@ -374,8 +429,13 @@ function Register() {
 
             <HStack paddingY="20px">
                 <Button onClick={() => navigate("/order-form")} colorPalette="blue" variant="solid">قبلی</Button>
-                <Button onClick={handleSubmit} colorPalette="blue" variant="solid">
-                    ارسال
+                <Button
+                    onClick={handleSubmit}
+                    colorPalette="blue"
+                    variant="solid"
+                    disabled={isSubmitting}
+                >
+                    {isSubmitting ? "در حال ارسال..." : "ارسال"}
                 </Button>
             </HStack>
         </Container>

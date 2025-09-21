@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { Field, SimpleGrid, Box, Input, Image, HStack, GridItem, RadioCard } from "@chakra-ui/react"
 import { FaCheck } from "react-icons/fa";
@@ -44,36 +44,67 @@ const material = [
 ]
 
 export default function DesignQuantityType({ formData, setFormData }) {
-    const [selectedValue, setSelectedValue] = useState(items[0]?.value);
-    const [selectedValueTwo, setSelectedValueTwo] = useState(numbers[0]?.value);
-    const [selectedValueThree, setSelectedValueThree] = useState(material[0]?.value);
+    const [selectedValue, setSelectedValue] = useState("");
+    const [selectedValueTwo, setSelectedValueTwo] = useState("");
+    const [selectedValueThree, setSelectedValueThree] = useState("");
     const [isInputFilled, setIsInputFilled] = useState(false);
 
-    const handlechange = (key, value) => {
-        setFormData({ ...formData, [key]: value.target.value });
-    };
-
-    const handlechangeInput = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handlechangeInputFile = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-
-        if (name === "countdisignnumber") {
-            setIsInputFilled(value.trim() !== "");
+    useEffect(() => {
+        setSelectedValue(formData.filedisign || items[0]?.value);
+        
+        setSelectedValueThree(formData.boardmaterial || material[0]?.value);
+        
+        const hasCustomNumber = formData.countdisignnumber && formData.countdisignnumber.trim() !== "";
+        setIsInputFilled(hasCustomNumber);
+        
+        if (hasCustomNumber) {
+            setSelectedValueTwo("");
+        } else {
+            setSelectedValueTwo(formData.countdisign || numbers[0]?.value);
         }
+    }, []);
+
+    useEffect(() => {
+        const hasCustomNumber = formData.countdisignnumber && formData.countdisignnumber.trim() !== "";
+        setIsInputFilled(hasCustomNumber);
+        
+        if (hasCustomNumber) {
+            setSelectedValueTwo("");
+        } else if (!hasCustomNumber && selectedValueTwo === "") {
+            setSelectedValueTwo(numbers[0]?.value);
+            setFormData({ ...formData, countdisign: numbers[0]?.value });
+        }
+    }, [formData.countdisignnumber]);
+
+    const handleRadioFileDesign = (value) => {
+        setSelectedValue(value);
+        setFormData({ ...formData, filedisign: value });
+    };
+
+    const handleRadioClick = (value) => {
+        if (!isInputFilled) {
+            setSelectedValueTwo(value);
+            setFormData({ ...formData, countdisign: value });
+        }
+    };
+
+    const handleRadioBoardMaterial = (value) => {
+        setSelectedValueThree(value);
+        setFormData({ ...formData, boardmaterial: value });
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
     };
 
     return (
         <>
-
             <RadioCard.Root
                 orientation="vertical"
                 align="center"
                 maxW="220px"
-                defaultValue="برد تک"
+                value={selectedValue}
                 paddingY="20px"
                 dir="rtl"
             >
@@ -89,9 +120,18 @@ export default function DesignQuantityType({ formData, setFormData }) {
                         <Box cursor="pointer" as={FaQuestionCircle}></Box>
                     </Tooltip>
                 </RadioCard.Label>
-                <HStack key="filedisign" name="filedisign" value={formData.filedisign || "برد تک"} onChange={(value) => handlechange("filedisign", value)}>
+                <HStack spacing={3}>
                     {items.map((item) => (
-                        <RadioCard.Item height="88px" _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValue(item.value)} key={item.value} value={item.value} colorPalette="blue">
+                        <RadioCard.Item 
+                            height="88px" 
+                            _hover={{ boxShadow: "md" }} 
+                            transitionDuration="300ms" 
+                            cursor="pointer" 
+                            onClick={() => handleRadioFileDesign(item.value)} 
+                            key={item.value} 
+                            value={item.value} 
+                            colorPalette="blue"
+                        >
                             <RadioCard.ItemHiddenInput />
                             <RadioCard.ItemControl>
                                 {selectedValue === item.value && (
@@ -119,7 +159,7 @@ export default function DesignQuantityType({ formData, setFormData }) {
                     <RadioCard.Root
                         orientation="vertical"
                         align="center"
-                        defaultValue="1"
+                        value={isInputFilled ? "" : selectedValueTwo}
                         paddingY="20px"
                         maxW="550px"
                         dir="rtl"
@@ -137,12 +177,21 @@ export default function DesignQuantityType({ formData, setFormData }) {
                                 <Box cursor="pointer" as={FaQuestionCircle}></Box>
                             </Tooltip>
                         </RadioCard.Label>
-                        <HStack key="countdisign" name="countdisign" value={formData.countdisign || "1"} onChange={(value) => handlechange("countdisign", value)} spacing={3} wrap="wrap" justify="center">
+                        <HStack spacing={3} wrap="wrap" justify="center">
                             {numbers.map((item) => (
-                                <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueTwo(item.value)} key={item.value} value={item.value} colorPalette="blue">
+                                <RadioCard.Item 
+                                    _hover={!isInputFilled ? { boxShadow: "md" } : {}} 
+                                    transitionDuration="300ms" 
+                                    cursor={isInputFilled ? "not-allowed" : "pointer"} 
+                                    onClick={() => handleRadioClick(item.value)} 
+                                    key={item.value} 
+                                    value={item.value} 
+                                    colorPalette="blue"
+                                    opacity={isInputFilled ? 0.5 : 1}
+                                >
                                     <RadioCard.ItemHiddenInput />
                                     <RadioCard.ItemControl>
-                                        {selectedValueTwo === item.value && (
+                                        {selectedValueTwo === item.value && !isInputFilled && (
                                             <RadioCard.ItemIndicator
                                                 as={FaCheck}
                                                 color=""
@@ -152,7 +201,6 @@ export default function DesignQuantityType({ formData, setFormData }) {
                                                 bottom="-6px"
                                                 left="-6px"
                                                 padding="3px"
-                                                display={isInputFilled ? "none" : ""}
                                             />
                                         )}
                                         <RadioCard.ItemText>{item.title}</RadioCard.ItemText>
@@ -168,7 +216,15 @@ export default function DesignQuantityType({ formData, setFormData }) {
                             تعداد طرح دلخواه را وارد کنید
                             <Field.RequiredIndicator />
                         </Field.Label>
-                        <Input backgroundColor="white" min={1} type="number" key="countdisignnumber" name="countdisignnumber" value={formData.countdisignnumber || ""} onChange={(e) => { handlechangeInput(e); handlechangeInputFile(e); }} height="44px" />
+                        <Input 
+                            backgroundColor="white" 
+                            min={1} 
+                            type="number" 
+                            name="countdisignnumber" 
+                            value={formData.countdisignnumber || ""} 
+                            onChange={handleInputChange} 
+                            height="44px" 
+                        />
                     </Field.Root>
                 </GridItem>
             </SimpleGrid>
@@ -177,7 +233,7 @@ export default function DesignQuantityType({ formData, setFormData }) {
                 orientation="vertical"
                 align="center"
                 maxW="740px"
-                defaultValue="FR-4"
+                value={selectedValueThree}
                 paddingY="20px"
                 dir="rtl"
             >
@@ -193,9 +249,18 @@ export default function DesignQuantityType({ formData, setFormData }) {
                         <Box cursor="pointer" as={FaQuestionCircle}></Box>
                     </Tooltip>
                 </RadioCard.Label>
-                <HStack key="boardmaterial" name="boardmaterial" value={formData.boardmaterial || "FR-4"} onChange={(value) => handlechange("boardmaterial", value)} spacing={3} wrap="wrap" justify="center">
+                <HStack spacing={3} wrap="wrap" justify="center">
                     {material.map((item) => (
-                        <RadioCard.Item _hover={{ boxShadow: "md" }} transitionDuration="300ms" cursor="pointer" onClick={() => setSelectedValueThree(item.value)} height="90px" key={item.value} value={item.value} colorPalette="blue">
+                        <RadioCard.Item 
+                            _hover={{ boxShadow: "md" }} 
+                            transitionDuration="300ms" 
+                            cursor="pointer" 
+                            onClick={() => handleRadioBoardMaterial(item.value)} 
+                            height="90px" 
+                            key={item.value} 
+                            value={item.value} 
+                            colorPalette="blue"
+                        >
                             <RadioCard.ItemHiddenInput />
                             <RadioCard.ItemControl>
                                 {selectedValueThree === item.value && (
