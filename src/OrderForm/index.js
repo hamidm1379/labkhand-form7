@@ -218,6 +218,15 @@ function OrderForm() {
     };
 
     const handleChange = (id, field, value) => {
+        if (field === 'count') {
+            const numericValue = value.replace(/[^0-9]/g, '');
+
+            setForms((prev) =>
+                prev.map((f) => (f.id === id ? { ...f, [field]: numericValue } : f))
+            );
+            return;
+        }
+
         setForms((prev) =>
             prev.map((f) => (f.id === id ? { ...f, [field]: value } : f))
         );
@@ -400,12 +409,12 @@ function OrderForm() {
                                 </Field.Label>
                                 <Input
                                     height="38px"
-                                    type="number"
+                                    type="text"
                                     name={form.count}
                                     value={form.count}
                                     onChange={(e) => handleChange(form.id, 'count', e.target.value)}
-                                    min={1}
                                     backgroundColor="white"
+                                    inputMode="numeric"
                                 />
                                 <Field.ErrorText>
                                     نام به درستی وارد نشده.

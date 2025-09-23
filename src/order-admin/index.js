@@ -164,7 +164,7 @@ function OrderAdmin() {
     }
 
     return (
-        <Container dir="rtl" maxW="6xl" backgroundColor="gray.50" marginY="20px" borderRadius="20px">
+        <Container dir="rtl" maxW="6xl" backgroundColor="#F2F7FE" marginY="20px" borderRadius="20px">
             <h1 style={{ textAlign: "center", color: "#333", marginBottom: "30px", fontSize: "24px" }}>لیست سفارشات درخواستی</h1>
             <SimpleGrid columns={{ base: 1, md: 4 }} gap={{ base: "24px", md: "40px" }}>
                 <GridItem colSpan={{ base: 1, md: 1 }}>
@@ -175,6 +175,7 @@ function OrderAdmin() {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             mb={4}
+                            backgroundColor="white"
                         />
                         <Text fontSize="md" fontWeight="semibold" mb={2}>مرتب سازی براساس:</Text>
                         <Box mb={2}>
