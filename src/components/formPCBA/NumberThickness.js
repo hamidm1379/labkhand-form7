@@ -145,6 +145,7 @@ const NumberThickness = ({ formData, setFormData }) => {
                         orientation="vertical"
                         align="center"
                         maxW="460px"
+                        value={isInputFilled ? "" : selectedValueTwo}
                         paddingY="20px"
                         dir="rtl"
                         defaultValue={2}
@@ -222,6 +223,7 @@ const NumberThickness = ({ formData, setFormData }) => {
                         maxW="550px"
                         paddingY="20px"
                         dir="rtl"
+                        value={isInputFilledSec ? "" : selectedValue}
                         defaultValue={1.6}
                         disabled={isInputFilledSec}
                     >
@@ -301,6 +303,7 @@ const NumberThickness = ({ formData, setFormData }) => {
                         maxW="130px"
                         dir="rtl"
                         defaultValue="1oz"
+                        value={isInputFilledThird ? "" : selectedValueThree}
                         disabled={isInputFilledThird}
                     >
                         <RadioCard.Label dir="rtl">ضخامت مس :

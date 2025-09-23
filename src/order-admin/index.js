@@ -75,7 +75,10 @@ function OrderAdmin() {
                 return (
                     fullName.includes(searchLower) ||
                     (data.companyname && data.companyname.toLowerCase().includes(searchLower)) ||
-                    order.randomCode.includes(searchLower)
+                    order.randomCode.includes(searchLower) ||
+                    (data.mobilephone && data.mobilephone.toString().toLowerCase().includes(searchLower)) ||
+                    (data.telephone && data.telephone.toString().toLowerCase().includes(searchLower)) ||
+                    (data.email && data.email.toLowerCase().includes(searchLower))
                 );
             });
             setFilteredOrders(filtered);
@@ -265,7 +268,7 @@ function OrderAdmin() {
                                                                         <Table.Cell>تلفن همراه : {data.mobilephone}</Table.Cell>
                                                                     </Table.Row>
                                                                     <Table.Row>
-                                                                        <Table.Cell>ایمیل : {data.postcode}</Table.Cell>
+                                                                        <Table.Cell>کدپستی : {data.postcode}</Table.Cell>
                                                                     </Table.Row>
                                                                 </Table.Body>
                                                             </Table.Root>

@@ -68,14 +68,17 @@ function Admin() {
             setFilteredUsers(users)
         } else {
             const filtered = users.filter(user => {
-                const fullName = `${user.firstname} ${user.lastname}`.toLowerCase();
+                const fullName = `${user.firstname || ''} ${user.lastname || ''}`.toLowerCase();
                 const searchLower = searchTerm.toLowerCase();
 
                 return (
                     fullName.includes(searchLower) ||
-                    user.productname.toLowerCase().includes(searchLower) ||
-                    user.pagename.toLowerCase().includes(searchLower) ||
-                    user.randomCode.includes(searchLower)
+                    (user.productname && user.productname.toLowerCase().includes(searchLower)) ||
+                    (user.pagename && user.pagename.toLowerCase().includes(searchLower)) ||
+                    (user.randomCode && user.randomCode.includes(searchLower)) ||
+                    (user.mobilephone && user.mobilephone.toString().toLowerCase().includes(searchLower)) ||
+                    (user.telephone && user.telephone.toString().toLowerCase().includes(searchLower)) ||
+                    (user.email && user.email.toLowerCase().includes(searchLower))
                 );
             });
             setFilteredUsers(filtered)
