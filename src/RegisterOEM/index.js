@@ -54,7 +54,7 @@ const stasil = [
 
 function Register() {
     const [selectedValueFive, setSelectedValueFive] = useState();
-    const [value, setValue] = useState();
+    const [value, setValue] = useState(stasil[1]?.value);
     const [valueSec, setValueSec] = useState();
     const [errors, setErrors] = useState({});
     const [pageTwoData, setPageTwoData] = useState({});
