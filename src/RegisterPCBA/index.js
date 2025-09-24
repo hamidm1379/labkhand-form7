@@ -53,8 +53,8 @@ const stasil = [
 ]
 
 function Register() {
-    const [selectedValueFive, setSelectedValueFive] = useState();
-    const [value, setValue] = useState(stasil[1]?.value);
+    const [selectedValueFive, setSelectedValueFive] = useState(stasil[1]?.value);
+    const [value, setValue] = useState();
     const [valueSec, setValueSec] = useState();
     const [errors, setErrors] = useState({});
     const [pageTwoData, setPageTwoData] = useState({});
@@ -190,14 +190,14 @@ function Register() {
             const allData = { ...page1, ...page2 };
 
             const { data, error } = await supabase.from("OrderForm").insert([allData]);
-            
+
             if (error) {
                 console.error("Supabase Error:", error);
                 alert("خطا در ارسال فرم. لطفا دوباره تلاش کنید.");
             } else {
                 console.log("Sent to Supabase:", data);
                 setSubmitSuccess(true);
-                
+
                 setTimeout(() => {
                     localStorage.removeItem("pageOneDataPCBA");
                     localStorage.removeItem("pageTwoData");
@@ -263,11 +263,11 @@ function Register() {
     if (submitSuccess) {
         return (
             <Container dir="rtl" marginY="50px" borderRadius="20px">
-                <Box 
-                    color="#0662EA" 
-                    fontWeight="bold" 
-                    paddingY="80px" 
-                    fontSize="23px" 
+                <Box
+                    color="#0662EA"
+                    fontWeight="bold"
+                    paddingY="80px"
+                    fontSize="23px"
                     textAlign="center"
                     display="flex"
                     flexDirection="column"
@@ -677,9 +677,9 @@ function Register() {
                 {page1.pagename === "OEM" && <Button onClick={() => navigate("/OEM")} colorPalette="blue" variant="solid">قبلی</Button>}
                 {page1.pagename === "PCB" && <Button onClick={() => navigate("/PCB")} colorPalette="blue" variant="solid">قبلی</Button>}
                 {page1.pagename === "PCBA" && <Button onClick={() => navigate("/PCBA")} colorPalette="blue" variant="solid">قبلی</Button>}
-                <Button 
-                    onClick={handleSubmit} 
-                    colorPalette="blue" 
+                <Button
+                    onClick={handleSubmit}
+                    colorPalette="blue"
                     variant="solid"
                     disabled={isSubmitting}
                 >
