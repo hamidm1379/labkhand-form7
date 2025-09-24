@@ -140,7 +140,7 @@ function OrderForm() {
             return;
         }
 
-        const { brand, number, count, description } = forms[0];
+        const { brand, number, count } = forms[0];
         let newErrors = {};
 
         if (!brand?.trim()) newErrors.brand = "برند الزامی است.";
@@ -436,12 +436,34 @@ function OrderForm() {
                                 </Field.ErrorText>
                             </Field.Root>
                             <Stack direction="row" padding="10px" margin="auto" gap="4px">
-                                <Box width="22px" onClick={addForm} padding="3px" backgroundColor="blue" borderRadius="full" cursor="pointer">
-                                    <AiOutlinePlus color="white" />
+                                <Box 
+                                    width="22px" 
+                                    onClick={addForm} 
+                                    padding="3px" 
+                                    backgroundColor="blue" 
+                                    borderRadius="full" 
+                                    cursor="pointer"
+                                    fontWeight="bold"
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                >
+                                    <AiOutlinePlus color="white" style={{ strokeWidth: '100px', fontWeight: 'bold' }} />
                                 </Box>
                                 {forms.length > 1 && (
-                                    <Box width="22px" onClick={() => removeForm(form.id)} padding="3px" backgroundColor="blue" borderRadius="full" cursor="pointer">
-                                        <AiOutlineMinus color="white" />
+                                    <Box 
+                                        width="22px" 
+                                        onClick={() => removeForm(form.id)} 
+                                        padding="3px" 
+                                        backgroundColor="blue" 
+                                        borderRadius="full" 
+                                        cursor="pointer"
+                                        fontWeight="bold"
+                                        display="flex"
+                                        alignItems="center"
+                                        justifyContent="center"
+                                    >
+                                        <AiOutlineMinus color="white" style={{ strokeWidth: '100px', fontWeight: 'bold' }} />
                                     </Box>
                                 )}
                             </Stack>

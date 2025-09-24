@@ -499,6 +499,7 @@ function Register() {
                 paddingY="20px"
                 maxW="200px"
                 dir="rtl"
+                defaultValue="no"
             >
                 <RadioCard.Label dir="rtl">حمل و نقل به آدرس متفاوت :</RadioCard.Label>
                 <HStack width="120px" key={14} onChange={(e) => setValue(e.target.value)}>

@@ -17,8 +17,8 @@ const layers = [
     { value: 6, title: 6 },
     { value: 8, title: 8 },
     { value: 10, title: 10 },
-    { value: 11, title: 11 },
-    { value: 12, title: 12 }
+    { value: 12, title: 12 },
+    { value: 14, title: 14 }
 ]
 
 const boardThickness = [
