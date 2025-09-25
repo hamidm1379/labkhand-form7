@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/supabase/:path*",
+      "destination": "https://xecdqvinprrsugkcvutb.supabase.co/:path*"
+    },
+    {
+      "source": "/api/labkhandelec/:path*",
+      "destination": "https://labkhandelec.com/:path*"
+    }
+  ]
+}
