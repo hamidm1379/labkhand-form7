@@ -195,9 +195,8 @@ function Register() {
                 alert("خطا در ارسال فرم. لطفا دوباره تلاش کنید.");
             } else {
                 console.log("Sent to Supabase:", data);
-                const userId = data[0].id; // گرفتن user_id از Supabase
+                const userId = data[0].id;
                 
-                // ذخیره user_id در cookie
                 document.cookie = `user_id=${userId}; path=/; max-age=31536000`; // یک سال اعتبار
                 
                 setSubmitSuccess(true);
