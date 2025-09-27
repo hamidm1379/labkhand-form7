@@ -467,7 +467,6 @@ function Register() {
                         {errors.telephone || "لطفا فرم را کامل کنید."}
                     </Field.ErrorText>
                 </Field.Root>
-
                 <Field.Root {...(errors?.mobilephone ? { invalid: true } : {})} width="full" marginTop="10px">
                     <Field.Label>
                         شماره موبایل :
@@ -487,12 +486,10 @@ function Register() {
                     </Field.ErrorText>
                 </Field.Root>
             </SimpleGrid>
-
             <Field.Root marginTop="10px">
-                <Field.Label>توضیحات سفارش :</Field.Label>
+                <Field.Label>توضیحات ارسال :</Field.Label>
                 <Textarea backgroundColor="white" key="orderdescription" name="orderdescription" value={formData.orderdescription || ""} onChange={handleChange} minH="200px" />
             </Field.Root>
-
             <RadioCard.Root
                 orientation="vertical"
                 align="center"

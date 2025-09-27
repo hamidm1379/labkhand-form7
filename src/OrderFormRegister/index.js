@@ -423,7 +423,7 @@ function Register() {
             </SimpleGrid>
 
             <Field.Root marginTop="10px">
-                <Field.Label>توضیحات سفارش :</Field.Label>
+                <Field.Label>توضیحات ارسال :</Field.Label>
                 <Textarea backgroundColor="white" key="orderdescription" name="orderdescription" value={registerData.orderdescription || ""} onChange={handleChange} minH="200px" />
             </Field.Root>
 

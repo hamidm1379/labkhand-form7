@@ -91,10 +91,20 @@ function OrderAdmin() {
             let comparison = 0;
 
             switch (sortBy) {
-                case "name":
-                    const nameA = `${a.data.firstname} ${a.data.lastname}`.toLowerCase();
-                    const nameB = `${b.data.firstname} ${b.data.lastname}`.toLowerCase();
-                    comparison = nameA.localeCompare(nameB);
+                case "firstname":
+                    const firstNameA = (a.data.firstname || "").toLowerCase();
+                    const firstNameB = (b.data.firstname || "").toLowerCase();
+                    comparison = firstNameA.localeCompare(firstNameB);
+                    break;
+                case "lastname":
+                    const lastNameA = (a.data.lastname || "").toLowerCase();
+                    const lastNameB = (b.data.lastname || "").toLowerCase();
+                    comparison = lastNameA.localeCompare(lastNameB);
+                    break;
+                case "ordercode":
+                    const codeA = a.randomCode || "";
+                    const codeB = b.randomCode || "";
+                    comparison = codeA.localeCompare(codeB);
                     break;
                 case "company":
                     const companyA = (a.data.companyname || "").toLowerCase();
@@ -165,7 +175,7 @@ function OrderAdmin() {
 
     return (
         <Container dir="rtl" maxW="6xl" backgroundColor="#F2F7FE" marginY="20px" borderRadius="20px">
-            <h1 style={{ textAlign: "center", color: "#333", marginBottom: "30px", fontSize: "24px" }}>لیست سفارشات درخواستی</h1>
+            <h1 style={{ textAlign: "center", color: "#333", marginBottom: "30px", fontSize: "24px" }}>لیست سفارشات قطعات</h1>
             <SimpleGrid columns={{ base: 1, md: 4 }} gap={{ base: "24px", md: "40px" }}>
                 <GridItem colSpan={{ base: 1, md: 1 }}>
                     <Box>
@@ -191,13 +201,43 @@ function OrderAdmin() {
                             </Button>
                             <Button
                                 size="sm"
-                                variant={sortBy === "name" ? "solid" : "outline"}
+                                variant={sortBy === "firstname" ? "solid" : "outline"}
                                 colorScheme="blue"
-                                onClick={() => handleSortChange("name")}
+                                onClick={() => handleSortChange("firstname")}
                                 ml={1}
                                 mb={1}
                             >
-                                نام {sortBy === "name" && (sortOrder === "desc" ? "↓" : "↑")}
+                                نام {sortBy === "firstname" && (sortOrder === "desc" ? "↓" : "↑")}
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant={sortBy === "lastname" ? "solid" : "outline"}
+                                colorScheme="blue"
+                                onClick={() => handleSortChange("lastname")}
+                                ml={1}
+                                mb={1}
+                            >
+                                نام خانوادگی {sortBy === "lastname" && (sortOrder === "desc" ? "↓" : "↑")}
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant={sortBy === "ordercode" ? "solid" : "outline"}
+                                colorScheme="blue"
+                                onClick={() => handleSortChange("ordercode")}
+                                ml={1}
+                                mb={1}
+                            >
+                                کد سفارش {sortBy === "ordercode" && (sortOrder === "desc" ? "↓" : "↑")}
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant={sortBy === "company" ? "solid" : "outline"}
+                                colorScheme="blue"
+                                onClick={() => handleSortChange("company")}
+                                ml={1}
+                                mb={1}
+                            >
+                                شرکت {sortBy === "company" && (sortOrder === "desc" ? "↓" : "↑")}
                             </Button>
                         </Box>
                         <Text fontSize="sm" color="gray.600">
@@ -214,7 +254,16 @@ function OrderAdmin() {
                             const data = order.data;
                             const products = Object.keys(data)
                                 .filter(key => /^\d+$/.test(key))
-                                .map(key => data[key]);
+                                .map(key => data[key])
+                                .filter(product => 
+                                    product && (
+                                        (product.number && product.number.trim()) ||
+                                        (product.brand && product.brand.trim()) ||
+                                        (product.count && product.count.toString().trim()) ||
+                                        (product.link && product.link.trim()) ||
+                                        (product.description && product.description.trim())
+                                    )
+                                );
                             const actualIndex = indexOfFirstItem + index;
                             return (
                                 <div dir="rtl" key={order.id} className="order-container">

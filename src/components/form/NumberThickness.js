@@ -18,7 +18,8 @@ const layers = [
     { value: 8, title: 8 },
     { value: 10, title: 10 },
     { value: 12, title: 12 },
-    { value: 14, title: 14 }
+    { value: 14, title: 14 },
+    { value: 16, title: 16 },
 ]
 
 const boardThickness = [
@@ -137,6 +138,8 @@ const NumberThickness = ({ formData, setFormData }) => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    // Step functions removed - using input step attribute instead
+
     return (
         <>
             <SimpleGrid columns={[1, null, 6]} gap="6">
@@ -144,7 +147,7 @@ const NumberThickness = ({ formData, setFormData }) => {
                     <RadioCard.Root
                         orientation="vertical"
                         align="center"
-                        maxW="460px"
+                        maxW="550px"
                         value={isInputFilled ? "" : selectedValueTwo}
                         paddingY="20px"
                         dir="rtl"
@@ -204,12 +207,13 @@ const NumberThickness = ({ formData, setFormData }) => {
                         </Field.Label>
                         <Input 
                             backgroundColor="white" 
-                            min={1} 
+                            min={2} 
+                            step={2}
                             height="44px" 
                             type="number" 
                             name="countlayernumber" 
                             value={formData.countlayernumber || ""} 
-                            onChange={handleInputChange} 
+                            onChange={handleInputChange}
                         />
                     </Field.Root>
                 </GridItem>
@@ -280,12 +284,13 @@ const NumberThickness = ({ formData, setFormData }) => {
                         </Field.Label>
                         <Input 
                             backgroundColor="white" 
-                            min={1} 
+                            min={0.2} 
+                            step={0.2}
                             height="44px" 
                             type="number" 
                             name="boardthicknessnumber" 
                             value={formData.boardthicknessnumber || ""} 
-                            onChange={handleInputChange} 
+                            onChange={handleInputChange}
                         />
                     </Field.Root>
                 </GridItem>
@@ -361,11 +366,12 @@ const NumberThickness = ({ formData, setFormData }) => {
                         <Input 
                             backgroundColor="white" 
                             min={1} 
+                            step={1}
                             height="44px" 
                             type="number" 
                             name="copperthicknessnumber" 
                             value={formData.copperthicknessnumber || ""} 
-                            onChange={handleInputChange} 
+                            onChange={handleInputChange}
                         />
                     </Field.Root>
                 </GridItem>

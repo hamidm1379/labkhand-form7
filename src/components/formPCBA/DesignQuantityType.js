@@ -17,6 +17,7 @@ import AluminiumImage from "../../image/aluminium.png"
 import copperImage from "../../image/core.png"
 import RogersImage from "../../image/rogers.png"
 import PTFEImage from "../../image/ptfe.png"
+import RigidFlexImage from "../../image/Rigid-Flex.jpg"
 
 const items = [
     { value: "برد تک", title: "برد تک", src: BordtakImage },
@@ -36,11 +37,11 @@ const numbers = [
 
 const material = [
     { value: "FR-4", title: "FR-4", src: FRImage },
-    { value: "flex", title: "flex", src: FlexImage },
-    { value: "aluminium", title: "aluminium", src: AluminiumImage },
-    { value: "copper-core", title: "copper core", src: copperImage },
-    { value: "rogers", title: "rogers", src: RogersImage },
-    { value: "PTFE teflon", title: "PTFE teflon", src: PTFEImage }
+    { value: "Rogers", title: "Rogers", src: RogersImage },
+    { value: "Flex", title: "Flex", src: FlexImage },
+    { value: "Rigid Flex", title: "Rigid Flex", src: RigidFlexImage },
+    { value: "PTFE Teflon", title: "PTFE Teflon", src: PTFEImage },
+    { value: "Copper Core", title: "Copper Core", src: copperImage },
 ]
 
 export default function DesignQuantityType({ formData, setFormData }) {
@@ -153,7 +154,6 @@ export default function DesignQuantityType({ formData, setFormData }) {
                     ))}
                 </HStack>
             </RadioCard.Root>
-
             <SimpleGrid columns={[1, null, 6]} gap="6">
                 <GridItem colSpan={[1, null, 3]}>
                     <RadioCard.Root
@@ -228,7 +228,6 @@ export default function DesignQuantityType({ formData, setFormData }) {
                     </Field.Root>
                 </GridItem>
             </SimpleGrid>
-
             <RadioCard.Root
                 orientation="vertical"
                 align="center"
@@ -275,7 +274,7 @@ export default function DesignQuantityType({ formData, setFormData }) {
                                         padding="3px"
                                     />
                                 )}
-                                <Image src={item.src} />
+                                <Image width="100%" height="35px" src={item.src} />
                                 <RadioCard.ItemText>{item.title}</RadioCard.ItemText>
                             </RadioCard.ItemControl>
                         </RadioCard.Item>

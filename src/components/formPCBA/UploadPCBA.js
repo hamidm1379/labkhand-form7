@@ -183,7 +183,6 @@ function Upload({ formData, setFormData, errors }) {
                     </p>
                 )}
             </div>
-            {errors?.boardfile && <p className="Boardfile-Error">لطفا یک فایل آپلود کنید.</p>}
             <Text fontSize="14px" color="gray" paddingTop="5px" paddingBottom="20px">
                 انواع فایل های مجاز : zip,exel,rar , حداکثر اندازه فایل: 30 MB.
             </Text>
@@ -215,7 +214,6 @@ function Upload({ formData, setFormData, errors }) {
                     </p>
                 )}
             </div>
-            {errors?.BOMfile && <p className="Boardfile-Error">لطفا یک فایل آپلود کنید.</p>}
             <Text fontSize="14px" color="gray" paddingTop="5px" paddingBottom="20px">
                 انواع فایل های مجاز : zip,exel,rar , حداکثر اندازه فایل: 30 MB.
             </Text>
@@ -255,7 +253,7 @@ function Upload({ formData, setFormData, errors }) {
                 </HStack>
             </RadioCard.Root>
             <Field.Root>
-                <Field.Label>توضیحات :</Field.Label>
+                <Field.Label>توضیحات سفارش :</Field.Label>
                 <Textarea backgroundColor="white" key="description" name="description" value={formData.description || ""} onChange={handlechangeInput} minH="200px" />
             </Field.Root>
         </>

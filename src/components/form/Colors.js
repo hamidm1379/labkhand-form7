@@ -21,7 +21,7 @@ const boardColor = [
 const guideColor = [
     { value: "سفید", title: "سفید", color: "white" },
     { value: "مشکی", title: "مشکی", color: "black" },
-    { value: "بی رنگ", title: "بی رنگ", color: "gray" }
+    { value: "بی رنگ", title: "بی رنگ", color: "#F2F7FE" }
 ]
 
 const finalCover = [

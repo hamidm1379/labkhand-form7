@@ -435,24 +435,11 @@ function OrderForm() {
                                     نام به درستی وارد نشده.
                                 </Field.ErrorText>
                             </Field.Root>
-                            <Stack direction="row" padding="10px" margin="auto" gap="4px">
-                                <Box 
-                                    width="22px" 
-                                    onClick={addForm} 
-                                    padding="3px" 
-                                    backgroundColor="blue" 
-                                    borderRadius="full" 
-                                    cursor="pointer"
-                                    fontWeight="bold"
-                                    display="flex"
-                                    alignItems="center"
-                                    justifyContent="center"
-                                >
-                                    <AiOutlinePlus color="white" style={{ strokeWidth: '100px', fontWeight: 'bold' }} />
-                                </Box>
+                            <Stack direction="row" padding="10px" margin="auto" gap="4px" width="70px" justifyContent="flex-start">
                                 {forms.length > 1 && (
                                     <Box 
                                         width="22px" 
+                                        height="22px"
                                         onClick={() => removeForm(form.id)} 
                                         padding="3px" 
                                         backgroundColor="blue" 
@@ -464,6 +451,23 @@ function OrderForm() {
                                         justifyContent="center"
                                     >
                                         <AiOutlineMinus color="white" style={{ strokeWidth: '100px', fontWeight: 'bold' }} />
+                                    </Box>
+                                )}
+                                {index === forms.length - 1 && (
+                                    <Box 
+                                        width="22px" 
+                                        height="22px"
+                                        onClick={addForm} 
+                                        padding="3px" 
+                                        backgroundColor="blue" 
+                                        borderRadius="full" 
+                                        cursor="pointer"
+                                        fontWeight="bold"
+                                        display="flex"
+                                        alignItems="center"
+                                        justifyContent="center"
+                                    >
+                                        <AiOutlinePlus color="white" style={{ strokeWidth: '100px', fontWeight: 'bold' }} />
                                     </Box>
                                 )}
                             </Stack>
@@ -479,7 +483,7 @@ function OrderForm() {
                     type="file"
                     ref={fileInputRef}
                     onChange={handleFileChange}
-                    accept=".zip,.xls,.xlsx,.csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
+                    accept=".zip,.rar,.xls,.xlsx,.csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
                 />
                 <button className="handleUpload" onClick={handleUploadClick}>
                     <div className="upload-text">
@@ -500,7 +504,7 @@ function OrderForm() {
                 )}
             </div>
             <Text fontSize="14px" color="gray" paddingTop="5px">
-                انواع فایل های مجاز : xlsx, حداکثر اندازه فایل: 30 MB.
+                انواع فایل های مجاز : xlsx,rar,zip , حداکثر اندازه فایل: 30 MB.
             </Text>
             <Text fontSize="16px" color="gray" paddingY="30px">
                 نمونه BOM مورد نظر را از <Link href="https://labkhandelec.com/wp-content/uploads/2025/04/BOM-Sample.xlsx">اینجا</Link> دانلود کنید.

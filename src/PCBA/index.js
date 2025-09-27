@@ -82,7 +82,6 @@ function HomePCBA() {
             navigate("/registerPCBA");
         }
     };
-
     return (
         <Container dir="rtl" maxW="6xl" backgroundColor="#F2F7FE" marginY="20px" borderRadius="20px">
             <Box color="#0662EA" paddingY="40px" fontSize="23px">

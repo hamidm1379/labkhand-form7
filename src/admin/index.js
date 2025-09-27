@@ -91,10 +91,20 @@ function Admin() {
             let comparison = 0;
 
             switch (sortBy) {
-                case "name":
-                    const nameA = `${a.firstname} ${a.lastname}`.toLowerCase();
-                    const nameB = `${b.firstname} ${b.lastname}`.toLowerCase();
-                    comparison = nameA.localeCompare(nameB);
+                case "firstname":
+                    const firstNameA = (a.firstname || "").toLowerCase();
+                    const firstNameB = (b.firstname || "").toLowerCase();
+                    comparison = firstNameA.localeCompare(firstNameB);
+                    break;
+                case "lastname":
+                    const lastNameA = (a.lastname || "").toLowerCase();
+                    const lastNameB = (b.lastname || "").toLowerCase();
+                    comparison = lastNameA.localeCompare(lastNameB);
+                    break;
+                case "ordercode":
+                    const codeA = a.randomCode || "";
+                    const codeB = b.randomCode || "";
+                    comparison = codeA.localeCompare(codeB);
                     break;
                 case "date":
                 default:
@@ -174,16 +184,39 @@ function Admin() {
                                 colorScheme="blue"
                                 onClick={() => handleSortChange("date")}
                                 ml={1}
+                                mb={1}
                             >
                                 تاریخ {sortBy === "date" && (sortOrder === "desc" ? "↓" : "↑")}
                             </Button>
                             <Button
                                 size="sm"
-                                variant={sortBy === "name" ? "solid" : "outline"}
+                                variant={sortBy === "firstname" ? "solid" : "outline"}
                                 colorScheme="blue"
-                                onClick={() => handleSortChange("name")}
+                                onClick={() => handleSortChange("firstname")}
+                                ml={1}
+                                mb={1}
                             >
-                                نام {sortBy === "name" && (sortOrder === "desc" ? "↓" : "↑")}
+                                نام {sortBy === "firstname" && (sortOrder === "desc" ? "↓" : "↑")}
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant={sortBy === "lastname" ? "solid" : "outline"}
+                                colorScheme="blue"
+                                onClick={() => handleSortChange("lastname")}
+                                ml={1}
+                                mb={1}
+                            >
+                                نام خانوادگی {sortBy === "lastname" && (sortOrder === "desc" ? "↓" : "↑")}
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant={sortBy === "ordercode" ? "solid" : "outline"}
+                                colorScheme="blue"
+                                onClick={() => handleSortChange("ordercode")}
+                                ml={1}
+                                mb={1}
+                            >
+                                کد سفارش {sortBy === "ordercode" && (sortOrder === "desc" ? "↓" : "↑")}
                             </Button>
                         </Box>
 

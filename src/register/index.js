@@ -292,6 +292,19 @@ function Register() {
             <Box color="#0662EA" fontWeight="bold" paddingY="40px" fontSize="23px">
                 فرم سفارش برد مدار چاپی ({page1.pagename})
             </Box>
+            {Object.keys(errors).length > 0 && (
+                <Box paddingBottom="10px">
+                    <Text color="red" fontSize="14px">���� ������ ��� �� ����� ����:</Text>
+                    <ul>
+                        {Object.keys(errors).map(key => (
+                            <li key={key}>
+                                <Text color="red" fontSize="14px">{errors[key]}</Text>
+                            </li>
+                        ))}
+                    </ul>
+                </Box>
+            )}
+
             <SimpleGrid columns={[1, null, 2]} gap="6">
                 <Field.Root width="full" {...(errors?.firstname ? { invalid: true } : {})}>
                     <Field.Label>
@@ -492,7 +505,7 @@ function Register() {
             </SimpleGrid>
 
             <Field.Root marginTop="10px">
-                <Field.Label>توضیحات سفارش :</Field.Label>
+                <Field.Label>توضیحات ارسال :</Field.Label>
                 <Textarea backgroundColor="white" key="orderdescription" name="orderdescription" value={formData.orderdescription || ""} onChange={handleChange} minH="200px" />
             </Field.Root>
 
@@ -599,7 +612,6 @@ function Register() {
                             لطفا فرم را کامل کنید.
                         </Field.ErrorText>
                     </Field.Root>
-
                     <SimpleGrid columns={[1, null, 2]} gap="6" marginTop="10px">
                         <Field.Root width="full" {...(errors?.changeprovince ? { invalid: true } : {})}>
                             <Select.Root collection={frameworks}>
@@ -628,7 +640,6 @@ function Register() {
                             </Select.Root>
                             <Field.ErrorText>لطفا استان مورد نظر را وارد کنید.</Field.ErrorText>
                         </Field.Root>
-
                         <Field.Root width="full" {...(errors?.changecity ? { invalid: true } : {})}>
                             <Select.Root collection={changecity}>
                                 <Select.HiddenSelect key="changecity" name="changecity" value={formData.changecity || ""} onChange={(value) => handlechangeSelect("changecity", value)} />
@@ -654,7 +665,6 @@ function Register() {
                             </Select.Root>
                             <Field.ErrorText>لطفا شهر مورد نظر را وارد کنید.</Field.ErrorText>
                         </Field.Root>
-
                         <Field.Root {...(errors?.changepostcode ? { invalid: true } : {})} width="full" marginTop="10px">
                             <Field.Label>
                                 کدپستی :
@@ -689,11 +699,8 @@ function Register() {
                     {isSubmitting ? "در حال ارسال..." : "ارسال"}
                 </Button>
             </HStack>
-
         </Container>
     );
 }
 
 export default Register;
-
-
