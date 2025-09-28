@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'yekan';
-  src: url('../public/fonts/IRANYEKANX-REGULAR.ttf') format('truetype');
+  src: url('../public/iransans/IRANsans.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -132,4 +132,8 @@ body {
   font-size: 14px;
   color: #555;
   margin-top: 8px;
+}
+
+.chakra-radio-card__itemText {
+  font-size: 13px;
 }
