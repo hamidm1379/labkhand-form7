@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
-import { Container, Box, SimpleGrid, GridItem, Input, Button, Text, Table, Dialog, CloseButton, Portal } from "@chakra-ui/react"
+import { Container, Box, SimpleGrid, GridItem, Input, Button, Text, Table, Dialog, CloseButton, Portal,Link } from "@chakra-ui/react"
 
 import DiplayFile from "../components/form/DisplayFile"
 import { convertToJalaali } from '../dateConveter';
@@ -175,7 +175,10 @@ function OrderAdmin() {
 
     return (
         <Container dir="rtl" maxW="6xl" backgroundColor="#F2F7FE" marginY="20px" borderRadius="20px">
-            <h1 style={{ textAlign: "center", color: "#333", marginBottom: "30px", fontSize: "24px" }}>لیست سفارشات قطعات</h1>
+            <Box display="flex" justifyContent="space-between" alignItems="center" marginBottom="30px" padding="20px" >
+                <h1 style={{ color: "#333", fontSize: "24px", margin: 0 }}>  لیست سفارش قطعات</h1>
+                <Link href="/admin" color="blue.500" fontSize="18px">لیست سفارشات (pcb , oem , pcba)</Link>
+            </Box>
             <SimpleGrid columns={{ base: 1, md: 4 }} gap={{ base: "24px", md: "40px" }}>
                 <GridItem colSpan={{ base: 1, md: 1 }}>
                     <Box>
@@ -255,7 +258,7 @@ function OrderAdmin() {
                             const products = Object.keys(data)
                                 .filter(key => /^\d+$/.test(key))
                                 .map(key => data[key])
-                                .filter(product => 
+                                .filter(product =>
                                     product && (
                                         (product.number && product.number.trim()) ||
                                         (product.brand && product.brand.trim()) ||

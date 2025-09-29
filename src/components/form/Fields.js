@@ -94,7 +94,7 @@ export default function Fields({ formData, setFormData, errors }) {
                 ابعاد :
             </Box>
             <SimpleGrid columns={[1, 2, 3]} gap="6">
-                <Field.Root {...(errors?.width ? { invalid: true } : {})} width="full" sm={{ width: "220px" }}>
+                <Field.Root {...(errors?.length ? { invalid: true } : {})} width="full" sm={{ width: "220px" }}>
                     <Field.Label>
                         طول :
                         <Field.RequiredIndicator
@@ -119,36 +119,31 @@ export default function Fields({ formData, setFormData, errors }) {
                     </Field.Label>
                     <Input backgroundColor="white" min={1} height="44px" type="number" key="length" name="length" value={formData.length} onChange={handlechange} />
                 </Field.Root>
-                <Box display="flex" marginY="auto">
-                    <Field.Root {...(errors?.length ? { invalid: true } : {})} width="full" sm={{ width: "220px" }}>
-                        <Field.Label>
-                            عرض :
-                            <Field.RequiredIndicator
-                                fallback={
-                                    <>
-                                        <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
-                                            *
-                                        </Badge>
-                                        <Tooltip
-                                            content="عرض را وارد کنید"
-                                            positioning={{ placement: "top" }}
-                                            openDelay={100}
-                                            closeDelay={100}
-                                            contentProps={{ css: { "--tooltip-bg": "white", "color": "black" } }}
-                                            showArrow
-                                        >
-                                            <Box cursor="pointer" as={FaQuestionCircle}></Box>
-                                        </Tooltip>
-                                    </>
-                                }
-                            />
-                        </Field.Label>
-                        <Input backgroundColor="white" min={1} height="44px" type="number" key="width" name="width" value={formData.width} onChange={handlechange} />
-                    </Field.Root>
-                <Text display="none"  md={{display:"flex"}} marginX="auto" marginY="auto">
-                    Unit:mm*
-                </Text>
-                </Box>
+                <Field.Root {...(errors?.width ? { invalid: true } : {})} width="full" sm={{ width: "220px" }}>
+                    <Field.Label>
+                        عرض :
+                        <Field.RequiredIndicator
+                            fallback={
+                                <>
+                                    <Badge fontSize="16px" size="xs" color="red" backgroundColor="#F2F7FE">
+                                        *
+                                    </Badge>
+                                    <Tooltip
+                                        content="عرض را وارد کنید"
+                                        positioning={{ placement: "top" }}
+                                        openDelay={100}
+                                        closeDelay={100}
+                                        contentProps={{ css: { "--tooltip-bg": "white", "color": "black" } }}
+                                        showArrow
+                                    >
+                                        <Box cursor="pointer" as={FaQuestionCircle}></Box>
+                                    </Tooltip>
+                                </>
+                            }
+                        />
+                    </Field.Label>
+                    <Input backgroundColor="white" min={1} height="44px" type="number" key="width" name="width" value={formData.width} onChange={handlechange} />
+                </Field.Root>
                 <Box display="flex" marginY="auto">
                     <Text md={{display:"none"}} margin="auto">
                         Unit:mm*

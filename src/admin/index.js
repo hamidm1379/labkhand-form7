@@ -119,7 +119,11 @@ function Admin() {
         setCurrentPage(1);
     }, [sortBy, sortOrder])
 
-    if (loading) return <p>در حال بارگذاری...</p>
+    if (loading) return (
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+            <p>در حال بارگذاری...</p>
+        </Box>
+    )
 
     const handleDelete = async (usersId) => {
         if (!window.confirm("آیا مطمئن هستید که می‌خواهید این سفارش را حذف کنید؟ این عمل غیرقابل بازگشت است.")) {
@@ -164,7 +168,11 @@ function Admin() {
 
     return (
         <Container dir="rtl" maxW="6xl" backgroundColor="#F2F7FE" marginY="20px" borderRadius="20px">
-            <h1 style={{ textAlign: "center", color: "#333", marginBottom: "30px", fontSize: "24px" }}>لیست سفارشات</h1>
+            <Box display="flex" justifyContent="space-between" alignItems="center" marginBottom="30px" padding="20px" >
+                <h1 style={{ color: "#333", fontSize: "24px", margin: 0 }}>لیست سفارشات (pcb , oem , pcba)</h1>
+                <Link href="/admin-order" color="blue.500" fontSize="18px"> لیست سفارش قطعات </Link>
+            </Box>
+
             <SimpleGrid columns={{ base: 1, md: 4 }} gap={{ base: "24px", md: "40px" }}>
                 <GridItem colSpan={{ base: 1, md: 1 }}>
                     <Box>
