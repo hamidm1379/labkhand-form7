@@ -1,4 +1,6 @@
 {
+  "buildCommand": "npm run build",
+  "outputDirectory": "build",
   "rewrites": [
     {
       "source": "/api/supabase/:path*",
@@ -7,6 +9,10 @@
     {
       "source": "/api/labkhandelec/:path*",
       "destination": "https://labkhandelec.com/:path*"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
     }
   ]
 }
