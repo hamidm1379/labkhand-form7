@@ -12,7 +12,7 @@ import RegisterOEM from "./RegisterOEM/index";
 
 function App() {
   return (
-    <BrowserRouter basename="/appform">
+    <BrowserRouter>
       <Routes>
         <Route path="/PCB" element={<Home />}></Route>
         <Route path="/PCBA" element={<PCBA />}></Route>
