@@ -39,7 +39,7 @@ const material = [
     { value: "FR-4", title: "FR-4", src: FRImage },
     { value: "Rogers", title: "Rogers", src: RogersImage },
     { value: "Flex", title: "Flex", src: FlexImage },
-    { value: "Rigid Flex", title: "Rigid Flex", src: RigidFlexImage },
+    { value: "Rigid-Flex", title: "Rigid-Flex", src: RigidFlexImage },
     { value: "PTFE Teflon", title: "PTFE Teflon", src: PTFEImage },
     { value: "Copper Core", title: "Copper Core", src: copperImage },
 ]

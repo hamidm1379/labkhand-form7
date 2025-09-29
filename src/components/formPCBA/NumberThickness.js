@@ -284,8 +284,8 @@ const NumberThickness = ({ formData, setFormData }) => {
                         </Field.Label>
                         <Input 
                             backgroundColor="white" 
-                            min={0.2} 
-                            step={0.2}
+                            min={0.1} 
+                            step={0.1}
                             height="44px" 
                             type="number" 
                             name="boardthicknessnumber" 

@@ -195,9 +195,9 @@ function Register() {
                 alert("خطا در ارسال فرم. لطفا دوباره تلاش کنید.");
             } else {
                 console.log("Sent to Supabase:", data);
-                const userId = data[0].id;
+                // const userId = data[0].id;
                 
-                document.cookie = `user_id=${userId}; path=/; max-age=31536000`; // یک سال اعتبار
+                // document.cookie = `user_id=${userId}; path=/; max-age=31536000`; // 
                 
                 setSubmitSuccess(true);
                 
@@ -292,18 +292,7 @@ function Register() {
             <Box color="#0662EA" fontWeight="bold" paddingY="40px" fontSize="23px">
                 فرم سفارش برد مدار چاپی ({page1.pagename})
             </Box>
-            {Object.keys(errors).length > 0 && (
-                <Box paddingBottom="10px">
-                    <Text color="red" fontSize="14px">���� ������ ��� �� ����� ����:</Text>
-                    <ul>
-                        {Object.keys(errors).map(key => (
-                            <li key={key}>
-                                <Text color="red" fontSize="14px">{errors[key]}</Text>
-                            </li>
-                        ))}
-                    </ul>
-                </Box>
-            )}
+           
 
             <SimpleGrid columns={[1, null, 2]} gap="6">
                 <Field.Root width="full" {...(errors?.firstname ? { invalid: true } : {})}>

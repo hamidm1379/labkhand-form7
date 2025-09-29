@@ -14,8 +14,8 @@ export default function Fields({ formData, setFormData, errors }) {
     
     if (errors?.productname) errorFields.push("نام سفارش");
     if (errors?.countproduct) errorFields.push("تعداد سفارش");
-    if (errors?.width) errorFields.push("طول");
-    if (errors?.length) errorFields.push("عرض");
+    if (errors?.width) errorFields.push("عرض");
+    if (errors?.length) errorFields.push("طول");
     if (errors?.boardfile) errorFields.push("فایل برد");
 
     return (
