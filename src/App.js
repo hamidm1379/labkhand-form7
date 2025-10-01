@@ -21,7 +21,7 @@ function App() {
         <Route path="/registerPCBA" element={<RegisterPCBA />}></Route>
         <Route path="/registerOEM" element={<RegisterOEM />}></Route>
         <Route path="/order-form-register" element={<OrderFormRegister />}></Route>
-        <Route path="/order-form" element={<OrderForm />}></Route>
+        <Route path="/order-form-user_id=MTIw" element={<OrderForm />}></Route>
         <Route path="/admin" element={<Admin />}></Route>
         <Route path="/admin-order" element={<AdminOrder />}></Route>
       </Routes>

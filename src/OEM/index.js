@@ -6,22 +6,25 @@ import UploadOEM from "../components/formOEM/UploadOEM";
 
 import { Container, HStack, Button, Box } from "@chakra-ui/react"
 
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-
-import { useNavigate } from "react-router-dom";
 
 function HomeOEM() {
 
     const [pageOneDataOEM, setPageOneDataOEM] = useState({});
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
+        const pathParts = location.pathname.split('user_id=');
+        const userId = pathParts[1] ? atob(pathParts[1]) : '';
         const savedData = localStorage.getItem("pageOneDataOEM");
         if (savedData) {
             const parsed = JSON.parse(savedData);
             setPageOneDataOEM({
                 ...parsed,
+                user_id: userId,
                 pagename: "OEM",
                 filedisign: "برد تک",
                 countdisign: "1",
@@ -39,6 +42,7 @@ function HomeOEM() {
             });
         } else {
             setPageOneDataOEM({
+                user_id: userId,
                 pagename: "OEM",
                 filedisign: "برد تک",
                 countdisign: "1",
@@ -57,7 +61,7 @@ function HomeOEM() {
                 BOMfile: null
             });
         }
-    }, []);
+    }, [location]);
 
     useEffect(() => {
         localStorage.setItem("pageOneDataOEM", JSON.stringify(pageOneDataOEM));

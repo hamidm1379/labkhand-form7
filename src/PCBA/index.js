@@ -8,20 +8,24 @@ import { Container, HStack, Button, Box } from "@chakra-ui/react"
 
 import { useState, useEffect } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function HomePCBA() {
 
     const [pageOneDataPCBA, setPageOneDataPCBA] = useState({});
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
+        const pathParts = location.pathname.split('user_id=');
+        const userId = pathParts[1] ? atob(pathParts[1]) : '';
         const savedData = localStorage.getItem("pageOneDataPCBA");
         if (savedData) {
             const parsed = JSON.parse(savedData);
             setPageOneDataPCBA({
                 ...parsed,
+                user_id: userId,
                 pagename: "PCBA",
                 filedisign: "برد تک",
                 countdisign: "1",
@@ -38,6 +42,7 @@ function HomePCBA() {
             });
         } else {
             setPageOneDataPCBA({
+                user_id: userId,
                 pagename: "PCBA",
                 filedisign: "برد تک",
                 countdisign: "1",
@@ -55,7 +60,7 @@ function HomePCBA() {
                 BOMfile: null
             });
         }
-    }, []);
+    }, [location]);
 
     useEffect(() => {
         localStorage.setItem("pageOneDataPCBA", JSON.stringify(pageOneDataPCBA));

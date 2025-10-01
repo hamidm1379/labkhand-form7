@@ -8,19 +8,22 @@ import { Container, HStack, Button, Box } from "@chakra-ui/react"
 
 import { useState, useEffect } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Home() {
   const [pageOneData, setPageOneData] = useState({});
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
+    const userId = atob(location.pathname.split('user_id=')[1]);
     const savedData = localStorage.getItem("pageOneData");
     if (savedData) {
       const parsed = JSON.parse(savedData);
       setPageOneData({
         ...parsed,
+        user_id: userId,
         pagename: "PCB",
         filedisign: "برد تک",
         countdisign: "1",
@@ -36,6 +39,7 @@ function Home() {
       });
     } else {
       setPageOneData({
+        user_id: userId,
         pagename: "PCB",
         filedisign: "برد تک",
         countdisign: "1",
@@ -51,7 +55,7 @@ function Home() {
         boardfile: null
       });
     }
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     localStorage.setItem("pageOneData", JSON.stringify(pageOneData));
@@ -79,6 +83,7 @@ function Home() {
 
   return (
     <Container dir="rtl" maxW="6xl" backgroundColor="#F2F7FE" marginY="20px" borderRadius="20px">
+
       <Box color="#0662EA" paddingY="40px" fontSize="23px">
         فرم سفارش برد مدار چاپی (PCB)
       </Box>

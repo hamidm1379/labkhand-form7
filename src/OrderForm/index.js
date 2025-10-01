@@ -14,12 +14,13 @@ import { HiUpload } from "react-icons/hi"
 import { Container } from "@chakra-ui/react"
 import { MdDescription } from 'react-icons/md';
 import { FaTimes } from 'react-icons/fa';
-
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, useLocation } from "react-router-dom";
 function OrderForm() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const pathParts = location.pathname.split('user_id=');
+    const userId = pathParts[1] ? atob(pathParts[1]) : '';
     const [linkErrors, setLinkErrors] = useState({});
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState({});
@@ -165,12 +166,14 @@ function OrderForm() {
                 if (parsedFormData.boardfile?.name) {
                     setFileName(parsedFormData.boardfile.name);
                 }
+            } else {
+                setFormData({});
             }
 
             if (savedForms) {
-                const parsedForms = JSON.parse(savedForms);
-                if (Array.isArray(parsedForms) && parsedForms.length > 0) {
-                    setForms(parsedForms);
+                const parsed = JSON.parse(savedForms);
+                if (parsed.forms && Array.isArray(parsed.forms) && parsed.forms.length > 0) {
+                    setForms(parsed.forms);
                 } else {
                     setForms(createDefaultForms());
                 }
@@ -181,7 +184,7 @@ function OrderForm() {
         } finally {
             setIsInitialized(true);
         }
-    }, []);
+    }, [location, userId]);
 
     useEffect(() => {
         if (isInitialized) {
@@ -196,12 +199,13 @@ function OrderForm() {
     useEffect(() => {
         if (isInitialized) {
             try {
-                localStorage.setItem("FormsData", JSON.stringify(forms));
+                const dataToSave = { forms, user_id: userId };
+                localStorage.setItem("FormsData", JSON.stringify(dataToSave));
             } catch (error) {
                 console.error("خطا در ذخیره FormsData:", error);
             }
         }
-    }, [forms, isInitialized]);
+    }, [forms, isInitialized, userId]);
 
     const addForm = () => {
         setForms((prev) => [
