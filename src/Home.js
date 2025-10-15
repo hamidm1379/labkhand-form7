@@ -8,17 +8,18 @@ import { Container, HStack, Button, Box } from "@chakra-ui/react"
 
 import { useState, useEffect } from "react";
 
-import { useNavigate, useLocation } from "react-router-dom";
-
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
+console.log(useSearchParams)
 function Home() {
   const [pageOneData, setPageOneData] = useState({});
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    const userId = atob(location.pathname.split('user_id=')[1]);
     const savedData = localStorage.getItem("pageOneData");
+    const userId = searchParams.get('user_id');
     if (savedData) {
       const parsed = JSON.parse(savedData);
       setPageOneData({
